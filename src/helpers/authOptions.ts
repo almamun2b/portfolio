@@ -40,13 +40,12 @@ export const authOptions: NextAuthOptions = {
             return null;
           }
           const user = await res.json();
-          if (user) {
-            // Any object returned will be saved in `user` property of the JWT
+          if (user.success) {
             return {
-              id: user?.id,
-              name: user?.name,
-              email: user?.email,
-              image: user?.picture,
+              id: user.data?.id,
+              name: user?.data.name,
+              email: user.data?.email,
+              image: user.data?.picture,
             };
           } else {
             return null;
