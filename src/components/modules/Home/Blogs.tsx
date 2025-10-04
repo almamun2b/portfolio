@@ -2,7 +2,8 @@
 
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { BlogCard } from "../Blogs/BlogCard";
+import { BlogCard } from "../Blogs/blog-card";
+// import { BlogCard } from "../Blogs/BlogCard";
 
 interface Blog {
   image?: string;

@@ -1,5 +1,7 @@
 "use client";
 
+import type React from "react";
+
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -78,7 +80,9 @@ export const BlogCard: React.FC<BlogCardProps> = ({
 
       {/* Content with description and tags */}
       <CardContent className="px-5 pb-4 flex-1">
-        <p className="text-gray-700 dark:text-gray-300 mb-3">{description}</p>
+        <p className="text-gray-700 dark:text-gray-300 mb-3 line-clamp-2">
+          {description}
+        </p>
 
         <div className="flex flex-wrap gap-2 mb-2">
           {tags.map((tag) => (
@@ -91,8 +95,8 @@ export const BlogCard: React.FC<BlogCardProps> = ({
 
       {/* Footer with Details Button */}
       <CardFooter className="px-5 pb-5">
-        <Button variant="outline" className="w-full">
-          <Link href={slug}>View Details</Link>
+        <Button variant="outline" className="w-full bg-transparent">
+          <Link href={`/blog/${slug}`}>View Details</Link>
         </Button>
       </CardFooter>
     </Card>
