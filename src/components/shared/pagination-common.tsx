@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import {
   Pagination,
   PaginationContent,
@@ -7,24 +7,28 @@ import {
   PaginationLink,
   PaginationNext,
   PaginationPrevious,
-} from "@/components/ui/pagination"
-import { usePagination } from "@/hooks/use-pagination"
-import { usePathname } from "next/navigation"
+} from "@/components/ui/pagination";
+import { usePagination } from "@/hooks/use-pagination";
+import { usePathname } from "next/navigation";
 
 type PaginationProps = {
-  currentPage: number
-  totalPages: number
-  paginationItemsToDisplay?: number
-}
+  currentPage: number;
+  totalPages: number;
+  paginationItemsToDisplay?: number;
+};
 
-export default function PaginationCommon({ currentPage, totalPages, paginationItemsToDisplay = 5 }: PaginationProps) {
+export default function PaginationCommon({
+  currentPage,
+  totalPages,
+  paginationItemsToDisplay = 5,
+}: PaginationProps) {
   const { pages, showLeftEllipsis, showRightEllipsis } = usePagination({
     currentPage,
     totalPages,
     paginationItemsToDisplay,
-  })
+  });
 
-  const path = usePathname()
+  const path = usePathname();
 
   return (
     <Pagination>
@@ -33,7 +37,9 @@ export default function PaginationCommon({ currentPage, totalPages, paginationIt
         <PaginationItem>
           <PaginationPrevious
             className="aria-disabled:pointer-events-none aria-disabled:opacity-50"
-            href={currentPage === 1 ? undefined : `${path}/${currentPage - 1}`}
+            href={
+              currentPage === 1 ? undefined : `${path}?page=${currentPage - 1}`
+            }
             aria-disabled={currentPage === 1 ? true : undefined}
             role={currentPage === 1 ? "link" : undefined}
           />
@@ -49,7 +55,10 @@ export default function PaginationCommon({ currentPage, totalPages, paginationIt
         {/* Page number links */}
         {pages.map((page) => (
           <PaginationItem key={page}>
-            <PaginationLink href={`${path}/${page}`} isActive={page === currentPage}>
+            <PaginationLink
+              href={`${path}?page=${page}`}
+              isActive={page === currentPage}
+            >
               {page}
             </PaginationLink>
           </PaginationItem>
@@ -66,12 +75,16 @@ export default function PaginationCommon({ currentPage, totalPages, paginationIt
         <PaginationItem>
           <PaginationNext
             className="aria-disabled:pointer-events-none aria-disabled:opacity-50"
-            href={currentPage === totalPages ? undefined : `${path}/${currentPage + 1}`}
+            href={
+              currentPage === totalPages
+                ? undefined
+                : `${path}?page=${currentPage + 1}`
+            }
             aria-disabled={currentPage === totalPages ? true : undefined}
             role={currentPage === totalPages ? "link" : undefined}
           />
         </PaginationItem>
       </PaginationContent>
     </Pagination>
-  )
+  );
 }

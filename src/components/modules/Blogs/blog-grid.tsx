@@ -4,8 +4,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import type { Blog } from "@/lib/blog-data";
 import { Search } from "lucide-react";
+import PaginationCommon from "../../shared/pagination-common";
 import { BlogCard } from "./blog-card";
-import PaginationCommon from "./pagination-common";
 
 interface BlogGridProps {
   blogs: Blog[];

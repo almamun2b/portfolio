@@ -1,16 +1,24 @@
+import { User } from "next-auth";
+
 // Mock blog data for demonstration
 export interface Blog {
   id: string;
-  slug: string;
   title: string;
+  slug: string;
   description: string;
+  content?: string;
   image: string;
+  isFeatured?: boolean;
   category: string;
   tags: string[];
+  views: number;
+  authorId?: number;
+  author?: User;
+  createdAt: string;
+  updatedAt?: string;
+  // New fields
   publisher: string;
   publisherAvatar: string;
-  createdAt: string;
-  views: number;
   featured?: boolean;
 }
 

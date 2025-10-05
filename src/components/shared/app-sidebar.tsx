@@ -5,6 +5,7 @@ import {
   Lock,
   Newspaper,
   Projector,
+  Type,
   Upload,
   User,
 } from "lucide-react";
@@ -37,13 +38,21 @@ const data = {
           title: "Create Project",
           url: "/projects/create",
         },
+      ],
+    },
+    {
+      title: "Blog Category",
+      url: "#",
+      icon: Type,
+      isActive: true,
+      items: [
         {
-          title: "Add Technology",
-          url: "/projects/add-technology",
+          title: "All Categories",
+          url: "/blog-category",
         },
         {
-          title: "Add Type",
-          url: "/projects/add-type",
+          title: "Create Category",
+          url: "/blog-category/create",
         },
       ],
     },
@@ -60,10 +69,6 @@ const data = {
         {
           title: "Create Blog",
           url: "/blogs/create",
-        },
-        {
-          title: "Add Category",
-          url: "/blogs/add-category",
         },
       ],
     },
