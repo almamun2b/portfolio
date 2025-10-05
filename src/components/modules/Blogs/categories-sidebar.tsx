@@ -46,7 +46,9 @@ export function CategoriesSidebar({
                 }`}
               >
                 <span>{category.name}</span>
-                <Badge variant="secondary">0</Badge>
+                <Badge variant="secondary" className="hidden">
+                  0
+                </Badge>
               </button>
             ))}
           </div>
