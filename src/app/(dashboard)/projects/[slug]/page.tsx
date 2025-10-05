@@ -1,3 +1,5 @@
+import CreateProjectForm from "@/components/modules/Projects/CreateProjectForm";
+import { SingleProjectResponse } from "@/types";
 import { Metadata } from "next";
 
 interface CreateProjectPageProps {
@@ -18,21 +20,29 @@ const CreateProjectPage = async ({
   const { slug } = await params;
   const { id } = await searchParams;
 
+  let project = null;
+
   if (slug !== "create" && slug !== "edit") {
     throw new Error("Page not found");
   } else if (slug === "edit" && !id) {
     throw new Error("Project ID is required for editing");
-  } else if (slug === "create") {
-    // Logic for creating a new project can be added here
   } else if (slug === "edit" && id) {
-    // Logic for editing an existing project can be added here
-  } else {
-    throw new Error("Invalid request");
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_API}/project/${id}`
+    );
+    if (!res.ok) {
+      throw new Error("Failed to fetch project");
+    }
+    const { data } = (await res.json()) as SingleProjectResponse;
+    project = data;
   }
 
   return (
-    <div>
-      CreateProjectPage {slug} params {id}
+    <div className="w-full h-full flex flex-col p-4">
+      <h1 className="text-3xl font-bold">
+        {slug === "create" ? "Create" : "Edit"} Project
+      </h1>
+      <CreateProjectForm slug={slug} project={project} />
     </div>
   );
 };
