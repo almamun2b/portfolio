@@ -23,7 +23,7 @@ export default function CallToAction() {
             <Link href="/contact">Contact Me</Link>
           </Button>
           <Button size="lg" asChild variant="outline">
-            <Link href="/Md_Abdul_Mamun_Resume.docx" download>
+            <Link href="/mamun.pdf" download>
               Download CV
             </Link>
           </Button>

@@ -24,7 +24,7 @@ const ProjectPage = async ({ searchParams }: ProjectPageProps) => {
       },
     }
   );
-  const { data } = (await res.json()) as { data: ProjectsResponse };
+  const { data } = (await res.json()) as ProjectsResponse;
 
   console.log("data:", data);
 

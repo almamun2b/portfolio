@@ -55,7 +55,7 @@ export default function AboutMe() {
               <Link href="/contact">Contact Me</Link>
             </Button>
             <Button variant="outline" asChild>
-              <Link href="/Md_Abdul_Mamun_Resume.docx" download>
+              <Link href="/mamun.pdf" download>
                 Download CV
               </Link>
             </Button>

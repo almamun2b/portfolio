@@ -164,8 +164,79 @@ export const post = [
   },
 ];
 
-export const GET = async () => {
-  return Response.json(post);
+export const GET = async (request: Request) => {
+  const { searchParams } = new URL(request.url);
+  const page = parseInt(searchParams.get("page") || "1");
+  const limit = parseInt(searchParams.get("limit") || "6");
+  const category = searchParams.get("category");
+  const search = searchParams.get("search");
+
+  let filteredPosts = [...post];
+
+  // Apply search filter
+  if (search) {
+    const searchLower = search.toLowerCase();
+    filteredPosts = filteredPosts.filter(
+      (blog) =>
+        blog.title.toLowerCase().includes(searchLower) ||
+        blog.content.toLowerCase().includes(searchLower) ||
+        blog.tags.some((tag) => tag.toLowerCase().includes(searchLower))
+    );
+  }
+
+  // Apply category filter
+  if (category && category !== "All") {
+    // For now, we'll use tags as categories since the API data doesn't have a category field
+    filteredPosts = filteredPosts.filter((blog) =>
+      blog.tags.some((tag) =>
+        tag.toLowerCase().includes(category.toLowerCase())
+      )
+    );
+  }
+
+  // Calculate pagination
+  const total = filteredPosts.length;
+  const totalPages = Math.ceil(total / limit);
+  const startIndex = (page - 1) * limit;
+  const endIndex = startIndex + limit;
+  const paginatedPosts = filteredPosts.slice(startIndex, endIndex);
+
+  // Transform data to match Blog interface
+  const blogs = paginatedPosts.map((blog) => ({
+    id: blog.id,
+    title: blog.title,
+    slug: blog.title
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/(^-|-$)/g, ""),
+    description: blog.content.substring(0, 200) + "...",
+    content: blog.content,
+    image: blog.thumbnail,
+    isFeatured: blog.isFeatured,
+    category: blog.tags[0] || "General", // Use first tag as category
+    tags: blog.tags,
+    views: blog.views,
+    authorId: blog.authorId,
+    createdAt: new Date(blog.createdAt),
+    updatedAt: new Date(blog.updatedAt),
+    author: blog.author,
+  }));
+
+  const response = {
+    success: true,
+    message: "Blogs fetched successfully",
+    data: {
+      posts: blogs,
+      meta: {
+        total,
+        page,
+        limit,
+        totalPages,
+      },
+    },
+  };
+
+  return Response.json(response);
 };
 
 export const POST = async (request: Request) => {

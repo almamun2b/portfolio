@@ -12,7 +12,7 @@ interface ProjectDetailPageProps {
 
 export const generateStaticParams = async () => {
   const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/project`);
-  const { data } = (await res.json()) as { data: ProjectsResponse };
+  const { data } = (await res.json()) as ProjectsResponse;
 
   return data.projects.map((blog) => ({
     slug: String(blog.slug),
@@ -63,7 +63,7 @@ const ProjectDetailPage = async ({ params }: ProjectDetailPageProps) => {
 
     return (
       <div className="min-h-screen bg-background">
-        <div className="container mx-auto px-4 py-8">
+        <div className="container mx-auto px-4 py-8 pt-20">
           {/* Back Button */}
           <Link href="/project">
             <Button variant="ghost" className="mb-8 -ml-4">

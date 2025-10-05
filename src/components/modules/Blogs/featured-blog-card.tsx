@@ -37,7 +37,7 @@ export function FeaturedBlogCard({
         <div className="grid md:grid-cols-2 gap-0">
           {/* Left side - Image */}
           <Link
-            href={slug}
+            href={`/blog/${slug}`}
             className="relative h-64 md:h-full overflow-hidden group"
           >
             <Image

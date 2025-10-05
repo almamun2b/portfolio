@@ -62,7 +62,9 @@ export const ProjectCard: React.FC<Project> = ({
 
       <CardFooter className="px-5 pb-5">
         <Button variant="outline" asChild className="w-full">
-          <Link href={`/project/${slug}`}>View Details</Link>
+          <Link href={`/project/${slug}`} className="w-full h-full">
+            View Details
+          </Link>
         </Button>
       </CardFooter>
     </Card>

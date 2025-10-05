@@ -37,6 +37,21 @@ export interface Project {
   updatedAt: Date;
 }
 
+export interface ProjectsResponse {
+  success: boolean;
+  message: string;
+  data: {
+    projects: Project[];
+    meta: Meta;
+  };
+}
+
+export interface SingleProjectResponse {
+  success: boolean;
+  message: string;
+  data: Project;
+}
+
 export interface Blog {
   id: number;
   title: string;
@@ -45,7 +60,11 @@ export interface Blog {
   content: string;
   image: string | null;
   isFeatured: boolean;
-  category: string;
+  category: {
+    id: number;
+    name: string;
+    slug: string;
+  };
   tags: string[];
   views: number;
   authorId: number;
@@ -55,17 +74,30 @@ export interface Blog {
 }
 
 export interface BlogsResponse {
-  blogs: Blog[];
-  meta: Meta;
-}
-
-export interface ProjectsResponse {
-  projects: Project[];
-  meta: Meta;
-}
-
-export interface SingleProjectResponse {
   success: boolean;
   message: string;
-  data: Project;
+  data: {
+    posts: Blog[];
+    meta: Meta;
+  };
+}
+
+export interface SingleBlogResponse {
+  success: boolean;
+  message: string;
+  data: Blog;
+}
+
+export interface Category {
+  id: number;
+  name: string;
+  slug: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface CategoriesResponse {
+  data: Category[];
+  success: boolean;
+  message: string;
 }

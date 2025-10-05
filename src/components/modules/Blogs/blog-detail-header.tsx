@@ -1,10 +1,13 @@
-import type { Blog } from "@/lib/blog-data"
-import { Calendar, Eye, User } from "lucide-react"
-import { Badge } from "@/components/ui/badge"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
+import type { Blog } from "@/types";
+import { Calendar, Eye, User } from "lucide-react";
 
 interface BlogDetailHeaderProps {
-  blog: Blog
+  blog: Blog & {
+    publisher?: string;
+    publisherAvatar?: string;
+  };
 }
 
 export function BlogDetailHeader({ blog }: BlogDetailHeaderProps) {
@@ -12,22 +15,29 @@ export function BlogDetailHeader({ blog }: BlogDetailHeaderProps) {
     <div className="space-y-6">
       {/* Category Badge */}
       <Badge variant="secondary" className="text-sm">
-        {blog.category}
+        {blog.category.name}
       </Badge>
 
       {/* Title */}
-      <h1 className="text-4xl md:text-5xl font-bold text-balance leading-tight">{blog.title}</h1>
+      <h1 className="text-4xl md:text-5xl font-bold text-balance leading-tight">
+        {blog.title}
+      </h1>
 
       {/* Meta Information */}
       <div className="flex flex-wrap items-center gap-6 text-sm text-muted-foreground">
         <div className="flex items-center gap-2">
           <Avatar className="h-10 w-10">
-            <AvatarImage src={blog.publisherAvatar || "/placeholder.svg"} alt={blog.publisher} />
+            <AvatarImage
+              src={blog.author?.picture || "/placeholder.svg"}
+              alt={blog.author?.name || "Author"}
+            />
             <AvatarFallback>
               <User className="h-5 w-5" />
             </AvatarFallback>
           </Avatar>
-          <span className="font-medium text-foreground">{blog.publisher}</span>
+          <span className="font-medium text-foreground">
+            {blog.author?.name || "Unknown Author"}
+          </span>
         </div>
 
         <div className="flex items-center gap-2">
@@ -56,5 +66,5 @@ export function BlogDetailHeader({ blog }: BlogDetailHeaderProps) {
         ))}
       </div>
     </div>
-  )
+  );
 }

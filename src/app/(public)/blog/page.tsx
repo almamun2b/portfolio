@@ -1,107 +1,154 @@
-"use client";
-
-import { BlogGrid } from "@/components/modules/Blogs/blog-grid";
-import { CategoriesSidebar } from "@/components/modules/Blogs/categories-sidebar";
+import { BlogPageClient } from "@/components/modules/Blogs/blog-page-client";
 import { FeaturedBlogSection } from "@/components/modules/Blogs/featured-blog-section";
-import { PopularBlogsSidebar } from "@/components/modules/Blogs/popular-blogs-sidebar";
 import { RecentBlogsSection } from "@/components/modules/Blogs/recent-blogs-section";
-import {
-  allTags,
-  categories,
-  getFeaturedBlogs,
-  getPopularBlogs,
-  getRecentBlogs,
-  mockBlogs,
-  searchBlogs,
-} from "@/lib/blog-data";
-import { useMemo, useState } from "react";
+import { Blog, BlogsResponse, Category } from "@/types";
+import type { Metadata } from "next";
 
-export default function BlogPage() {
-  const [selectedCategory, setSelectedCategory] = useState("All");
-  const [searchQuery, setSearchQuery] = useState("");
-  const [activeSearchQuery, setActiveSearchQuery] = useState("");
-  const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 6;
+interface BlogPageProps {
+  searchParams: Promise<{
+    page?: string;
+    category?: string;
+    search?: string;
+  }>;
+}
 
-  const featuredBlogs = getFeaturedBlogs();
-  const popularBlogs = getPopularBlogs(5);
-  const recentBlogs = getRecentBlogs(3);
+export const metadata: Metadata = {
+  title: "Blog",
+  description:
+    "Read our latest articles and insights on web development, technology, and more.",
+};
 
-  // Filter blogs based on category and search
-  const filteredBlogs = useMemo(() => {
-    let blogs = mockBlogs;
+const BlogPage = async ({ searchParams }: BlogPageProps) => {
+  const { page, category, search } = await searchParams;
 
-    // Apply search filter
-    if (activeSearchQuery) {
-      blogs = searchBlogs(activeSearchQuery);
+  // Fetch blogs from API
+  const blogsRes = await fetch(
+    `${process.env.NEXT_PUBLIC_BASE_API}/blog?limit=6&page=${page || 1}${
+      category ? `&category=${category}` : ""
+    }${search ? `&search=${search}` : ""}`,
+    {
+      next: {
+        tags: ["BLOGS"],
+      },
     }
+  );
+  if (!blogsRes.ok) {
+    throw new Error(`Failed to fetch blogs: ${blogsRes.status}`);
+  }
 
-    // Apply category filter
-    if (selectedCategory !== "All") {
-      blogs = blogs.filter((blog) => blog.category === selectedCategory);
+  const blogsJson = await blogsRes.json();
+  const blogsResponse = blogsJson as BlogsResponse;
+  console.log(blogsResponse, "blogsResponse");
+
+  // Fetch featured blogs
+  const featuredRes = await fetch(
+    `${process.env.NEXT_PUBLIC_BASE_API}/blog/featured`,
+    {
+      next: {
+        tags: ["BLOGS"],
+      },
     }
+  );
 
-    return blogs;
-  }, [selectedCategory, activeSearchQuery]);
+  if (!featuredRes.ok) {
+    throw new Error(`Failed to fetch featured blogs: ${featuredRes.status}`);
+  }
 
-  const totalPages = Math.ceil(filteredBlogs.length / itemsPerPage);
+  const featuredJson = await featuredRes.json();
 
-  const handleCategoryChange = (category: string) => {
-    setSelectedCategory(category);
-    setCurrentPage(1);
-  };
+  const { data: featuredBlogs } = featuredJson as { data: Blog[] };
 
-  const handleSearch = () => {
-    setActiveSearchQuery(searchQuery);
-    setCurrentPage(1);
-  };
+  console.log(featuredBlogs, "featuredBlogs");
 
-  const onSearchTextChange = (query: string) => {
-    setSearchQuery(query);
-    if (query === "") {
-      setActiveSearchQuery("");
-      setCurrentPage(1);
+  // Fetch popular blogs (sorted by views)
+  const popularRes = await fetch(
+    `${process.env.NEXT_PUBLIC_BASE_API}/blog/popular`,
+    {
+      next: {
+        tags: ["BLOGS"],
+      },
     }
-  };
+  );
+
+  if (!popularRes.ok) {
+    throw new Error(`Failed to fetch popular blogs: ${popularRes.status}`);
+  }
+
+  const popularJson = await popularRes.json();
+  const { data: popularBlogs } = popularJson as { data: Blog[] };
+
+  console.log(popularBlogs, "popularBlogs");
+
+  // Fetch recent blogs
+  const recentRes = await fetch(
+    `${process.env.NEXT_PUBLIC_BASE_API}/blog?limit=3`,
+    {
+      next: {
+        tags: ["BLOGS"],
+      },
+    }
+  );
+
+  if (!recentRes.ok) {
+    throw new Error(`Failed to fetch recent blogs: ${recentRes.status}`);
+  }
+
+  const recentJson = await recentRes.json();
+  const recentResponse = recentJson as BlogsResponse;
+  console.log(recentResponse, "recentResponse");
+
+  // Fetch categories
+  const categoriesRes = await fetch(
+    `${process.env.NEXT_PUBLIC_BASE_API}/category`,
+    {
+      next: {
+        tags: ["BLOGS"],
+      },
+    }
+  );
+
+  if (!categoriesRes.ok) {
+    throw new Error(`Failed to fetch categories: ${categoriesRes.status}`);
+  }
+
+  const categoriesJson = await categoriesRes.json();
+  const { data: categories } = categoriesJson as { data: Category[] };
+  console.log(categories, "categories");
+
+  // Generate tags from all blogs
+  const allTags = ["Git", "Version Control", "Automation", "Tools", "DevOps"];
 
   return (
     <div className="min-h-screen bg-background">
       <div className="container mx-auto px-4 py-8 pt-20">
         {/* Featured Section */}
-        <FeaturedBlogSection blogs={featuredBlogs} />
+        <FeaturedBlogSection blogs={featuredBlogs || []} />
 
-        {/* Main Content Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-          {/* Main Blog Grid - Now Full Width */}
-          <div className="lg:col-span-9">
-            <BlogGrid
-              blogs={filteredBlogs}
-              currentPage={currentPage}
-              totalPages={totalPages}
-              itemsPerPage={itemsPerPage}
-              searchQuery={searchQuery}
-              onSearchTextChange={onSearchTextChange}
-              onSearch={handleSearch}
-            />
-          </div>
-
-          {/* Right Sidebar - Categories, Popular & Tags */}
-          <div className="lg:col-span-3 space-y-6">
-            {/* Categories at the top */}
-            <CategoriesSidebar
-              categories={categories}
-              selectedCategory={selectedCategory}
-              onCategoryChange={handleCategoryChange}
-            />
-
-            {/* Popular Blogs & Tags below */}
-            <PopularBlogsSidebar popularBlogs={popularBlogs} tags={allTags} />
-          </div>
-        </div>
+        {/* Client Component for Interactive Features */}
+        <BlogPageClient
+          initialBlogs={blogsResponse?.data?.posts || []}
+          initialMeta={
+            blogsResponse?.data?.meta
+              ? {
+                  ...blogsResponse.data.meta,
+                }
+              : {
+                  total: 0,
+                  page: 1,
+                  limit: 6,
+                  totalPages: 0,
+                }
+          }
+          categories={categories}
+          popularBlogs={popularBlogs || []}
+          allTags={allTags}
+        />
 
         {/* Recent Blogs Section */}
-        <RecentBlogsSection blogs={recentBlogs} />
+        <RecentBlogsSection blogs={recentResponse?.data?.posts || []} />
       </div>
     </div>
   );
-}
+};
+
+export default BlogPage;

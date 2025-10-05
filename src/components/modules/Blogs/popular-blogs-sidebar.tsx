@@ -2,14 +2,14 @@
 
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import type { Blog } from "@/lib/blog-data";
+import type { Blog } from "@/types";
 import { Eye } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
 interface PopularBlogsSidebarProps {
   popularBlogs: Blog[];
-  tags: { name: string; count: number }[];
+  tags?: string[];
 }
 
 export function PopularBlogsSidebar({
@@ -66,13 +66,13 @@ export function PopularBlogsSidebar({
         </CardHeader>
         <CardContent>
           <div className="flex flex-wrap gap-2">
-            {tags.map((tag) => (
+            {tags?.map((tag) => (
               <Badge
-                key={tag.name}
+                key={tag}
                 variant="outline"
                 className="cursor-pointer hover:bg-primary hover:text-primary-foreground transition-colors"
               >
-                {tag.name} ({tag.count})
+                {tag}
               </Badge>
             ))}
           </div>

@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import type { Blog } from "@/lib/blog-data";
+import type { Blog } from "@/types";
 import { Search } from "lucide-react";
 import PaginationCommon from "../../shared/pagination-common";
 import { BlogCard } from "./blog-card";
@@ -26,9 +26,8 @@ export function BlogGrid({
   onSearchTextChange,
   onSearch,
 }: BlogGridProps) {
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const endIndex = startIndex + itemsPerPage;
-  const displayedBlogs = blogs.slice(startIndex, endIndex);
+  // No need for client-side pagination since data comes pre-paginated from server
+  const displayedBlogs = blogs;
 
   return (
     <div className="space-y-6">
@@ -67,8 +66,7 @@ export function BlogGrid({
               tags={blog.tags}
               category={blog.category}
               createdAt={blog.createdAt}
-              publisher={blog.publisher}
-              publisherAvatar={blog.publisherAvatar}
+              author={blog.author}
               slug={blog.slug}
             />
           ))}

@@ -23,7 +23,7 @@ const ProjectDetailContent = ({ project }: ProjectDetailContentProps) => {
       )}
 
       {/* Project Content */}
-      <div>
+      <div className="">
         <HtmlRenderer content={project.content} />
       </div>
     </div>

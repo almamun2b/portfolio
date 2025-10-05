@@ -1,6 +1,4 @@
-"use client";
-
-import type { Blog } from "@/lib/blog-data";
+import type { Blog } from "@/types";
 import { BlogCard } from "./blog-card";
 
 interface RecentBlogsSectionProps {
@@ -23,8 +21,7 @@ export function RecentBlogsSection({ blogs }: RecentBlogsSectionProps) {
             tags={blog.tags}
             category={blog.category}
             createdAt={blog.createdAt}
-            publisher={blog.publisher}
-            publisherAvatar={blog.publisherAvatar}
+            author={blog.author}
             slug={blog.slug}
           />
         ))}

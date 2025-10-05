@@ -14,7 +14,7 @@ export function BlogDetailContent({
   return (
     <div className="space-y-8">
       {/* Featured Image */}
-      <div className="relative w-full aspect-video rounded-lg overflow-hidden">
+      <div className="relative w-full aspect-[1200/600] rounded-lg overflow-hidden">
         <Image
           src={image || "/placeholder.svg"}
           alt={title}
