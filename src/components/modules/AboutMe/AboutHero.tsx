@@ -1,5 +1,4 @@
-"use client";
-
+import mamun from "@/assets/mamun.png";
 import Image from "next/image";
 
 export const AboutHero = () => {
@@ -7,12 +6,7 @@ export const AboutHero = () => {
     <section className="flex flex-col md:flex-row items-center justify-between gap-10 py-16">
       {/* Avatar / Profile Image */}
       <div className="relative w-80 min-w-80 h-80 rounded-full overflow-hidden shadow-lg">
-        <Image
-          src="/images/mamun.png"
-          alt="Md Abdul Mamun"
-          fill
-          className="object-cover"
-        />
+        <Image src={mamun} alt="Md Abdul Mamun" fill className="object-cover" />
       </div>
 
       {/* Intro Text */}

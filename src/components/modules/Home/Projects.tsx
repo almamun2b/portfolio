@@ -12,6 +12,9 @@ export const Projects = async () => {
       },
     }
   );
+  if (!res.ok) {
+    throw new Error(`Failed to fetch projects: ${res.status}`);
+  }
   const { data } = (await res.json()) as ProjectsResponse;
 
   return (

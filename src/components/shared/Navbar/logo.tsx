@@ -1,3 +1,4 @@
+import logo from "@/assets/logo.jpg";
 import Image from "next/image";
 
 export const Logo = () => (
@@ -5,7 +6,7 @@ export const Logo = () => (
     width={96}
     height={32}
     className="w-auto"
-    src="/logo.jpg"
+    src={logo}
     alt="Company Logo"
   ></Image>
 );

@@ -1,3 +1,4 @@
+import mamun from "@/assets/mamun.png";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import Image from "next/image";
@@ -12,7 +13,7 @@ export default function AboutMe() {
           <Card className="overflow-hidden rounded-2xl shadow-sm">
             <CardContent className="p-0">
               <Image
-                src="/images/mamun.png" // replace with your image path
+                src={mamun} // replace with your image path
                 alt="Md Abdul Mamun"
                 width={400}
                 height={450}

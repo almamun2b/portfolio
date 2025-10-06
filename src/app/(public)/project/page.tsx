@@ -26,8 +26,6 @@ const ProjectPage = async ({ searchParams }: ProjectPageProps) => {
   );
   const { data } = (await res.json()) as ProjectsResponse;
 
-  console.log("data:", data);
-
   return (
     <section className="max-w-7xl mx-auto px-4 py-20 pt-32">
       <h2 className="text-3xl font-bold mb-4 text-center">My Projects</h2>

@@ -16,13 +16,6 @@ import { useRouter } from "next/navigation";
 import { FieldValues, useForm } from "react-hook-form";
 import { toast } from "sonner";
 
-type RegisterFormValues = {
-  name: string;
-  email: string;
-  phone: string;
-  password: string;
-};
-
 export default function RegisterForm() {
   const router = useRouter();
   const form = useForm<FieldValues>({

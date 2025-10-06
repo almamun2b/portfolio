@@ -1,14 +1,9 @@
 import type { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import GoogleProvider from "next-auth/providers/google";
 
 export const authOptions: NextAuthOptions = {
   // Configure one or more authentication providers
   providers: [
-    GoogleProvider({
-      clientId: process.env.GOOGLE_CLIENT_ID as string,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
-    }),
     CredentialsProvider({
       name: "Credentials",
       credentials: {
@@ -70,18 +65,8 @@ export const authOptions: NextAuthOptions = {
       }
       return session;
     },
-    // async signIn({ user, account }) {
-    //   if (account?.provider === "google") {
-    //     const res = await loginWithGoogle(user); // save user into to backend
-    //     if (res?.id) {
-    //       return true;
-    //     }
-    //     return false;
-    //   }
-    //   return true;
-    // },
   },
-  secret: process.env.AUTH_SECRET,
+  secret: process.env.NEXTAUTH_SECRET,
   pages: {
     signIn: "/login",
   },

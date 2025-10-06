@@ -1,5 +1,6 @@
 import type React from "react";
 
+import mamun from "@/assets/mamun.png";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -53,7 +54,7 @@ export const BlogCard: React.FC<BlogCardProps> = ({
       {/* Project / Blog Image */}
       <div className="relative w-full h-48 overflow-hidden rounded-t-lg ">
         <Image
-          src={image || "/images/mamun.png"}
+          src={image || mamun}
           alt={title}
           fill
           className="object-cover transition-transform duration-500 hover:scale-110"
@@ -72,7 +73,7 @@ export const BlogCard: React.FC<BlogCardProps> = ({
           <div className="flex items-center gap-2">
             <div className="relative w-8 h-8 rounded-full overflow-hidden">
               <Image
-                src={author?.picture || "/images/mamun.png"}
+                src={author?.picture || mamun}
                 alt={author?.name || "Author"}
                 fill
                 className="object-cover"

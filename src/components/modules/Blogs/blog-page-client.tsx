@@ -36,9 +36,7 @@ export function BlogPageClient({
   const [searchQuery, setSearchQuery] = useState(
     searchParams.get("search") || ""
   );
-  const [activeSearchQuery, setActiveSearchQuery] = useState(
-    searchParams.get("search") || ""
-  );
+  // const [, setActiveSearchQuery] = useState(searchParams.get("search") || "");
 
   const currentPage = parseInt(searchParams.get("page") || "1");
   const itemsPerPage = initialMeta.limit;
@@ -49,14 +47,14 @@ export function BlogPageClient({
   };
 
   const handleSearch = () => {
-    setActiveSearchQuery(searchQuery);
+    // setActiveSearchQuery(searchQuery);
     updateURL({ search: searchQuery, page: "1" });
   };
 
   const onSearchTextChange = (query: string) => {
     setSearchQuery(query);
     if (query === "") {
-      setActiveSearchQuery("");
+      // setActiveSearchQuery("");
       updateURL({ search: "", page: "1" });
     }
   };

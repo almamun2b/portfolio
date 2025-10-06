@@ -78,7 +78,7 @@ export function BlogGrid({
           <PaginationCommon
             currentPage={currentPage}
             totalPages={totalPages}
-            paginationItemsToDisplay={5}
+            paginationItemsToDisplay={itemsPerPage}
           />
         </div>
       )}

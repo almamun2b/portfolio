@@ -1,5 +1,6 @@
 "use client";
 
+import mamun from "@/assets/mamun.png";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import Link from "next/link";
@@ -43,7 +44,7 @@ export default function Hero() {
       <div className="w-full md:w-1/2 flex justify-center">
         <div className="relative w-64 h-64 sm:w-96 sm:h-96 rounded-full overflow-hidden shadow-lg border border-border">
           <Image
-            src="/images/mamun.png"
+            src={mamun}
             alt="Md Abdul Mamun"
             fill
             className="object-cover"

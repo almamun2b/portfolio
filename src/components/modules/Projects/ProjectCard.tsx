@@ -18,12 +18,7 @@ export const ProjectCard: React.FC<Project> = ({
   title,
   type,
   description,
-  codeUrl,
-  projectUrl,
   technologies,
-  createdAt,
-  updatedAt,
-  content,
   slug,
 }) => {
   return (

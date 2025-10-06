@@ -1,3 +1,4 @@
+import mamun from "@/assets/mamun.png";
 import type { Blog } from "@/types";
 import { FeaturedBlogCard } from "./featured-blog-card";
 
@@ -13,14 +14,14 @@ export function FeaturedBlogSection({ blogs }: FeaturedBlogSectionProps) {
     <section className="mb-12">
       <h2 className="text-3xl font-bold mb-6 text-balance">Featured Article</h2>
       <FeaturedBlogCard
-        image={featuredBlog.image || "/images/mamun.png"}
+        image={featuredBlog.image || mamun.src}
         title={featuredBlog.title}
         description={featuredBlog.description}
         tags={featuredBlog.tags}
         category={featuredBlog.category.name}
         createdAt={new Date(featuredBlog.createdAt).toLocaleDateString()}
         publisher={featuredBlog.author?.name || "Unknown"}
-        publisherAvatar={featuredBlog.author?.picture || "/images/mamun.png"}
+        publisherAvatar={featuredBlog.author?.picture || mamun.src}
         slug={featuredBlog.slug}
       />
     </section>
