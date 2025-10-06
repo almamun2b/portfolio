@@ -1,10 +1,8 @@
-export { default } from "next-auth/middleware";
-
 import { getToken } from "next-auth/jwt";
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 
-// export const config = { matcher: ["/dashboard"] };
+export { default } from "next-auth/middleware";
 
 export async function middleware(request: NextRequest) {
   const token = await getToken({
