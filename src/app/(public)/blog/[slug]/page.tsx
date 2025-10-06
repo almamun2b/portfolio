@@ -1,3 +1,4 @@
+import mamun from "@/assets/mamun.png";
 import { BlogDetailContent } from "@/components/modules/Blogs/blog-detail-content";
 import { BlogDetailHeader } from "@/components/modules/Blogs/blog-detail-header";
 import { PopularBlogsSidebar } from "@/components/modules/Blogs/popular-blogs-sidebar";
@@ -5,7 +6,7 @@ import { RelatedBlogsSection } from "@/components/modules/Blogs/related-blogs-se
 import { Button } from "@/components/ui/button";
 import { Blog, BlogsResponse, SingleBlogResponse } from "@/types";
 import { ChevronLeft } from "lucide-react";
-import type { Metadata } from "next";
+import { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
@@ -15,22 +16,20 @@ interface BlogDetailPageProps {
 
 export const generateStaticParams = async () => {
   const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/blog`);
-  const blogsResponse = (await res.json()) as BlogsResponse;
 
-  return blogsResponse.data.posts.map((blog) => ({
-    slug: String(blog.slug),
+  const { data: blogs } = (await res.json()) as BlogsResponse;
+
+  return blogs.posts.slice(0, 3).map((blog) => ({
+    slug: blog.slug,
   }));
 };
-
 export const generateMetadata = async ({
   params,
 }: {
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> => {
   const { slug } = await params;
-  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/blog/${slug}`, {
-    cache: "no-store",
-  });
+  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/blog/${slug}`);
 
   if (!res.ok) {
     return {
@@ -52,12 +51,7 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
 
   try {
     // Fetch single blog
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_API}/blog/${slug}`,
-      {
-        cache: "no-store",
-      }
-    );
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/blog/${slug}`);
 
     if (!res.ok) {
       notFound();
@@ -127,12 +121,12 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
                 blog={{
                   ...blog,
                   publisher: blog.author?.name || "Unknown",
-                  publisherAvatar: blog.author?.picture || "/images/mamun.png",
+                  publisherAvatar: blog.author?.picture || mamun.src,
                 }}
               />
               <div className="mt-8">
                 <BlogDetailContent
-                  image={blog.image || "/images/mamun.png"}
+                  image={blog.image || mamun.src}
                   title={blog.title}
                   description={blog.description}
                 />
@@ -141,7 +135,7 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
                 blogs={relatedBlogs.map((b) => ({
                   ...b,
                   publisher: b.author?.name || "Unknown",
-                  publisherAvatar: b.author?.picture || "/images/mamun.png",
+                  publisherAvatar: b.author?.picture || mamun.src,
                 }))}
               />
             </article>
