@@ -54,7 +54,7 @@ const createProjectSchema = z.object({
     }),
 });
 
-export type CreateProjectForm = z.infer<typeof createProjectSchema>;
+export type CreateProjectFormTypes = z.infer<typeof createProjectSchema>;
 
 interface CreateProjectFormProps {
   slug: "create" | "edit";
@@ -63,7 +63,7 @@ interface CreateProjectFormProps {
 
 const CreateProjectForm = ({ slug, project }: CreateProjectFormProps) => {
   const router = useRouter();
-  const form = useForm<CreateProjectForm>({
+  const form = useForm<CreateProjectFormTypes>({
     resolver: zodResolver(createProjectSchema),
     mode: "onChange",
     reValidateMode: "onChange",
@@ -79,7 +79,7 @@ const CreateProjectForm = ({ slug, project }: CreateProjectFormProps) => {
     },
   });
 
-  const onSubmit = async (values: CreateProjectForm) => {
+  const onSubmit = async (values: CreateProjectFormTypes) => {
     try {
       if (slug === "create") {
         await createProjects({ data: values });

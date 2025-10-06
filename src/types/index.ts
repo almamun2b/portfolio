@@ -101,3 +101,9 @@ export interface CategoriesResponse {
   success: boolean;
   message: string;
 }
+
+export interface SingleCategoryResponse {
+  success: boolean;
+  message: string;
+  data: Category;
+}

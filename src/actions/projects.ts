@@ -1,9 +1,13 @@
 "use server";
 
-import { CreateProjectForm } from "@/components/modules/Projects/CreateProjectForm";
+import { CreateProjectFormTypes } from "@/components/modules/Projects/CreateProjectForm";
 import { revalidateTag } from "next/cache";
 
-export const createProjects = async ({ data }: { data: CreateProjectForm }) => {
+export const createProjects = async ({
+  data,
+}: {
+  data: CreateProjectFormTypes;
+}) => {
   const technologyArray = data.technologies
     .toString()
     .split(",")
@@ -31,7 +35,7 @@ export const updateProject = async ({
   data,
   id,
 }: {
-  data: CreateProjectForm;
+  data: CreateProjectFormTypes;
   id: number;
 }) => {
   const technologyArray = data.technologies
