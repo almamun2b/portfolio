@@ -20,7 +20,7 @@ export default function CallToAction() {
         </CardDescription>
         <CardFooter className="flex justify-center gap-4">
           <Button size="lg" asChild>
-            <Link href="/contact">Contact Me</Link>
+            <Link href="/contact-me">Contact Me</Link>
           </Button>
           <Button size="lg" asChild variant="outline">
             <Link href="/mamun.pdf" download>

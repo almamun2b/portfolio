@@ -35,7 +35,7 @@ export default function Hero() {
             variant="outline"
             className="rounded-xl shadow-sm"
           >
-            <Link href="/contact">Contact Me</Link>
+            <Link href="/contact-me">Contact Me</Link>
           </Button>
         </div>
       </div>

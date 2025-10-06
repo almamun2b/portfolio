@@ -53,7 +53,7 @@ export default function AboutMe() {
           {/* Buttons */}
           <div className="flex gap-4">
             <Button variant="default" asChild>
-              <Link href="/contact">Contact Me</Link>
+              <Link href="/contact-me">Contact Me</Link>
             </Button>
             <Button variant="outline" asChild>
               <Link href="/mamun.pdf" download>
