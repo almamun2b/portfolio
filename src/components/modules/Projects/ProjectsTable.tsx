@@ -1,3 +1,5 @@
+import { deleteProject } from "@/actions/projects";
+import { DeleteConfirmDialog } from "@/components/shared/DeleteConfirmDialog";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
@@ -9,7 +11,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Project } from "@/types";
-import { Edit, Eye, Trash2 } from "lucide-react";
+import { Edit, Eye } from "lucide-react";
 import Link from "next/link";
 
 interface ProjectsTableProps {
@@ -95,9 +97,12 @@ export function ProjectsTable({ projects, isLoading }: ProjectsTableProps) {
                     <Edit className="h-4 w-4" />
                   </Link>
                 </Button>
-                <Button variant="ghost" size="sm">
-                  <Trash2 className="h-4 w-4 text-red-500" />
-                </Button>
+                <DeleteConfirmDialog
+                  id={project.id}
+                  title={project.title}
+                  itemType="project"
+                  onDelete={deleteProject}
+                />
               </div>
             </TableCell>
           </TableRow>

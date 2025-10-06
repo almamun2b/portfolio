@@ -29,6 +29,7 @@ export const createProjects = async ({
   if (result.success) {
     revalidateTag("PROJECTS");
   }
+  return result;
 };
 
 export const updateProject = async ({
@@ -59,4 +60,20 @@ export const updateProject = async ({
   if (result.success) {
     revalidateTag("PROJECTS");
   }
+  return result;
+};
+
+export const deleteProject = async (id: number) => {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/project/${id}`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+
+  const result = await res.json();
+  if (result.success) {
+    revalidateTag("PROJECTS");
+  }
+  return result;
 };

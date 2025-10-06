@@ -1,3 +1,5 @@
+import { deleteCategory } from "@/actions/categories";
+import { DeleteConfirmDialog } from "@/components/shared/DeleteConfirmDialog";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
@@ -9,7 +11,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Category } from "@/types";
-import { Edit, Eye, Trash2 } from "lucide-react";
+import { Edit, Eye } from "lucide-react";
 import Link from "next/link";
 
 interface BlogCategoryTableProps {
@@ -52,7 +54,7 @@ export function BlogCategoryTable({
           <TableHead>Name</TableHead>
           <TableHead>Slug</TableHead>
           <TableHead>Created Date</TableHead>
-          <TableHead>Actions</TableHead>
+          <TableHead className="text-center">Actions</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
@@ -69,7 +71,7 @@ export function BlogCategoryTable({
               {new Date(category.createdAt).toLocaleDateString()}
             </TableCell>
             <TableCell>
-              <div className="flex items-center gap-2">
+              <div className="flex justify-center items-center gap-2">
                 <Button variant="ghost" size="sm" asChild className="hidden">
                   <Link href={`/blog?category=${category.slug}`}>
                     <Eye className="h-4 w-4" />
@@ -80,9 +82,12 @@ export function BlogCategoryTable({
                     <Edit className="h-4 w-4" />
                   </Link>
                 </Button>
-                <Button variant="ghost" size="sm">
-                  <Trash2 className="h-4 w-4 text-red-500" />
-                </Button>
+                <DeleteConfirmDialog
+                  id={category.id}
+                  title={category.name}
+                  itemType="category"
+                  onDelete={deleteCategory}
+                />
               </div>
             </TableCell>
           </TableRow>

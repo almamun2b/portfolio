@@ -47,3 +47,21 @@ export const updateCategory = async ({
   }
   return result;
 };
+
+export const deleteCategory = async (id: number) => {
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_BASE_API}/category/${id}`,
+    {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
+
+  const result = await res.json();
+  if (result.success) {
+    revalidateTag("CATEGORIES");
+  }
+  return result;
+};

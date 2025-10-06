@@ -1,3 +1,5 @@
+import { deleteBlog } from "@/actions/blogs";
+import { DeleteConfirmDialog } from "@/components/shared/DeleteConfirmDialog";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
@@ -9,7 +11,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Blog } from "@/types";
-import { Edit, Eye, Trash2 } from "lucide-react";
+import { Edit, Eye } from "lucide-react";
 import Link from "next/link";
 
 interface BlogTableProps {
@@ -36,9 +38,7 @@ export function BlogTable({ blogs, isLoading }: BlogTableProps) {
   }
 
   if (!blogs?.length) {
-    return (
-      <div className="p-4 text-center text-gray-500">No blogs found.</div>
-    );
+    return <div className="p-4 text-center text-gray-500">No blogs found.</div>;
   }
 
   return (
@@ -88,11 +88,13 @@ export function BlogTable({ blogs, isLoading }: BlogTableProps) {
               </span>
             </TableCell>
             <TableCell>
-              <span className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ${
-                blog.isFeatured 
-                  ? "bg-yellow-50 text-yellow-700 ring-1 ring-inset ring-yellow-700/10" 
-                  : "bg-gray-50 text-gray-600 ring-1 ring-inset ring-gray-500/10"
-              }`}>
+              <span
+                className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ${
+                  blog.isFeatured
+                    ? "bg-yellow-50 text-yellow-700 ring-1 ring-inset ring-yellow-700/10"
+                    : "bg-gray-50 text-gray-600 ring-1 ring-inset ring-gray-500/10"
+                }`}
+              >
                 {blog.isFeatured ? "Featured" : "Regular"}
               </span>
             </TableCell>
@@ -111,9 +113,12 @@ export function BlogTable({ blogs, isLoading }: BlogTableProps) {
                     <Edit className="h-4 w-4" />
                   </Link>
                 </Button>
-                <Button variant="ghost" size="sm">
-                  <Trash2 className="h-4 w-4 text-red-500" />
-                </Button>
+                <DeleteConfirmDialog
+                  id={blog.id}
+                  title={blog.title}
+                  itemType="blog"
+                  onDelete={deleteBlog}
+                />
               </div>
             </TableCell>
           </TableRow>

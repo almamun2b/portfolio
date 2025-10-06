@@ -1,19 +1,11 @@
 "use server";
 
 import { CreateBlogFormTypes } from "@/components/modules/Blogs/CreateBlogForm";
+import { getUserSession } from "@/helpers/getUserSession";
 import { revalidateTag } from "next/cache";
 
-// export interface CreateBlogForm {
-//   title: string;
-//   description: string;
-//   content: string;
-//   image: string;
-//   categoryId: string;
-//   tags: string;
-//   isFeatured: boolean;
-// }
-
 export const createBlog = async ({ data }: { data: CreateBlogFormTypes }) => {
+  const session = await getUserSession();
   const tagsArray = data.tags
     .toString()
     .split(",")
@@ -23,6 +15,7 @@ export const createBlog = async ({ data }: { data: CreateBlogFormTypes }) => {
     ...data,
     tags: tagsArray,
     categoryId: Number(data.categoryId),
+    authorId: session?.user?.id,
   };
 
   const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/blog`, {
@@ -47,6 +40,7 @@ export const updateBlog = async ({
   data: CreateBlogFormTypes;
   id: number;
 }) => {
+  const session = await getUserSession();
   const tagsArray = data.tags
     .toString()
     .split(",")
@@ -56,6 +50,7 @@ export const updateBlog = async ({
     ...data,
     tags: tagsArray,
     categoryId: Number(data.categoryId),
+    authorId: session?.user?.id,
   };
 
   const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/blog/${id}`, {
@@ -64,6 +59,21 @@ export const updateBlog = async ({
       "Content-Type": "application/json",
     },
     body: JSON.stringify(modifiedBlogInfo),
+  });
+
+  const result = await res.json();
+  if (result.success) {
+    revalidateTag("BLOGS");
+  }
+  return result;
+};
+
+export const deleteBlog = async (id: number) => {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/blog/${id}`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
   });
 
   const result = await res.json();
