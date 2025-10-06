@@ -1,7 +1,7 @@
 import ProjectDetailContent from "@/components/modules/Projects/ProjectDetailContent";
 import { ProjectDetailHeader } from "@/components/modules/Projects/ProjectDetailHeader";
 import { Button } from "@/components/ui/button";
-import { ProjectsResponse, SingleProjectResponse } from "@/types";
+import { SingleProjectResponse } from "@/types";
 import { ChevronLeft } from "lucide-react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -10,35 +10,35 @@ interface ProjectDetailPageProps {
   params: Promise<{ slug: string }>;
 }
 
-export const generateStaticParams = async () => {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/project`);
-  const { data } = (await res.json()) as ProjectsResponse;
+// export const generateStaticParams = async () => {
+//   const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/project`);
+//   const { data } = (await res.json()) as ProjectsResponse;
 
-  return data.projects.map((blog) => ({
-    slug: String(blog.slug),
-  }));
-};
+//   return data.projects.map((blog) => ({
+//     slug: String(blog.slug),
+//   }));
+// };
 
-export const generateMetadata = async ({
-  params,
-}: {
-  params: Promise<{ slug: string }>;
-}) => {
-  const { slug } = await params;
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_API}/project/${slug}`,
-    {
-      cache: "no-store",
-    }
-  );
+// export const generateMetadata = async ({
+//   params,
+// }: {
+//   params: Promise<{ slug: string }>;
+// }) => {
+//   const { slug } = await params;
+//   const res = await fetch(
+//     `${process.env.NEXT_PUBLIC_BASE_API}/project/${slug}`,
+//     {
+//       cache: "no-store",
+//     }
+//   );
 
-  const { data: project } = (await res.json()) as SingleProjectResponse;
+//   const { data: project } = (await res.json()) as SingleProjectResponse;
 
-  return {
-    title: project?.title,
-    description: project?.description,
-  };
-};
+//   return {
+//     title: project?.title,
+//     description: project?.description,
+//   };
+// };
 
 const ProjectDetailPage = async ({ params }: ProjectDetailPageProps) => {
   const { slug } = await params;
