@@ -9,7 +9,7 @@ const stats = [
 
 export default function Stats() {
   return (
-    <section className="py-16 w-full max-w-7xl mx-auto">
+    <section className="py-16 px-6 w-full max-w-7xl mx-auto">
       <div className="container mx-auto grid gap-6 sm:grid-cols-2 md:grid-cols-4">
         {stats.map((stat, idx) => (
           <Card

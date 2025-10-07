@@ -61,7 +61,7 @@ export default function ContactUs() {
 
       {/* Contact Form */}
       <div className="pb-32">
-        <div className="mx-auto container px-4 lg:px-8 max-w-2xl">
+        <div className="mx-auto container px-6 lg:px-8 max-w-2xl">
           <Form {...form}>
             <form
               onSubmit={form.handleSubmit(onSubmit)}

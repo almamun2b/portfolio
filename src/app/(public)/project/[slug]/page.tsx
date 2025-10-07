@@ -57,7 +57,7 @@ const ProjectDetailPage = async ({ params }: ProjectDetailPageProps) => {
 
     return (
       <div className="min-h-screen bg-background">
-        <div className="container mx-auto px-4 py-8 pt-20">
+        <div className="container mx-auto px-6 py-8 pt-20">
           {/* Back Button */}
           <Link href="/project">
             <Button variant="ghost" className="mb-8 -ml-4">

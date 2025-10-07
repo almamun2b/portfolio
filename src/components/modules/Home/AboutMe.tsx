@@ -6,7 +6,7 @@ import Link from "next/link";
 
 export default function AboutMe() {
   return (
-    <section id="about" className="py-20">
+    <section id="about" className="py-20 px-6">
       <div className="container mx-auto grid md:grid-cols-2 gap-12 items-center">
         {/* Image Section */}
         <div className="flex justify-center">
@@ -17,7 +17,7 @@ export default function AboutMe() {
                 alt="Md Abdul Mamun"
                 width={400}
                 height={450}
-                className="object-cover"
+                className="object-cover w-full h-auto"
               />
             </CardContent>
           </Card>

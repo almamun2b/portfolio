@@ -7,7 +7,7 @@ import Link from "next/link";
 
 export default function Hero() {
   return (
-    <section className="relative min-h-[90vh] flex flex-col lg:flex-row items-center justify-between gap-12 px-8">
+    <section className="relative min-h-[90vh] flex flex-col lg:flex-row items-center justify-between gap-12 px-8 py-20">
       {/* Left Content */}
       <div className="w-full md:w-1/2 text-center lg:text-left">
         <h1 className="text-4xl sm:text-6xl font-bold tracking-tight">

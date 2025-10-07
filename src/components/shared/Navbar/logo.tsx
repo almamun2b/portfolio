@@ -5,7 +5,7 @@ export const Logo = () => (
   <Image
     width={96}
     height={32}
-    className="w-auto"
+    className="w-[96px] h-auto"
     src={logo}
     alt="Company Logo"
   ></Image>

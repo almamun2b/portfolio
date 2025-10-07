@@ -20,7 +20,7 @@ export const Blogs = async () => {
   const blogsJson = await blogsRes.json();
   const { data } = blogsJson as BlogsResponse;
   return (
-    <section className="max-w-7xl mx-auto px-4 py-16">
+    <section className="max-w-7xl mx-auto px-6 py-16">
       <div className="flex justify-between items-center mb-10">
         <div className="space-y-2">
           <h2 className="text-3xl font-bold">Latest Blogs</h2>
