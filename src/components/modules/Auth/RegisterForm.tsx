@@ -30,7 +30,6 @@ export default function RegisterForm() {
   const onSubmit = async (values: FieldValues) => {
     try {
       const res = await register(values);
-      console.log("User registered:", res);
       if (res?.id) {
         toast.success("User registered successfully");
         router.push("/login");

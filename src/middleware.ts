@@ -43,6 +43,9 @@ export function middleware(request: NextRequest) {
     "/projects/edit",
     "/blogs/edit",
     "/blog-category/edit",
+    "/profile",
+    "/edit-profile",
+    "/change-password",
   ];
 
   const isOnProtectedRoute = protectedRoutes.some((route) =>

@@ -70,7 +70,9 @@ export function ChangePasswordForm({ userId }: ChangePasswordFormProps) {
         form.reset();
         router.push("/profile");
       } else {
-        toast.error(result?.message || "Failed to change password. Please try again.");
+        toast.error(
+          result?.message || "Failed to change password. Please try again."
+        );
       }
     } catch (error) {
       console.error("Failed to change password:", error);
@@ -95,7 +97,8 @@ export function ChangePasswordForm({ userId }: ChangePasswordFormProps) {
             Change Password
           </h1>
           <p className="mt-6 text-lg leading-8 text-muted-foreground">
-            Update your password to keep your account secure. Make sure to use a strong password.
+            Update your password to keep your account secure. Make sure to use a
+            strong password.
           </p>
         </div>
       </div>
@@ -109,8 +112,8 @@ export function ChangePasswordForm({ userId }: ChangePasswordFormProps) {
               className="space-y-6 rounded-2xl border bg-card p-8 shadow-sm"
             >
               {/* Current Password */}
-              <DynamicFormField 
-                name="currentPassword" 
+              <DynamicFormField
+                name="currentPassword"
                 label="Current Password *"
                 description="Enter your current password to verify your identity"
               >
@@ -127,7 +130,9 @@ export function ChangePasswordForm({ userId }: ChangePasswordFormProps) {
                       variant="ghost"
                       size="sm"
                       className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
-                      onClick={() => setShowCurrentPassword(!showCurrentPassword)}
+                      onClick={() =>
+                        setShowCurrentPassword(!showCurrentPassword)
+                      }
                     >
                       {showCurrentPassword ? (
                         <EyeOff className="h-4 w-4" />
@@ -140,8 +145,8 @@ export function ChangePasswordForm({ userId }: ChangePasswordFormProps) {
               </DynamicFormField>
 
               {/* New Password */}
-              <DynamicFormField 
-                name="newPassword" 
+              <DynamicFormField
+                name="newPassword"
                 label="New Password *"
                 description="Must be at least 8 characters with uppercase, lowercase, and number"
               >
@@ -171,8 +176,8 @@ export function ChangePasswordForm({ userId }: ChangePasswordFormProps) {
               </DynamicFormField>
 
               {/* Confirm New Password */}
-              <DynamicFormField 
-                name="confirmPassword" 
+              <DynamicFormField
+                name="confirmPassword"
                 label="Confirm New Password *"
                 description="Re-enter your new password to confirm"
               >
@@ -189,7 +194,9 @@ export function ChangePasswordForm({ userId }: ChangePasswordFormProps) {
                       variant="ghost"
                       size="sm"
                       className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
-                      onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                      onClick={() =>
+                        setShowConfirmPassword(!showConfirmPassword)
+                      }
                     >
                       {showConfirmPassword ? (
                         <EyeOff className="h-4 w-4" />
@@ -206,13 +213,15 @@ export function ChangePasswordForm({ userId }: ChangePasswordFormProps) {
                 <div className="flex items-start gap-3">
                   <Lock className="h-5 w-5 text-muted-foreground mt-0.5" />
                   <div className="space-y-2">
-                    <h3 className="font-medium text-sm">Password Security Tips:</h3>
+                    <h3 className="font-medium text-sm">
+                      Password Security Tips:
+                    </h3>
                     <ul className="text-sm text-muted-foreground space-y-1">
                       <li>• Use at least 8 characters</li>
                       <li>• Include uppercase and lowercase letters</li>
                       <li>• Add numbers and special characters</li>
                       <li>• Avoid using personal information</li>
-                      <li>• Don't reuse passwords from other accounts</li>
+                      <li>• Don`t reuse passwords from other accounts</li>
                     </ul>
                   </div>
                 </div>
@@ -223,10 +232,13 @@ export function ChangePasswordForm({ userId }: ChangePasswordFormProps) {
                   <Save className="h-4 w-4 mr-2" />
                   Change Password
                 </Button>
-                <Button type="button" variant="outline" asChild className="flex-1">
-                  <Link href="/profile">
-                    Cancel
-                  </Link>
+                <Button
+                  type="button"
+                  variant="outline"
+                  asChild
+                  className="flex-1"
+                >
+                  <Link href="/profile">Cancel</Link>
                 </Button>
               </div>
             </form>

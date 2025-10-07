@@ -38,7 +38,6 @@ const BlogPage = async ({ searchParams }: BlogPageProps) => {
 
   const blogsJson = await blogsRes.json();
   const blogsResponse = blogsJson as BlogsResponse;
-  console.log(blogsResponse, "blogsResponse");
 
   // Fetch featured blogs
   const featuredRes = await fetch(
@@ -58,8 +57,6 @@ const BlogPage = async ({ searchParams }: BlogPageProps) => {
 
   const { data: featuredBlogs } = featuredJson as { data: Blog[] };
 
-  console.log(featuredBlogs, "featuredBlogs");
-
   // Fetch popular blogs (sorted by views)
   const popularRes = await fetch(
     `${process.env.NEXT_PUBLIC_BASE_API}/blog/popular`,
@@ -77,8 +74,6 @@ const BlogPage = async ({ searchParams }: BlogPageProps) => {
   const popularJson = await popularRes.json();
   const { data: popularBlogs } = popularJson as { data: Blog[] };
 
-  console.log(popularBlogs, "popularBlogs");
-
   // Fetch recent blogs
   const recentRes = await fetch(
     `${process.env.NEXT_PUBLIC_BASE_API}/blog?limit=3`,
@@ -95,7 +90,6 @@ const BlogPage = async ({ searchParams }: BlogPageProps) => {
 
   const recentJson = await recentRes.json();
   const recentResponse = recentJson as BlogsResponse;
-  console.log(recentResponse, "recentResponse");
 
   // Fetch categories
   const categoriesRes = await fetch(
@@ -113,7 +107,6 @@ const BlogPage = async ({ searchParams }: BlogPageProps) => {
 
   const categoriesJson = await categoriesRes.json();
   const { data: categories } = categoriesJson as { data: Category[] };
-  console.log(categories, "categories");
 
   // Generate tags from all blogs
   const allTags = ["Git", "Version Control", "Automation", "Tools", "DevOps"];

@@ -46,7 +46,7 @@ export const authOptions: NextAuthOptions = {
             return null;
           }
         } catch (error) {
-          console.log("User login failed", error);
+          console.error("User login failed", error);
           return null;
         }
       },
