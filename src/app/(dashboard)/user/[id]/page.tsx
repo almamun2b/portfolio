@@ -1,25 +1,26 @@
 import { getUserById } from "@/actions/users";
 import { ProfileContent } from "@/components/modules/Profile";
-import { getUserSession } from "@/helpers/getUserSession";
 import { SingleUserResponse } from "@/types";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 
+interface UserProfilePageProps {
+  params: Promise<{ id: string }>;
+}
+
 export const metadata: Metadata = {
-  title: "Profile",
-  description: "View and manage your profile information.",
+  title: "User Profile",
+  description: "View user profile information.",
 };
 
-const ProfilePage = async () => {
-  const session = await getUserSession();
+const UserProfilePage = async ({ params }: UserProfilePageProps) => {
+  const { id } = await params;
 
-  if (!session?.user?.id) {
+  if (!id) {
     notFound();
   }
 
-  const userResponse: SingleUserResponse | null = await getUserById(
-    session.user.id
-  );
+  const userResponse: SingleUserResponse | null = await getUserById(id);
 
   if (!userResponse || !userResponse.success) {
     notFound();
@@ -28,4 +29,4 @@ const ProfilePage = async () => {
   return <ProfileContent user={userResponse.data} />;
 };
 
-export default ProfilePage;
+export default UserProfilePage;

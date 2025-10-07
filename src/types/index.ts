@@ -107,3 +107,16 @@ export interface SingleCategoryResponse {
   message: string;
   data: Category;
 }
+
+export interface SingleUserResponse {
+  success: boolean;
+  message: string;
+  data: User;
+}
+
+export interface UpdateUserRequest {
+  name?: string;
+  email?: string;
+  phone?: string;
+  picture?: string;
+}

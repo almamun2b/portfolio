@@ -81,12 +81,12 @@ const data = {
     },
     {
       name: "Update Profile",
-      url: "#",
+      url: "/edit-profile",
       icon: Upload,
     },
     {
       name: "Update Password",
-      url: "#",
+      url: "/change-password",
       icon: Lock,
     },
   ],

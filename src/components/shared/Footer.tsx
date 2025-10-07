@@ -5,30 +5,19 @@ import Link from "next/link";
 
 const footerLinks = [
   {
-    title: "Projects",
+    title: "Company",
     links: [
       { name: "All Projects", href: "/projects" },
-      { name: "Frontend", href: "/projects/frontend" },
-      { name: "Backend", href: "/projects/backend" },
-      { name: "Full Stack", href: "/projects/fullstack" },
-    ],
-  },
-  {
-    title: "Blog",
-    links: [
-      { name: "All Blogs", href: "/blogs" },
-      { name: "Frontend", href: "/blogs/frontend" },
-      { name: "Backend", href: "/blogs/backend" },
-      { name: "Full Stack", href: "/blogs/fullstack" },
+      { name: "All Blogs", href: "/blog" },
     ],
   },
   {
     title: "Resources",
     links: [
-      { name: "About Me", href: "/about" },
-      { name: "Contact", href: "/contact" },
-      { name: "Resume", href: "/resume" },
-      { name: "Privacy Policy", href: "/privacy" },
+      { name: "About Me", href: "/about-me" },
+      { name: "Contact", href: "/contact-me" },
+      { name: "Resume", href: "/mamun.pdf" },
+      { name: "Privacy Policy", href: "/privacy-policy" },
     ],
   },
 ];
@@ -71,7 +60,7 @@ export const Footer: React.FC = () => {
           </div>
 
           {/* Dynamic Links */}
-          <div className="w-full max-w-2xl grid grid-cols-1 sm:grid-cols-3 gap-10 text-center md:text-left">
+          <div className="w-full max-w-xl grid grid-cols-1 sm:grid-cols-2 gap-10 text-center md:text-left">
             {footerLinks.map((section) => (
               <div key={section.title}>
                 <h3 className="text-lg font-semibold mb-4 text-foreground">
