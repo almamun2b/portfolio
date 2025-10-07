@@ -4,6 +4,7 @@ import "quill/dist/quill.snow.css";
 import React from "react";
 import { useQuill } from "react-quilljs";
 
+// Register custom font sizes
 interface RichTextEditorProps {
   /** Placeholder text inside the editor */
   placeholder?: string;
@@ -28,8 +29,6 @@ const RichTextEditor: React.FC<RichTextEditorProps> = ({
   placeholder = "Start typing...",
   defaultValue = "",
   onChange,
-  height = 300,
-  width = "100%",
 }) => {
   const { quill, quillRef } = useQuill({
     theme: "snow",
@@ -37,37 +36,47 @@ const RichTextEditor: React.FC<RichTextEditorProps> = ({
     modules: {
       toolbar: [
         [{ header: [1, 2, 3, false] }],
+        [{ size: ["small", false, "large", "huge"] }],
         ["bold", "italic", "underline", "strike"],
         [{ list: "ordered" }, { list: "bullet" }],
         ["blockquote", "code-block"],
         ["link", "image"],
         ["clean"],
+        [{ align: [] }],
+        [{ color: [] }, { background: [] }],
+        [{ script: "sub" }, { script: "super" }],
       ],
     },
   });
 
-  // Set initial content
+  // Set initial content only once
+  const isInitializedRef = React.useRef(false);
   React.useEffect(() => {
-    if (quill && defaultValue) {
-      quill.root.innerHTML = defaultValue;
+    if (quill && defaultValue && !isInitializedRef.current) {
+      // ✅ FIXED: convert requires an object, not a plain string
+      const delta = quill.clipboard.convert({ html: defaultValue });
+      quill.setContents(delta, "silent");
+      isInitializedRef.current = true;
     }
   }, [quill, defaultValue]);
 
-  // Handle content change
+  // Handle content change with cleanup
   React.useEffect(() => {
-    if (quill && onChange) {
-      quill.on("text-change", () => {
-        onChange(quill.root.innerHTML);
-      });
-    }
+    if (!quill || !onChange) return;
+
+    const handleChange = () => {
+      onChange(quill.root.innerHTML);
+    };
+
+    quill.on("text-change", handleChange);
+    return () => {
+      quill.off("text-change", handleChange);
+    };
   }, [quill, onChange]);
 
   return (
-    <div
-      style={{ width, height }}
-      className="bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-700 rounded-lg overflow-hidden"
-    >
-      <div ref={quillRef} style={{ height: "100%" }} />
+    <div className="bg-background border border-border rounded-lg">
+      <div ref={quillRef} className="min-h-[300px] h-[300px] max-h-[300px]" />
     </div>
   );
 };

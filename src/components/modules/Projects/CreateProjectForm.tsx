@@ -117,7 +117,6 @@ const CreateProjectForm = ({ slug, project }: CreateProjectFormProps) => {
             {(field) => (
               <RichTextEditor
                 placeholder="Write your project details..."
-                height={250}
                 defaultValue={field.value}
                 onChange={(html) => field.onChange(html)}
               />

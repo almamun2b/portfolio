@@ -9,7 +9,7 @@ import Link from "next/link";
 
 export default function CallToAction() {
   return (
-    <section className="py-20 bg-muted/30">
+    <section className="py-20">
       <Card className="container mx-auto text-center max-w-2xl bg-background p-10">
         <CardTitle className="text-3xl mb-4">
           Do you have a project idea? <br /> Let’s discuss your project!

@@ -3,6 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
+import { ModeToggle } from "../mode-toggle";
 import { Logo } from "./logo";
 import { NavMenu } from "./nav-menu";
 import { NavigationSheet } from "./navigation-sheet";
@@ -24,7 +25,8 @@ const Navbar = () => {
         <NavMenu className="hidden md:block" />
 
         {/* Actions and Mobile Menu */}
-        <div>
+        <div className="flex items-center gap-4">
+          <ModeToggle />
           {session.status === "authenticated" ? (
             <Button
               asChild

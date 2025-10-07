@@ -129,7 +129,6 @@ const CreateBlogForm = ({ slug, blog, categories }: CreateBlogFormProps) => {
             {(field) => (
               <RichTextEditor
                 placeholder="Write your blog content..."
-                height={300}
                 defaultValue={field.value}
                 onChange={(html) => field.onChange(html)}
               />
