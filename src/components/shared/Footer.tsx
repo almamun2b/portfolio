@@ -17,7 +17,6 @@ const footerLinks = [
       { name: "About Me", href: "/about-me" },
       { name: "Contact", href: "/contact-me" },
       { name: "Resume", href: "/mamun.pdf" },
-      { name: "Privacy Policy", href: "/privacy-policy" },
     ],
   },
 ];
