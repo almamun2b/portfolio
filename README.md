@@ -6,6 +6,10 @@ A modern, full-stack portfolio and blog platform built with Next.js 15, featurin
 
 This is a professional portfolio website and blog platform for **Md Abdul Mamun**, a passionate Software Engineer with 3+ years of experience. The platform showcases projects, technical blogs, skills, and provides a complete admin dashboard for content management.
 
+### Live Frontent: https://portfolio-mamun.vercel.app/
+
+### Live Backend: https://portfolio-mamun-api.vercel.app/
+
 ## ✨ Key Features
 
 ### 🎨 Frontend Features
