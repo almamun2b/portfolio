@@ -32,7 +32,7 @@ const Navbar = () => {
             <>
               <Button
                 asChild
-                className="rounded-full px-2 py-2 text-sm md:text-base  hidden md:block"
+                className="rounded-full px-2 py-2 text-sm md:text-base  hidden md:flex"
               >
                 <Link href="/dashboard" className="w-full text-center">
                   Dashboard
