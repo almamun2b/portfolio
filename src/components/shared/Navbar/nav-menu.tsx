@@ -1,10 +1,10 @@
 "use client";
 
 import {
-    NavigationMenu,
-    NavigationMenuItem,
-    NavigationMenuLink,
-    NavigationMenuList,
+  NavigationMenu,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
 } from "@/components/ui/navigation-menu";
 import { cn } from "@/lib/utils";
 import type { NavigationMenuProps } from "@radix-ui/react-navigation-menu";
@@ -22,7 +22,7 @@ export const NavMenu = ({ onClickMenu, ...props }: NavMenuProps) => {
   const navMenus = [
     { label: "Home", href: "/" },
     { label: "Projects", href: "/project" },
-    { label: "Journal", href: "/blog" },
+    { label: "Blogs", href: "/blog" },
     { label: "About", href: "/about-me" },
     { label: "Contact", href: "/contact-me" },
   ];
@@ -60,7 +60,7 @@ export const NavMenu = ({ onClickMenu, ...props }: NavMenuProps) => {
                   {isActive && (
                     <motion.div
                       layoutId="activeNav"
-                      className="absolute -bottom-1 left-2 right-2 h-0.5 bg-primary rounded-full shadow-[0_0_10px_rgba(var(--primary-rgb),0.5)]"
+                      className="absolute -bottom-1 left-2 right-2 h-0.5 bg-primary rounded-full shadow-[0_0_15px_rgba(var(--primary-rgb),0.6)]"
                       transition={{
                         type: "spring",
                         stiffness: 380,

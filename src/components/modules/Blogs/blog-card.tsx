@@ -50,7 +50,7 @@ export const BlogCard: React.FC<BlogCardProps> = ({
     <motion.div
       whileHover={{ y: -10 }}
       transition={{ duration: 0.4, ease: "easeOut" }}
-      className="group relative flex flex-col h-full bg-card/40 backdrop-blur-xl rounded-[2.5rem] border border-border/50 overflow-hidden hover:border-primary/40 hover:shadow-[0_20px_50px_rgba(var(--primary-rgb),0.1)] transition-all duration-500"
+      className="group relative flex flex-col h-full bg-card/40 backdrop-blur-xl rounded-[2.5rem] border border-border/40 overflow-hidden hover:border-primary/40 hover:shadow-[0_20px_50px_-12px_rgba(var(--primary-rgb),0.15)] dark:hover:shadow-[0_20px_50px_-12px_rgba(var(--primary-rgb),0.2)] transition-all duration-500"
     >
       {/* Image Container */}
       <div className="relative aspect-16/10 overflow-hidden m-3 rounded-[1.8rem]">
