@@ -4,8 +4,8 @@ import { Button } from "@/components/ui/button";
 import { LayoutDashboard } from "lucide-react";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
-import { ModeToggle } from "../mode-toggle";
 import { Logo } from "./logo";
+import { ModeToggle } from "./mode-toggle";
 import { NavMenu } from "./nav-menu";
 import { NavigationSheet } from "./navigation-sheet";
 
