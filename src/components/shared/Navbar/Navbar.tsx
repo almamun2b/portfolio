@@ -18,7 +18,7 @@ const Navbar = () => {
           <div className="md:hidden">
             <NavigationSheet />
           </div>
-          <Link href="/" className="flex-shrink-0 ">
+          <Link href="/">
             <Logo />
           </Link>
         </div>
@@ -28,7 +28,7 @@ const Navbar = () => {
         {/* Actions and Mobile Menu */}
         <div className="flex items-center gap-4">
           <ModeToggle />
-          {session.status === "authenticated" ? (
+          {session.status === "authenticated" && (
             <>
               <Button
                 asChild
@@ -45,15 +45,6 @@ const Navbar = () => {
                 <LayoutDashboard />
               </Link>
             </>
-          ) : (
-            <Button
-              asChild
-              className="rounded-full px-2 py-2 text-sm md:text-base"
-            >
-              <Link href="/login" className="block w-full text-center">
-                Login
-              </Link>
-            </Button>
           )}
         </div>
       </div>
