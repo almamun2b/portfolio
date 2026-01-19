@@ -1,6 +1,4 @@
 import { BlogPageClient } from "@/components/modules/Blogs/blog-page-client";
-import { FeaturedBlogSection } from "@/components/modules/Blogs/featured-blog-section";
-import { RecentBlogsSection } from "@/components/modules/Blogs/recent-blogs-section";
 import { Blog, BlogsResponse, Category } from "@/types";
 import type { Metadata } from "next";
 
@@ -13,9 +11,9 @@ interface BlogPageProps {
 }
 
 export const metadata: Metadata = {
-  title: "Blog",
+  title: "Blog | Md Abdul Mamun",
   description:
-    "Read our latest articles and insights on web development, technology, and more.",
+    "Insightful articles on web development, modern technologies, and my professional journey as a software engineer.",
 };
 
 const BlogPage = async ({ searchParams }: BlogPageProps) => {
@@ -30,7 +28,7 @@ const BlogPage = async ({ searchParams }: BlogPageProps) => {
       next: {
         tags: ["BLOGS"],
       },
-    }
+    },
   );
   if (!blogsRes.ok) {
     throw new Error(`Failed to fetch blogs: ${blogsRes.status}`);
@@ -39,24 +37,6 @@ const BlogPage = async ({ searchParams }: BlogPageProps) => {
   const blogsJson = await blogsRes.json();
   const blogsResponse = blogsJson as BlogsResponse;
 
-  // Fetch featured blogs
-  const featuredRes = await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_API}/blog/featured`,
-    {
-      next: {
-        tags: ["BLOGS"],
-      },
-    }
-  );
-
-  if (!featuredRes.ok) {
-    throw new Error(`Failed to fetch featured blogs: ${featuredRes.status}`);
-  }
-
-  const featuredJson = await featuredRes.json();
-
-  const { data: featuredBlogs } = featuredJson as { data: Blog[] };
-
   // Fetch popular blogs (sorted by views)
   const popularRes = await fetch(
     `${process.env.NEXT_PUBLIC_BASE_API}/blog/popular`,
@@ -64,32 +44,15 @@ const BlogPage = async ({ searchParams }: BlogPageProps) => {
       next: {
         tags: ["BLOGS"],
       },
-    }
+    },
   );
 
-  if (!popularRes.ok) {
-    throw new Error(`Failed to fetch popular blogs: ${popularRes.status}`);
+  let popularBlogs: Blog[] = [];
+  if (popularRes.ok) {
+    const popularJson = await popularRes.json();
+    const { data } = popularJson as { data: Blog[] };
+    popularBlogs = data || [];
   }
-
-  const popularJson = await popularRes.json();
-  const { data: popularBlogs } = popularJson as { data: Blog[] };
-
-  // Fetch recent blogs
-  const recentRes = await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_API}/blog?limit=3`,
-    {
-      next: {
-        tags: ["BLOGS"],
-      },
-    }
-  );
-
-  if (!recentRes.ok) {
-    throw new Error(`Failed to fetch recent blogs: ${recentRes.status}`);
-  }
-
-  const recentJson = await recentRes.json();
-  const recentResponse = recentJson as BlogsResponse;
 
   // Fetch categories
   const categoriesRes = await fetch(
@@ -98,49 +61,70 @@ const BlogPage = async ({ searchParams }: BlogPageProps) => {
       next: {
         tags: ["BLOGS"],
       },
-    }
+    },
   );
 
-  if (!categoriesRes.ok) {
-    throw new Error(`Failed to fetch categories: ${categoriesRes.status}`);
+  let categories: Category[] = [];
+  if (categoriesRes.ok) {
+    const categoriesJson = await categoriesRes.json();
+    const { data } = categoriesJson as { data: Category[] };
+    categories = data || [];
   }
 
-  const categoriesJson = await categoriesRes.json();
-  const { data: categories } = categoriesJson as { data: Category[] };
-
-  // Generate tags from all blogs
-  const allTags = ["Git", "Version Control", "Automation", "Tools", "DevOps"];
+  const allTags = [
+    "React",
+    "Next.js",
+    "TypeScript",
+    "Performance",
+    "Clean Code",
+  ];
 
   return (
-    <div className="min-h-screen bg-background">
-      <div className="container mx-auto px-6 py-8 pt-20">
-        {/* Featured Section */}
-        <FeaturedBlogSection blogs={featuredBlogs || []} />
+    <main className="min-h-screen">
+      {/* Hero Section */}
+      <section className="relative pt-32 pb-20 overflow-hidden">
+        <div className="absolute top-0 left-0 w-full h-full bg-primary/5 -z-10" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-primary/20 rounded-full blur-[120px] opacity-30 -z-20" />
 
-        {/* Client Component for Interactive Features */}
-        <BlogPageClient
-          initialBlogs={blogsResponse?.data?.posts || []}
-          initialMeta={
-            blogsResponse?.data?.meta
-              ? {
-                  ...blogsResponse.data.meta,
-                }
-              : {
-                  total: 0,
-                  page: 1,
-                  limit: 6,
-                  totalPages: 0,
-                }
-          }
-          categories={categories}
-          popularBlogs={popularBlogs || []}
-          allTags={allTags}
-        />
+        <div className="container mx-auto px-6 text-center">
+          <span className="text-primary font-bold tracking-widest uppercase text-xs md:text-sm mb-4 block">
+            The Journal
+          </span>
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold mb-6 leading-tight">
+            Design, Tech &{" "}
+            <span className="text-primary text-glow">Insights</span>
+          </h1>
+          <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+            Exploring the intersection of modern web development, engineering
+            practices, and digital craftsmanship.
+          </p>
+        </div>
+      </section>
 
-        {/* Recent Blogs Section */}
-        <RecentBlogsSection blogs={recentResponse?.data?.posts || []} />
-      </div>
-    </div>
+      <section className="pb-32">
+        <div className="container mx-auto px-6">
+          {/* Client Component for Interactive Features */}
+          <BlogPageClient
+            initialBlogs={blogsResponse?.data?.posts || []}
+            initialMeta={
+              blogsResponse?.data?.meta
+                ? {
+                    ...blogsResponse.data.meta,
+                  }
+                : {
+                    total: 0,
+                    page: 1,
+                    limit: 6,
+                    totalPages: 0,
+                  }
+            }
+            categories={categories}
+            popularBlogs={popularBlogs}
+            allTags={allTags}
+          />
+        </div>
+      </section>
+    </main>
   );
 };
 

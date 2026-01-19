@@ -1,3 +1,6 @@
+"use client";
+
+import { motion } from "framer-motion";
 import Image from "next/image";
 
 interface BlogDetailContentProps {
@@ -12,83 +15,99 @@ export function BlogDetailContent({
   description,
 }: BlogDetailContentProps) {
   return (
-    <div className="space-y-8">
-      {/* Featured Image */}
-      <div className="relative w-full aspect-[1200/600] rounded-lg overflow-hidden">
-        <Image
-          src={image || "/placeholder.svg"}
-          alt={title}
-          fill
-          className="object-cover"
-          priority
-        />
-      </div>
+    <div className="space-y-16">
+      {/* Immersive Featured Image */}
+      <motion.div
+        initial={{ opacity: 0, y: 40 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 1, ease: "easeOut" }}
+        className="relative aspect-16/10 lg:aspect-21/9 overflow-hidden rounded-[2.5rem] border border-border/50 group shadow-2xl"
+      >
+        <div className="relative w-full h-full">
+          <Image
+            src={image || "/placeholder.svg"}
+            alt={title}
+            fill
+            className="object-cover transition-transform duration-1000 group-hover:scale-105"
+            priority
+          />
+          {/* Subtle Overlay */}
+          <div className="absolute inset-0 bg-linear-to-t from-background/40 to-transparent" />
+        </div>
+      </motion.div>
 
-      {/* Article Content */}
-      <div className="prose prose-lg max-w-none">
-        <p className="text-xl text-muted-foreground leading-relaxed">
-          {description}
-        </p>
+      {/* Professional Prose Content */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.8 }}
+        className="max-w-[800px] mx-auto"
+      >
+        <div className="prose prose-xl dark:prose-invert prose-headings:font-black prose-headings:tracking-tight prose-p:text-muted-foreground prose-p:leading-[1.8] prose-strong:text-foreground prose-a:text-primary hover:prose-a:underline prose-li:text-muted-foreground prose-img:rounded-3xl max-w-none">
+          <p className="text-2xl font-medium text-foreground leading-[1.6] mb-12">
+            {description}
+          </p>
 
-        <h2>Introduction</h2>
-        <p>
-          This comprehensive guide will walk you through everything you need to
-          know about this topic. Whether you`re a beginner or an experienced
-          developer, you`ll find valuable insights and practical tips to enhance
-          your skills.
-        </p>
+          <h2>Technical Deep Dive</h2>
+          <p>
+            In the ever-evolving landscape of software engineering, staying
+            ahead means mastering both the broad paradigms and the intricate
+            details. This article aims to dismantle complex concepts into
+            actionable insights.
+          </p>
 
-        <h2>Key Concepts</h2>
-        <p>
-          Understanding the fundamental concepts is crucial for mastering any
-          technology. In this section, we`ll explore the core principles that
-          form the foundation of this topic.
-        </p>
+          <blockquote>
+            &quot;Great code is not just written; it&apos;s meticulously crafted
+            through iterations of learning and refinement.&quot;
+          </blockquote>
 
-        <h3>Getting Started</h3>
-        <p>
-          Let`s begin by setting up your development environment. Follow these
-          steps to ensure you have everything you need to follow along with the
-          examples in this article.
-        </p>
+          <h2>Core Architecture</h2>
+          <p>
+            Understanding the underlying structure is paramount. When building
+            scalable systems, we focus on modularity, high cohesion, and low
+            coupling. This ensures that as the codebase grows, it remains
+            maintainable and robust.
+          </p>
 
-        <ul>
-          <li>Install the necessary tools and dependencies</li>
-          <li>Configure your development environment</li>
-          <li>Set up your first project</li>
-          <li>Verify your installation</li>
-        </ul>
+          <h3>Implementation Strategy</h3>
+          <p>
+            To successfully deploy these concepts, we recommend a phased
+            approach. Start by auditing your current stack, then gradually
+            integrate the patterns described below:
+          </p>
 
-        <h3>Best Practices</h3>
-        <p>
-          Following best practices ensures your code is maintainable, scalable,
-          and efficient. Here are some essential guidelines to keep in mind as
-          you work on your projects.
-        </p>
+          <ul>
+            <li>Analyze existing bottlenecks and technical debt</li>
+            <li>Implement modular design patterns and clean interfaces</li>
+            <li>Automate testing and deployment pipelines</li>
+            <li>Monitor performance and iterate based on real-world metrics</li>
+          </ul>
 
-        <ol>
-          <li>Write clean and readable code</li>
-          <li>Follow naming conventions</li>
-          <li>Document your code properly</li>
-          <li>Test your implementations</li>
-        </ol>
+          <h3>Best Practices & Patterns</h3>
+          <p>
+            Consistency is the hallmark of professional engineering. Adhering to
+            established standards not only improves code quality but also
+            facilitates seamless collaboration across teams.
+          </p>
 
-        <h2>Advanced Techniques</h2>
-        <p>
-          Once you`ve mastered the basics, it`s time to explore more advanced
-          techniques that will take your skills to the next level. These
-          strategies are used by professionals to build robust and scalable
-          applications.
-        </p>
+          <ol>
+            <li>Prioritize readability and self-documenting code</li>
+            <li>Maintain a strict separation of concerns</li>
+            <li>Leverage type safety and modern tooling</li>
+            <li>Commit to continuous integration and delivery</li>
+          </ol>
 
-        <h2>Conclusion</h2>
-        <p>
-          We`ve covered a lot of ground in this article. By now, you should have
-          a solid understanding of the topic and be ready to apply these
-          concepts in your own projects. Remember to practice regularly and stay
-          updated with the latest developments in the field.
-        </p>
-      </div>
+          <h2>Conclusion</h2>
+          <p>
+            Mastering these techniques represents a significant step forward in
+            your journey as an engineer. By combining technical excellence with
+            a design-first mindset, you can build digital experiences that are
+            truly exceptional. Stay curious, keep building, and never stop
+            refining your craft.
+          </p>
+        </div>
+      </motion.div>
     </div>
   );
 }

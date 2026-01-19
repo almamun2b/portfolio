@@ -2,7 +2,7 @@ import ProjectDetailContent from "@/components/modules/Projects/ProjectDetailCon
 import { ProjectDetailHeader } from "@/components/modules/Projects/ProjectDetailHeader";
 import { Button } from "@/components/ui/button";
 import { ProjectsResponse, SingleProjectResponse } from "@/types";
-import { ChevronLeft } from "lucide-react";
+import { ChevronLeft, Home } from "lucide-react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
@@ -14,8 +14,8 @@ export const generateStaticParams = async () => {
   const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/project`);
   const { data } = (await res.json()) as ProjectsResponse;
 
-  return data.projects.map((blog) => ({
-    slug: blog.slug,
+  return data.projects.map((project) => ({
+    slug: project.slug,
   }));
 };
 
@@ -26,13 +26,13 @@ export const generateMetadata = async ({
 }) => {
   const { slug } = await params;
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_API}/project/${slug}`
+    `${process.env.NEXT_PUBLIC_BASE_API}/project/${slug}`,
   );
 
   const { data: project } = (await res.json()) as SingleProjectResponse;
 
   return {
-    title: project?.title,
+    title: `${project?.title} | Project Detail`,
     description: project?.description,
   };
 };
@@ -42,7 +42,7 @@ const ProjectDetailPage = async ({ params }: ProjectDetailPageProps) => {
 
   try {
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_API}/project/${slug}`
+      `${process.env.NEXT_PUBLIC_BASE_API}/project/${slug}`,
     );
 
     if (!res.ok) {
@@ -56,28 +56,64 @@ const ProjectDetailPage = async ({ params }: ProjectDetailPageProps) => {
     }
 
     return (
-      <div className="min-h-screen bg-background">
-        <div className="container mx-auto px-6 py-8 pt-20">
-          {/* Back Button */}
-          <Link href="/project">
-            <Button variant="ghost" className="mb-8 -ml-4">
-              <ChevronLeft className="h-4 w-4 mr-2" />
-              Back to Projects
-            </Button>
-          </Link>
+      <main className="min-h-screen relative overflow-hidden">
+        {/* Decorative Background Elements */}
+        <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-primary/5 rounded-full blur-[120px] -z-10" />
+        <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-primary/5 rounded-full blur-[100px] -z-10" />
 
-          {/* Main Content Grid */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-            {/* Project Content */}
-            <article className="lg:col-span-12">
+        <div className="container mx-auto px-6 pt-32 pb-24">
+          {/* Breadcrumbs / Navigation */}
+          <nav className="flex items-center gap-4 mb-12 animate-in fade-in slide-in-from-left-4 duration-700">
+            <Link href="/">
+              <Button
+                variant="ghost"
+                size="sm"
+                className="rounded-full text-muted-foreground hover:text-primary transition-colors"
+              >
+                <Home size={18} />
+              </Button>
+            </Link>
+            <div className="w-1 h-1 rounded-full bg-muted-foreground/30" />
+            <Link href="/project">
+              <Button
+                variant="ghost"
+                size="sm"
+                className="rounded-full text-muted-foreground hover:text-primary transition-colors font-bold"
+              >
+                Projects
+              </Button>
+            </Link>
+            <div className="w-1 h-1 rounded-full bg-muted-foreground/30" />
+            <span className="text-sm font-bold text-primary truncate max-w-[200px]">
+              {project.title}
+            </span>
+          </nav>
+
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20">
+            {/* Project Header & Visuals */}
+            <div className="lg:col-span-12 space-y-12">
               <ProjectDetailHeader project={project} />
-              <div className="mt-8">
-                <ProjectDetailContent project={project} />
-              </div>
-            </article>
+
+              <div className="w-full h-px bg-linear-to-r from-transparent via-border to-transparent" />
+
+              <ProjectDetailContent project={project} />
+            </div>
+          </div>
+
+          {/* Footer Navigation */}
+          <div className="mt-24 pt-12 border-t border-border/50 flex flex-col md:flex-row items-center justify-between gap-8">
+            <Link href="/project">
+              <Button
+                variant="outline"
+                className="rounded-2xl border-2 px-8 h-14 font-bold group"
+              >
+                <ChevronLeft className="mr-2 group-hover:-translate-x-1 transition-transform" />
+                Back to All Projects
+              </Button>
+            </Link>
           </div>
         </div>
-      </div>
+      </main>
     );
   } catch (error) {
     console.error("Error fetching project:", error);

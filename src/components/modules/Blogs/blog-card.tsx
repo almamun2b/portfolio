@@ -1,17 +1,12 @@
-import type React from "react";
+"use client";
 
 import mamun from "@/assets/mamun.png";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { motion } from "framer-motion";
+import { Calendar, Eye } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import type React from "react";
 
 interface BlogCardProps {
   image?: string | null;
@@ -37,41 +32,53 @@ export const BlogCard: React.FC<BlogCardProps> = ({
   image,
   title,
   description,
-  tags = [],
   category,
   createdAt,
   author,
   slug,
 }) => {
   const formatDate = (date: string | Date) => {
-    if (typeof date === "string") {
-      return new Date(date).toLocaleDateString();
-    }
-    return date.toLocaleDateString();
+    const d = typeof date === "string" ? new Date(date) : date;
+    return d.toLocaleDateString("en-US", {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+    });
   };
+
   return (
-    <Card className="hover:shadow-xl transition-shadow duration-300 py-0 gap-0">
-      {/* Project / Blog Image */}
-      <div className="relative w-full h-48 overflow-hidden rounded-t-lg ">
+    <motion.div
+      whileHover={{ y: -10 }}
+      transition={{ duration: 0.4, ease: "easeOut" }}
+      className="group relative flex flex-col h-full bg-card/40 backdrop-blur-xl rounded-[2.5rem] border border-border/50 overflow-hidden hover:border-primary/40 hover:shadow-[0_20px_50px_rgba(var(--primary-rgb),0.1)] transition-all duration-500"
+    >
+      {/* Image Container */}
+      <div className="relative aspect-16/10 overflow-hidden m-3 rounded-[1.8rem]">
         <Image
           src={image || mamun}
           alt={title}
           fill
-          className="object-cover transition-transform duration-500 hover:scale-110"
+          className="object-cover transition-transform duration-1000 group-hover:scale-110"
         />
-        <Badge variant="secondary" className="absolute top-4 right-4">
+
+        {/* Modern Hover Overlay */}
+        <div className="absolute inset-0 bg-primary/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center">
+          <div className="w-14 h-14 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center scale-75 group-hover:scale-100 transition-transform duration-500">
+            <Eye className="text-white w-6 h-6" />
+          </div>
+        </div>
+
+        <Badge className="absolute top-4 left-4 bg-background/90 backdrop-blur-md text-foreground border-none px-4 py-1.5 font-bold text-[10px] uppercase tracking-wider rounded-full shadow-lg">
           {category.name}
         </Badge>
       </div>
 
-      {/* Header with Title, Author, Date, Category */}
-      <CardHeader className="p-5 space-y-3">
-        <CardTitle className="text-lg">{title}</CardTitle>
-
-        {/* Author info */}
-        <div className="flex items-center justify-between">
+      {/* Content */}
+      <div className="p-8 pt-4 flex flex-col flex-1">
+        {/* Meta Line */}
+        <div className="flex items-center gap-6 mb-6 text-muted-foreground">
           <div className="flex items-center gap-2">
-            <div className="relative w-8 h-8 rounded-full overflow-hidden">
+            <div className="relative w-7 h-7 rounded-full overflow-hidden border border-background shadow-sm">
               <Image
                 src={author?.picture || mamun}
                 alt={author?.name || "Author"}
@@ -79,40 +86,43 @@ export const BlogCard: React.FC<BlogCardProps> = ({
                 className="object-cover"
               />
             </div>
-            <p className="text-sm text-gray-700 dark:text-gray-300">
-              {author?.name || "Anonymous"}
-            </p>
+            <span className="text-xs font-bold tracking-tight text-foreground/80">
+              {author?.name || "Admin"}
+            </span>
           </div>
-
-          <p className="text-sm text-gray-500 dark:text-gray-400">
-            {formatDate(createdAt)}
-          </p>
+          <div className="flex items-center gap-2">
+            <Calendar size={13} className="text-primary/60" />
+            <span className="text-[10px] font-black uppercase tracking-widest">
+              {formatDate(createdAt)}
+            </span>
+          </div>
         </div>
-      </CardHeader>
 
-      {/* Content with description and tags */}
-      <CardContent className="px-5 pb-4 flex-1">
-        <p className="text-gray-700 dark:text-gray-300 mb-3 line-clamp-2">
+        <h3 className="text-2xl font-extrabold mb-4 group-hover:text-primary transition-colors duration-300 line-clamp-2 leading-tight">
+          {title}
+        </h3>
+
+        <p className="text-muted-foreground text-base leading-relaxed line-clamp-2 mb-8 flex-1">
           {description}
         </p>
 
-        <div className="flex flex-wrap gap-2 mb-2">
-          {tags.map((tag) => (
-            <Badge key={tag} variant="outline">
-              {tag}
-            </Badge>
-          ))}
-        </div>
-      </CardContent>
-
-      {/* Footer with Details Button */}
-      <CardFooter className="px-5 pb-5">
-        <Button variant="outline" className="w-full bg-transparent">
-          <Link href={`/blog/${slug}`} className="w-full h-full">
-            View Details
+        {/* Read More Section */}
+        <div className="pt-6 border-t border-border/50">
+          <Link
+            href={`/blog/${slug}`}
+            className="inline-flex items-center gap-2 text-sm font-black uppercase tracking-[0.2em] text-primary group/link"
+          >
+            Read Article
+            <motion.span
+              initial={{ x: 0 }}
+              whileHover={{ x: 5 }}
+              className="text-lg leading-none"
+            >
+              →
+            </motion.span>
           </Link>
-        </Button>
-      </CardFooter>
-    </Card>
+        </div>
+      </div>
+    </motion.div>
   );
 };

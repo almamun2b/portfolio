@@ -1,54 +1,94 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import { motion } from "framer-motion";
 import { LayoutDashboard } from "lucide-react";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
-import { ModeToggle } from "../mode-toggle";
+import { useEffect, useState } from "react";
 import { Logo } from "./logo";
+import { ModeToggle } from "./mode-toggle";
 import { NavMenu } from "./nav-menu";
 import { NavigationSheet } from "./navigation-sheet";
 
 const Navbar = () => {
   const session = useSession();
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 20);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   return (
-    <nav className="fixed h-20 w-full bg-background border dark:border-slate-700/70 z-50">
-      <div className="container mx-auto flex h-full items-center justify-between px-6">
+    <motion.nav
+      initial={{ y: -100 }}
+      animate={{ y: 0 }}
+      transition={{ duration: 0.6, ease: "easeOut" }}
+      className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${
+        isScrolled
+          ? "h-16 bg-background/80 backdrop-blur-xl border-b border-border/50 shadow-lg shadow-black/5"
+          : "h-24 bg-transparent border-b border-transparent"
+      }`}
+    >
+      <div className="container mx-auto h-full flex items-center justify-between px-6">
+        {/* Left: Brand / Logo */}
         <div className="flex items-center gap-4">
           <div className="md:hidden">
             <NavigationSheet />
           </div>
-          <Link href="/">
+          <Link href="/" className="group flex items-center gap-3">
             <Logo />
+            <div className="flex flex-col -space-y-1">
+              <span className="text-lg font-black tracking-tighter uppercase group-hover:text-primary transition-colors">
+                Abdul <span className="text-primary italic">Mamun</span>
+              </span>
+              <span className="text-[10px] font-bold text-muted-foreground tracking-[0.2em] uppercase">
+                Software Engineer
+              </span>
+            </div>
           </Link>
         </div>
 
-        <NavMenu className="hidden md:block" />
+        {/* Center: Desktop Navigation */}
+        <div className="hidden md:flex items-center">
+          <NavMenu />
+        </div>
 
-        {/* Actions and Mobile Menu */}
+        {/* Right: Actions */}
         <div className="flex items-center gap-4">
           <ModeToggle />
-          {session.status === "authenticated" && (
-            <>
+
+          {session.status === "authenticated" ? (
+            <div className="flex items-center gap-3">
               <Button
                 asChild
-                className="rounded-full px-2 py-2 text-sm md:text-base  hidden md:flex"
+                variant="outline"
+                className="hidden md:flex rounded-2xl border-2 font-bold h-10 px-6 transition-all hover:bg-primary hover:text-white"
               >
-                <Link href="/dashboard" className="w-full text-center">
-                  Dashboard
-                </Link>
+                <Link href="/dashboard">Dashboard</Link>
               </Button>
               <Link
                 href="/dashboard"
-                className="rounded-full px-2 py-2 text-sm md:text-base md:hidden"
+                className="md:hidden w-10 h-10 flex items-center justify-center rounded-2xl bg-primary/10 text-primary border border-primary/20"
               >
-                <LayoutDashboard />
+                <LayoutDashboard size={20} />
               </Link>
-            </>
+            </div>
+          ) : (
+            <Button
+              asChild
+              className="rounded-2xl font-black uppercase tracking-widest text-[10px] h-10 px-6 shadow-xl shadow-primary/20 hidden sm:flex"
+            >
+              <Link href="/contact-me">Hire Me</Link>
+            </Button>
           )}
         </div>
       </div>
-    </nav>
+    </motion.nav>
   );
 };
 
