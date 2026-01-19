@@ -3,7 +3,7 @@
 import mamun from "@/assets/mamun.png";
 import { Badge } from "@/components/ui/badge";
 import { motion } from "framer-motion";
-import { Calendar } from "lucide-react";
+import { Calendar, Eye } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import type React from "react";
@@ -49,29 +49,36 @@ export const BlogCard: React.FC<BlogCardProps> = ({
   return (
     <motion.div
       whileHover={{ y: -10 }}
-      transition={{ duration: 0.3 }}
-      className="group flex flex-col h-full bg-card/50 backdrop-blur-sm rounded-3xl border border-border/50 overflow-hidden hover:border-primary/50 hover:shadow-2xl hover:shadow-primary/10 transition-all duration-500"
+      transition={{ duration: 0.4, ease: "easeOut" }}
+      className="group relative flex flex-col h-full bg-card/40 backdrop-blur-xl rounded-[2.5rem] border border-border/50 overflow-hidden hover:border-primary/40 hover:shadow-[0_20px_50px_rgba(var(--primary-rgb),0.1)] transition-all duration-500"
     >
       {/* Image Container */}
-      <div className="relative aspect-16/10 overflow-hidden">
+      <div className="relative aspect-[16/10] overflow-hidden m-3 rounded-[1.8rem]">
         <Image
           src={image || mamun}
           alt={title}
           fill
-          className="object-cover transition-transform duration-700 group-hover:scale-110"
+          className="object-cover transition-transform duration-1000 group-hover:scale-110"
         />
-        <div className="absolute inset-0 bg-linear-to-t from-background/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-        <Badge className="absolute top-4 right-4 bg-primary text-white border-none px-3 py-1 font-bold">
+
+        {/* Modern Hover Overlay */}
+        <div className="absolute inset-0 bg-primary/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center">
+          <div className="w-14 h-14 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center scale-75 group-hover:scale-100 transition-transform duration-500">
+            <Eye className="text-white w-6 h-6" />
+          </div>
+        </div>
+
+        <Badge className="absolute top-4 left-4 bg-background/90 backdrop-blur-md text-foreground border-none px-4 py-1.5 font-bold text-[10px] uppercase tracking-wider rounded-full shadow-lg">
           {category.name}
         </Badge>
       </div>
 
       {/* Content */}
-      <div className="p-6 flex flex-col flex-1">
-        {/* Author & Date */}
-        <div className="flex items-center gap-4 mb-4">
+      <div className="p-8 pt-4 flex flex-col flex-1">
+        {/* Meta Line */}
+        <div className="flex items-center gap-6 mb-6 text-muted-foreground">
           <div className="flex items-center gap-2">
-            <div className="relative w-8 h-8 rounded-full overflow-hidden border-2 border-background shadow-sm">
+            <div className="relative w-7 h-7 rounded-full overflow-hidden border border-background shadow-sm">
               <Image
                 src={author?.picture || mamun}
                 alt={author?.name || "Author"}
@@ -79,34 +86,40 @@ export const BlogCard: React.FC<BlogCardProps> = ({
                 className="object-cover"
               />
             </div>
-            <span className="text-xs font-semibold text-foreground/80">
+            <span className="text-xs font-bold tracking-tight text-foreground/80">
               {author?.name || "Admin"}
             </span>
           </div>
-          <div className="flex items-center gap-1 text-muted-foreground">
-            <Calendar size={12} />
-            <span className="text-[10px] font-bold uppercase tracking-wider">
+          <div className="flex items-center gap-2">
+            <Calendar size={13} className="text-primary/60" />
+            <span className="text-[10px] font-black uppercase tracking-widest">
               {formatDate(createdAt)}
             </span>
           </div>
         </div>
 
-        <h3 className="text-xl font-bold mb-3 group-hover:text-primary transition-colors duration-300 line-clamp-2">
+        <h3 className="text-2xl font-extrabold mb-4 group-hover:text-primary transition-colors duration-300 line-clamp-2 leading-tight">
           {title}
         </h3>
 
-        <p className="text-muted-foreground text-sm leading-relaxed line-clamp-3 mb-6 flex-1">
+        <p className="text-muted-foreground text-base leading-relaxed line-clamp-2 mb-8 flex-1">
           {description}
         </p>
 
-        {/* Action Link */}
-        <div className="pt-4 border-t border-border/50">
+        {/* Read More Section */}
+        <div className="pt-6 border-t border-border/50">
           <Link
             href={`/blog/${slug}`}
-            className="inline-flex items-center gap-2 text-sm font-bold text-primary group-hover:gap-3 transition-all duration-300"
+            className="inline-flex items-center gap-2 text-sm font-black uppercase tracking-[0.2em] text-primary group/link"
           >
-            Read More
-            <span className="text-lg">→</span>
+            Read Article
+            <motion.span
+              initial={{ x: 0 }}
+              whileHover={{ x: 5 }}
+              className="text-lg leading-none"
+            >
+              →
+            </motion.span>
           </Link>
         </div>
       </div>

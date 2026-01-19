@@ -2,7 +2,6 @@ import AboutMe from "@/components/modules/Home/AboutMe";
 import { Blogs } from "@/components/modules/Home/Blogs";
 import CallToAction from "@/components/modules/Home/CallToAction";
 import Contact from "@/components/modules/Home/Contact";
-import Education from "@/components/modules/Home/Education";
 import Experience from "@/components/modules/Home/Experience";
 import Hero from "@/components/modules/Home/Hero";
 import { Projects } from "@/components/modules/Home/Projects";
@@ -44,7 +43,6 @@ export default async function PortfolioLanding() {
       <AboutMe />
       <Skills />
       <Experience />
-      <Education />
       <Projects projectsData={projectsData} />
       <Blogs blogsData={blogsData} />
       <Contact />

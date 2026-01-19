@@ -1,13 +1,14 @@
 "use client";
 
 import {
-  NavigationMenu,
-  NavigationMenuItem,
-  NavigationMenuLink,
-  NavigationMenuList,
+    NavigationMenu,
+    NavigationMenuItem,
+    NavigationMenuLink,
+    NavigationMenuList,
 } from "@/components/ui/navigation-menu";
 import { cn } from "@/lib/utils";
 import type { NavigationMenuProps } from "@radix-ui/react-navigation-menu";
+import { motion } from "framer-motion";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -20,13 +21,12 @@ export const NavMenu = ({ onClickMenu, ...props }: NavMenuProps) => {
 
   const navMenus = [
     { label: "Home", href: "/" },
-    { label: "About Me", href: "/about-me" },
-    { label: "Contact Me", href: "/contact-me" },
     { label: "Projects", href: "/project" },
-    { label: "Blog", href: "/blog" },
+    { label: "Journal", href: "/blog" },
+    { label: "About", href: "/about-me" },
+    { label: "Contact", href: "/contact-me" },
   ];
 
-  // Function to check if a route is active
   const isActiveRoute = (href: string): boolean => {
     if (href === "/") {
       return pathname === "/";
@@ -36,7 +36,7 @@ export const NavMenu = ({ onClickMenu, ...props }: NavMenuProps) => {
 
   return (
     <NavigationMenu {...props}>
-      <NavigationMenuList className="gap-6 space-x-0 gap-y-2 data-[orientation=vertical]:flex-col data-[orientation=vertical]:items-start text-base font-medium">
+      <NavigationMenuList className="gap-2 text-sm font-bold uppercase tracking-widest">
         {navMenus.map((menu) => {
           const isActive = isActiveRoute(menu.href);
           return (
@@ -44,14 +44,30 @@ export const NavMenu = ({ onClickMenu, ...props }: NavMenuProps) => {
               <NavigationMenuLink
                 asChild
                 className={cn(
-                  "transition-all duration-200 relative",
-                  isActive && "text-foreground font-semibold"
-                  // Add underline effect for active state
+                  "relative px-4 py-2 transition-colors duration-300 rounded-xl hover:text-primary",
+                  isActive
+                    ? "text-primary"
+                    : "text-muted-foreground/80 hover:bg-muted/50",
                 )}
                 data-active={isActive}
               >
-                <Link href={menu.href} onClick={onClickMenu}>
-                  {menu.label}
+                <Link
+                  href={menu.href}
+                  onClick={onClickMenu}
+                  className="flex flex-col items-center"
+                >
+                  <span>{menu.label}</span>
+                  {isActive && (
+                    <motion.div
+                      layoutId="activeNav"
+                      className="absolute -bottom-1 left-2 right-2 h-0.5 bg-primary rounded-full shadow-[0_0_10px_rgba(var(--primary-rgb),0.5)]"
+                      transition={{
+                        type: "spring",
+                        stiffness: 380,
+                        damping: 30,
+                      }}
+                    />
+                  )}
                 </Link>
               </NavigationMenuLink>
             </NavigationMenuItem>
