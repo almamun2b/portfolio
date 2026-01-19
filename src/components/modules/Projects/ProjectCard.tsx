@@ -2,14 +2,9 @@
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 import { Project } from "@/types";
+import { motion } from "framer-motion";
+import { ExternalLink } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -22,46 +17,76 @@ export const ProjectCard: React.FC<Project> = ({
   slug,
 }) => {
   return (
-    <Card className="hover:shadow-xl transition-shadow duration-300 py-0 gap-0">
-      <div className="relative w-full h-48 overflow-hidden rounded-t-lg">
+    <motion.div
+      whileHover={{ y: -10 }}
+      transition={{ duration: 0.3 }}
+      className="group relative h-full flex flex-col bg-card/50 backdrop-blur-sm rounded-3xl border border-border/50 overflow-hidden hover:border-primary/50 hover:shadow-2xl hover:shadow-primary/10 transition-all duration-500"
+    >
+      {/* Image Container */}
+      <div className="relative aspect-video overflow-hidden">
         {image && (
           <Image
             src={image}
             alt={title}
             fill
-            className="object-cover transition-transform duration-500 hover:scale-110"
+            className="object-cover transition-transform duration-700 group-hover:scale-110"
           />
         )}
-      </div>
+        {/* Overlay on hover */}
+        <div className="absolute inset-0 bg-primary/40 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center gap-4">
+          <Button
+            size="icon"
+            variant="secondary"
+            className="rounded-full scale-0 group-hover:scale-100 transition-transform duration-500 flex items-center justify-center"
+            asChild
+          >
+            <Link href={`/project/${slug}`}>
+              <ExternalLink size={20} />
+            </Link>
+          </Button>
+        </div>
 
-      <CardHeader className="p-5">
-        <CardTitle className="text-lg">{title}</CardTitle>
-        <Badge variant="secondary" className="mt-2">
+        <Badge className="absolute top-4 left-4 bg-background/80 backdrop-blur-md text-foreground border-none px-3 py-1 font-bold">
           {type}
         </Badge>
-      </CardHeader>
+      </div>
 
-      <CardContent className="px-5 pb-4 flex-1">
-        <p className="text-gray-700 dark:text-gray-300 mb-3">{description}</p>
+      {/* Content */}
+      <div className="p-6 flex flex-col flex-1">
+        <h3 className="text-xl font-bold mb-3 group-hover:text-primary transition-colors duration-300">
+          {title}
+        </h3>
+        <p className="text-muted-foreground text-sm leading-relaxed line-clamp-2 mb-6 flex-1">
+          {description}
+        </p>
 
-        {technologies.length > 0 && (
-          <div className="flex flex-wrap gap-2">
-            {technologies.map((tech) => (
-              <Badge key={tech} variant="outline">
-                {tech}
-              </Badge>
-            ))}
-          </div>
-        )}
-      </CardContent>
+        {/* Tech Stack */}
+        <div className="flex flex-wrap gap-2 mb-6">
+          {technologies.slice(0, 3).map((tech) => (
+            <Badge
+              key={tech}
+              variant="secondary"
+              className="bg-primary/10 text-primary border-none text-[10px] uppercase tracking-wider font-bold"
+            >
+              {tech}
+            </Badge>
+          ))}
+          {technologies.length > 3 && (
+            <span className="text-[10px] text-muted-foreground self-center font-bold">
+              +{technologies.length - 3} more
+            </span>
+          )}
+        </div>
 
-      <CardFooter className="px-5 pb-5">
-        <Button variant="outline" asChild className="w-full">
-          <Link href={`/project/${slug}`} className="w-full h-full">
-            View Details
-          </Link>
+        {/* Action Button */}
+        <Button
+          variant="outline"
+          className="w-full rounded-xl border-2 font-bold group-hover:bg-primary group-hover:text-white group-hover:border-primary transition-all duration-300"
+          asChild
+        >
+          <Link href={`/project/${slug}`}>View Case Study</Link>
         </Button>
-      </CardFooter>
-    </Card>
+      </div>
+    </motion.div>
   );
 };

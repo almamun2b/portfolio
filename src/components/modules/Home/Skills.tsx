@@ -1,83 +1,164 @@
-// components/Skills.tsx
 "use client";
 
-import { Card, CardContent } from "@/components/ui/card";
-import {
-  Code2,
-  Gauge,
-  Palette,
-  Server,
-  ShieldCheck,
-  Smartphone,
-} from "lucide-react";
+import { motion, Variants } from "framer-motion";
+import { Code2, Cpu, Globe, Layout, Rocket, ShieldCheck } from "lucide-react";
 
 const skills = [
   {
-    icon: Code2,
-    title: "Frontend Web Development",
+    icon: Layout,
+    title: "Frontend Development",
+    subtitle: "Modern & Responsive UI",
     description:
-      "Specialized in building modern, fast, and responsive web applications using TypeScript, JavaScript, HTML5, CSS3, React.js, Next.js, Nuxt.js, and Astro.js with TailwindCSS.",
+      "Expertise in building high-performance, pixel-perfect interfaces using React, Next.js, and Tailwind CSS. Focused on user experience and accessibility.",
+    gradient: "from-blue-500/20 to-cyan-500/20",
+    iconColor: "text-blue-500",
   },
   {
-    icon: Server,
-    title: "Backend Development",
+    icon: Cpu,
+    title: "Backend Engineering",
+    subtitle: "Scalable & Secure Logic",
     description:
-      "Proficient in building scalable and secure backend applications using Node.js and Express.js. Experienced with MongoDB (Mongoose) and PostgreSQL (Prisma)",
+      "Architecting robust server-side solutions with Node.js, Express, and databases like PostgreSQL and MongoDB. Ensuring seamless data flow.",
+    gradient: "from-purple-500/20 to-pink-500/20",
+    iconColor: "text-purple-500",
   },
   {
-    icon: Smartphone,
-    title: "Mobile-Friendly Development",
+    icon: Globe,
+    title: "Full-Stack Integration",
+    subtitle: "Complete Digital Solutions",
     description:
-      "Crafting responsive and mobile-first designs ensuring smooth experiences across all devices.",
+      "Bridging the gap between frontend and backend to deliver comprehensive web applications that are fast, reliable, and easy to maintain.",
+    gradient: "from-emerald-500/20 to-teal-500/20",
+    iconColor: "text-emerald-500",
   },
   {
-    icon: Gauge,
+    icon: Rocket,
     title: "Performance Optimization",
+    subtitle: "Lightning Fast Speed",
     description:
-      "Optimizing applications for speed, SEO, and user experience through best practices and clean architecture.",
+      "Boosting application performance through code splitting, caching strategies, and efficient asset management to ensure top-tier rankings.",
+    gradient: "from-orange-500/20 to-red-500/20",
+    iconColor: "text-orange-500",
   },
   {
-    icon: Palette,
-    title: "User-Centric Design",
+    icon: Code2,
+    title: "Clean Architecture",
+    subtitle: "Maintainable Codebases",
     description:
-      "Focused on creating interfaces that are both functional and visually appealing with attention to usability.",
+      "Writing clean, modular, and well-documented code following SOLID principles and best practices for long-term scalability and collaboration.",
+    gradient: "from-indigo-500/20 to-blue-500/20",
+    iconColor: "text-indigo-500",
   },
   {
     icon: ShieldCheck,
-    title: "Testing & Quality Assurance",
+    title: "Quality Assurance",
+    subtitle: "Reliable & Bug-Free",
     description:
-      "Ensuring bug-free and secure applications using unit testing, integration testing, and debugging tools.",
+      "Implementing comprehensive testing strategies and security best practices to protect user data and ensure application stability.",
+    gradient: "from-rose-500/20 to-orange-500/20",
+    iconColor: "text-rose-500",
   },
 ];
 
+const containerVariants: Variants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1,
+    },
+  },
+};
+
+const itemVariants: Variants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.6,
+      ease: "easeOut",
+    },
+  },
+};
+
 export default function Skills() {
   return (
-    <section id="skills" className="py-20 px-6">
-      <div className="container mx-auto text-center max-w-4xl mb-12">
-        <h2 className="text-3xl font-bold mb-4">My Skills</h2>
-        <p className="text-muted-foreground">
-          I`m not just a developer; I build seamless digital experiences.
-          Discover how I can help you with modern, scalable solutions.
-        </p>
+    <section
+      id="skills"
+      className="py-16 md:py-24 lg:py-32 relative overflow-hidden"
+    >
+      {/* Background Decorative Elements */}
+      <div className="absolute top-0 left-0 w-full h-full -z-10 opacity-30 pointer-events-none">
+        <div className="absolute top-1/4 -left-20 w-80 h-80 bg-primary/10 rounded-full blur-[100px]" />
+        <div className="absolute bottom-1/4 -right-20 w-80 h-80 bg-primary/10 rounded-full blur-[100px]" />
       </div>
 
-      <div className="container mx-auto grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-        {skills.map((skill, idx) => (
-          <Card
-            key={idx}
-            className="rounded-2xl border bg-background hover:shadow-lg hover:scale-105 transition-transform duration-300"
+      <div className="container mx-auto px-6">
+        <div className="text-center max-w-3xl mx-auto mb-16 md:mb-24">
+          <motion.span
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-primary font-bold tracking-widest uppercase text-xs md:text-sm mb-4 block"
           >
-            <CardContent className="p-8 flex flex-col items-center text-center space-y-4">
-              <div className="flex items-center justify-center w-16 h-16 rounded-full bg-muted">
-                <skill.icon className="w-8 h-8 text-primary" />
+            Capabilities
+          </motion.span>
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.1 }}
+            className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6"
+          >
+            My Expertise in <span className="text-primary">Development</span>
+          </motion.h2>
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.2 }}
+            className="text-muted-foreground text-base md:text-lg"
+          >
+            I deliver end-to-end digital solutions that combine aesthetic
+            excellence with technical precision.
+          </motion.p>
+        </div>
+
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-100px" }}
+          className="grid gap-6 md:gap-8 sm:grid-cols-2 lg:grid-cols-3"
+        >
+          {skills.map((skill, idx) => (
+            <motion.div
+              key={idx}
+              variants={itemVariants}
+              className="group relative p-8 rounded-3xl border border-border/50 bg-card/50 backdrop-blur-sm hover:border-primary/50 transition-all duration-500 overflow-hidden"
+            >
+              {/* Card Gradient Background */}
+              <div
+                className={`absolute inset-0 bg-linear-to-br ${skill.gradient} opacity-0 group-hover:opacity-100 transition-opacity duration-500`}
+              />
+
+              <div className="relative z-10 flex flex-col items-start">
+                <div className="w-14 h-14 rounded-2xl bg-muted flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-500">
+                  <skill.icon className={`w-7 h-7 ${skill.iconColor}`} />
+                </div>
+
+                <span className="text-[10px] md:text-xs font-bold text-primary tracking-widest uppercase mb-2">
+                  {skill.subtitle}
+                </span>
+                <h3 className="text-xl font-bold mb-4">{skill.title}</h3>
+                <p className="text-muted-foreground text-sm md:text-base leading-relaxed transition-all duration-500">
+                  {skill.description}
+                </p>
               </div>
-              <h3 className="text-lg font-semibold">{skill.title}</h3>
-              <p className="text-sm text-muted-foreground">
-                {skill.description}
-              </p>
-            </CardContent>
-          </Card>
-        ))}
+            </motion.div>
+          ))}
+        </motion.div>
       </div>
     </section>
   );
