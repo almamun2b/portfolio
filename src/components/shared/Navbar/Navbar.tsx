@@ -12,7 +12,7 @@ import { NavigationSheet } from "./navigation-sheet";
 const Navbar = () => {
   const session = useSession();
   return (
-    <nav className="fixed h-14 w-full bg-background border dark:border-slate-700/70 z-50">
+    <nav className="fixed h-20 w-full bg-background border dark:border-slate-700/70 z-50">
       <div className="container mx-auto flex h-full items-center justify-between px-6">
         <div className="flex items-center gap-4">
           <div className="md:hidden">
