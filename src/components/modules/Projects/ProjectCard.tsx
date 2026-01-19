@@ -20,7 +20,7 @@ export const ProjectCard: React.FC<Project> = ({
     <motion.div
       whileHover={{ y: -10 }}
       transition={{ duration: 0.4, ease: "easeOut" }}
-      className="group relative h-full flex flex-col bg-card/40 backdrop-blur-xl rounded-[2.5rem] border border-border/50 overflow-hidden hover:border-primary/40 hover:shadow-[0_20px_50px_rgba(var(--primary-rgb),0.1)] transition-all duration-500"
+      className="group relative h-full flex flex-col bg-card/40 backdrop-blur-xl rounded-[2.5rem] border border-border/40 overflow-hidden hover:border-primary/40 hover:shadow-[0_20px_50px_-12px_rgba(var(--primary-rgb),0.15)] dark:hover:shadow-[0_20px_50px_-12px_rgba(var(--primary-rgb),0.2)] transition-all duration-500"
     >
       {/* Image Container */}
       <div className="relative aspect-16/10 overflow-hidden m-3 rounded-[1.8rem]">
@@ -79,7 +79,7 @@ export const ProjectCard: React.FC<Project> = ({
         {/* Unified Action */}
         <Button
           variant="outline"
-          className="w-full h-14 rounded-2xl border-border/50 font-extrabold text-sm uppercase tracking-widest group-hover:bg-primary group-hover:text-white group-hover:border-primary group-hover:shadow-[0_10px_20px_rgba(var(--primary-rgb),0.2)] transition-all duration-300"
+          className="w-full h-14 rounded-2xl border-border/50 font-extrabold text-sm uppercase tracking-widest group-hover:bg-primary group-hover:text-white group-hover:border-primary group-hover:shadow-[0_10px_20px_-5px_rgba(var(--primary-rgb),0.4)] transition-all duration-300"
           asChild
         >
           <Link href={`/project/${slug}`}>View Case Study</Link>

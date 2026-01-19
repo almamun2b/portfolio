@@ -63,6 +63,7 @@
   --shadow-xl:
     0 1px 3px 0px hsl(0 0% 0% / 0.1), 0 8px 10px -1px hsl(0 0% 0% / 0.1);
   --shadow-2xl: 0 1px 3px 0px hsl(0 0% 0% / 0.25);
+  --primary-rgb: 234 88 12;
   --tracking-normal: 0em;
   --spacing: 0.25rem;
 }
@@ -127,6 +128,7 @@
   --shadow-xl:
     0 1px 3px 0px hsl(0 0% 0% / 0.1), 0 8px 10px -1px hsl(0 0% 0% / 0.1);
   --shadow-2xl: 0 1px 3px 0px hsl(0 0% 0% / 0.25);
+  --primary-rgb: 249 115 22;
 }
 
 @theme inline {
