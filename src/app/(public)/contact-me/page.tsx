@@ -1,5 +1,6 @@
 "use client";
 
+import { sendContactEmail } from "@/actions/contact";
 import { DynamicFormField } from "@/components/shared/DynamicFormField";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
@@ -34,13 +35,22 @@ export default function ContactUs() {
   });
 
   const onSubmit = async (values: ContactFormData) => {
+    const toastId = toast.loading("Sending message...");
     try {
-      console.log("Form Values:", values);
-      toast.success("Message sent successfully! I'll get back to you soon.");
-      form.reset();
+      const result = await sendContactEmail(values);
+      if (result.success) {
+        toast.success(result.message, { id: toastId });
+        form.reset();
+      } else {
+        toast.error(result.message || "Failed to send message.", {
+          id: toastId,
+        });
+      }
     } catch (error) {
       console.error("Failed to send message:", error);
-      toast.error("Failed to send message. Please try again later.");
+      toast.error("An unexpected error occurred. Please try again later.", {
+        id: toastId,
+      });
     }
   };
 

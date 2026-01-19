@@ -1,10 +1,61 @@
 "use client";
 
+import { sendContactEmail } from "@/actions/contact";
 import { Button } from "@/components/ui/button";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { motion } from "framer-motion";
 import { Mail, MapPin, Phone, Send } from "lucide-react";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+import { z } from "zod";
+
+const contactSchema = z.object({
+  name: z.string().min(2, "Name must be at least 2 characters"),
+  email: z.string().email("Please enter a valid email"),
+  subject: z.string().min(3, "Subject must be at least 3 characters"),
+  message: z.string().min(10, "Message must be at least 10 characters"),
+});
+
+type ContactFormData = z.infer<typeof contactSchema>;
 
 export default function Contact() {
+  const form = useForm<ContactFormData>({
+    resolver: zodResolver(contactSchema),
+    defaultValues: {
+      name: "",
+      email: "",
+      subject: "",
+      message: "",
+    },
+  });
+
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors, isSubmitting },
+  } = form;
+
+  const onSubmit = async (values: ContactFormData) => {
+    const toastId = toast.loading("Sending message...");
+    try {
+      const result = await sendContactEmail(values);
+      if (result.success) {
+        toast.success(result.message, { id: toastId });
+        reset();
+      } else {
+        toast.error(result.message || "Failed to send message.", {
+          id: toastId,
+        });
+      }
+    } catch (error) {
+      console.error("Failed to send message:", error);
+      toast.error("An unexpected error occurred. Please try again later.", {
+        id: toastId,
+      });
+    }
+  };
+
   return (
     <section
       id="contact"
@@ -106,53 +157,86 @@ export default function Contact() {
             viewport={{ once: true }}
             className="lg:col-span-3 p-8 md:p-12 rounded-[2.5rem] border border-border/50 bg-card/50 backdrop-blur-sm"
           >
-            <form className="space-y-6">
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
               <div className="grid md:grid-cols-2 gap-6">
                 <div className="space-y-2">
                   <label className="text-sm font-semibold ml-1">
                     Full Name
                   </label>
                   <input
+                    {...register("name")}
                     type="text"
                     placeholder="John Doe"
-                    className="w-full px-5 py-4 rounded-xl bg-background border border-border/50 focus:border-primary outline-none transition-all"
+                    className={`w-full px-5 py-4 rounded-xl bg-background border ${
+                      errors.name ? "border-destructive" : "border-border/50"
+                    } focus:border-primary outline-none transition-all`}
                   />
+                  {errors.name && (
+                    <p className="text-xs text-destructive ml-1">
+                      {errors.name.message}
+                    </p>
+                  )}
                 </div>
                 <div className="space-y-2">
                   <label className="text-sm font-semibold ml-1">
                     Email Address
                   </label>
                   <input
+                    {...register("email")}
                     type="email"
                     placeholder="john@example.com"
-                    className="w-full px-5 py-4 rounded-xl bg-background border border-border/50 focus:border-primary outline-none transition-all"
+                    className={`w-full px-5 py-4 rounded-xl bg-background border ${
+                      errors.email ? "border-destructive" : "border-border/50"
+                    } focus:border-primary outline-none transition-all`}
                   />
+                  {errors.email && (
+                    <p className="text-xs text-destructive ml-1">
+                      {errors.email.message}
+                    </p>
+                  )}
                 </div>
               </div>
 
               <div className="space-y-2">
                 <label className="text-sm font-semibold ml-1">Subject</label>
                 <input
+                  {...register("subject")}
                   type="text"
                   placeholder="How can I help you?"
-                  className="w-full px-5 py-4 rounded-xl bg-background border border-border/50 focus:border-primary outline-none transition-all"
+                  className={`w-full px-5 py-4 rounded-xl bg-background border ${
+                    errors.subject ? "border-destructive" : "border-border/50"
+                  } focus:border-primary outline-none transition-all`}
                 />
+                {errors.subject && (
+                  <p className="text-xs text-destructive ml-1">
+                    {errors.subject.message}
+                  </p>
+                )}
               </div>
 
               <div className="space-y-2">
                 <label className="text-sm font-semibold ml-1">Message</label>
                 <textarea
+                  {...register("message")}
                   rows={5}
                   placeholder="Tell me about your project..."
-                  className="w-full px-5 py-4 rounded-xl bg-background border border-border/50 focus:border-primary outline-none transition-all resize-none"
+                  className={`w-full px-5 py-4 rounded-xl bg-background border ${
+                    errors.message ? "border-destructive" : "border-border/50"
+                  } focus:border-primary outline-none transition-all resize-none`}
                 />
+                {errors.message && (
+                  <p className="text-xs text-destructive ml-1">
+                    {errors.message.message}
+                  </p>
+                )}
               </div>
 
               <Button
                 size="lg"
+                disabled={isSubmitting}
                 className="w-full rounded-xl h-14 font-bold text-lg group"
               >
-                Send Message
+                {isSubmitting ? "Sending..." : "Send Message"}
                 <Send
                   size={20}
                   className="ml-2 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform"
