@@ -21,9 +21,9 @@ export function BlogDetailContent({
         initial={{ opacity: 0, y: 40 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 1, ease: "easeOut" }}
-        className="relative group rounded-[2.5rem] md:rounded-[4rem] overflow-hidden border border-border/50 shadow-2xl"
+        className="relative aspect-16/10 lg:aspect-21/9 overflow-hidden rounded-[2.5rem] border border-border/50 group shadow-2xl"
       >
-        <div className="relative aspect-video lg:aspect-[21/9] w-full">
+        <div className="relative w-full h-full">
           <Image
             src={image || "/placeholder.svg"}
             alt={title}
@@ -58,8 +58,8 @@ export function BlogDetailContent({
           </p>
 
           <blockquote>
-            "Great code is not just written; it's meticulously crafted through
-            iterations of learning and refinement."
+            &quot;Great code is not just written; it&apos;s meticulously crafted
+            through iterations of learning and refinement.&quot;
           </blockquote>
 
           <h2>Core Architecture</h2>

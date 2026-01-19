@@ -78,7 +78,7 @@ export default function Hero() {
                 variant="outline"
                 className="rounded-xl px-10 h-14 border-2 font-bold"
               >
-                <Link href="/resume.pdf" target="_blank">
+                <Link href="/mamun.pdf" target="_blank">
                   <Download className="mr-2 h-5 w-5" /> Download CV
                 </Link>
               </Button>

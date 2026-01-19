@@ -76,7 +76,7 @@ export const Projects = ({
           viewport={{ once: true, margin: "-100px" }}
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16"
         >
-          {data.projects.map((project, idx) => (
+          {data.projects.map((project) => (
             <motion.div key={project.title} variants={itemVariants}>
               <ProjectCard {...project} />
             </motion.div>
@@ -96,7 +96,7 @@ export const Projects = ({
             className="rounded-xl px-10 h-14 border-2 font-bold group"
             asChild
           >
-            <Link href="/projects">
+            <Link href="/project">
               See All Projects
               <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" />
             </Link>

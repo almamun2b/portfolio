@@ -23,7 +23,7 @@ export const ProjectCard: React.FC<Project> = ({
       className="group relative h-full flex flex-col bg-card/40 backdrop-blur-xl rounded-[2.5rem] border border-border/50 overflow-hidden hover:border-primary/40 hover:shadow-[0_20px_50px_rgba(var(--primary-rgb),0.1)] transition-all duration-500"
     >
       {/* Image Container */}
-      <div className="relative aspect-[16/10] overflow-hidden m-3 rounded-[1.8rem]">
+      <div className="relative aspect-16/10 overflow-hidden m-3 rounded-[1.8rem]">
         {image && (
           <Image
             src={image}

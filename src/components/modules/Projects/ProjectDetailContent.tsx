@@ -18,9 +18,9 @@ const ProjectDetailContent = ({ project }: ProjectDetailContentProps) => {
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, ease: "easeOut" }}
-          className="relative group rounded-[2.5rem] md:rounded-[4rem] overflow-hidden border border-border/50 shadow-2xl"
+          className="relative aspect-16/10 lg:aspect-21/9 overflow-hidden rounded-3xl border border-border/50 group shadow-2xl"
         >
-          <div className="relative aspect-video lg:aspect-[21/9] w-full">
+          <div className="relative w-full h-full">
             <Image
               src={project.image}
               alt={project.title}

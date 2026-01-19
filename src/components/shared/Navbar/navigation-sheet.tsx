@@ -55,7 +55,7 @@ export const NavigationSheet = () => {
 
         <div className="pt-8 border-t border-border/50">
           <p className="text-[10px] font-bold text-muted-foreground tracking-widest uppercase">
-            Let's Build Something Great
+            Let&apos;s Build Something Great
           </p>
         </div>
 

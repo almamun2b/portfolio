@@ -67,7 +67,7 @@ export default function Education() {
               </div>
 
               <div className="space-y-4">
-                <div className="hidden items-center gap-3 p-4 rounded-2xl bg-background shadow-sm border border-border/50">
+                <div className="flex items-center gap-3 p-4 rounded-2xl bg-background shadow-sm border border-border/50">
                   <Award className="text-primary" size={24} />
                   <div>
                     <p className="text-[10px] uppercase tracking-widest text-muted-foreground font-bold">
