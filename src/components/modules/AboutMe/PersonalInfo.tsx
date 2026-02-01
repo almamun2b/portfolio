@@ -26,11 +26,11 @@ const infoItems = [
   {
     icon: Phone,
     label: "Phone",
-    value: "+880 1789 XXX XXX",
-    href: "tel:+8801789",
+    value: "+880 1610 088 700",
+    href: "tel:+8801610088700",
   },
-  { icon: MapPin, label: "Location", value: "Dhaka, Bangladesh" },
-  { icon: Calendar, label: "Age", value: "27 Years" },
+  { icon: MapPin, label: "Location", value: "Sirajganj, Bangladesh" },
+  { icon: Calendar, label: "Age", value: "32 Years" },
   { icon: Globe, label: "Website", value: "mamun.dev", href: "/" },
 ];
 

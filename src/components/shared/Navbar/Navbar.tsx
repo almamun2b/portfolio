@@ -37,24 +37,24 @@ const Navbar = () => {
       <div className="container mx-auto h-full flex items-center justify-between px-6">
         {/* Left: Brand / Logo */}
         <div className="flex items-center gap-4">
-          <div className="md:hidden">
+          <div className="lg:hidden">
             <NavigationSheet />
           </div>
           <Link href="/" className="group flex items-center gap-3">
             <Logo />
             <div className="flex flex-col -space-y-1">
-              <span className="text-lg font-black tracking-tighter uppercase group-hover:text-primary transition-colors">
-                Abdul <span className="text-primary italic">Mamun</span>
+              <span className="text-base sm:text-lg font-extrabold tracking-tight group-hover:text-primary transition-colors">
+                Md Abdul <span className="text-primary italic">Mamun</span>
               </span>
-              <span className="text-[10px] font-bold text-muted-foreground tracking-[0.2em] uppercase">
-                Software Engineer
+              <span className="hidden xs:block text-[9px] sm:text-[10px] font-bold text-muted-foreground tracking-[0.1em] uppercase">
+                Frontend Developer
               </span>
             </div>
           </Link>
         </div>
 
         {/* Center: Desktop Navigation */}
-        <div className="hidden md:flex items-center">
+        <div className="hidden lg:flex items-center">
           <NavMenu />
         </div>
 
@@ -81,7 +81,7 @@ const Navbar = () => {
           ) : (
             <Button
               asChild
-              className="rounded-2xl font-black uppercase tracking-widest text-[10px] h-10 px-6 shadow-xl shadow-primary/20 hidden sm:flex"
+              className="rounded-xl font-bold uppercase tracking-widest text-[10px] h-11 px-8 shadow-xl shadow-primary/20 hidden sm:flex"
             >
               <Link href="/contact-me">Hire Me</Link>
             </Button>

@@ -6,6 +6,13 @@ import { motion } from "framer-motion";
 import { Download, Github, Linkedin, Mail, Twitter } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { useEffect, useState } from "react";
+
+const roles = [
+  "Frontend Developer",
+  "Backend Developer",
+  "Full Stack Developer",
+];
 
 const stats = [
   { label: "Experiences", value: "3.5+" },
@@ -21,6 +28,38 @@ const socialLinks = [
 ];
 
 export default function Hero() {
+  const [currentRoleIndex, setCurrentRoleIndex] = useState(0);
+  const [currentText, setCurrentText] = useState("");
+  const [isDeleting, setIsDeleting] = useState(false);
+
+  useEffect(() => {
+    const currentFullRole = roles[currentRoleIndex];
+    let timeout: NodeJS.Timeout;
+
+    if (isDeleting) {
+      if (currentText === "") {
+        setIsDeleting(false);
+        setCurrentRoleIndex((prev) => (prev + 1) % roles.length);
+      } else {
+        timeout = setTimeout(() => {
+          setCurrentText(currentFullRole.slice(0, currentText.length - 1));
+        }, 50);
+      }
+    } else {
+      if (currentText === currentFullRole) {
+        timeout = setTimeout(() => {
+          setIsDeleting(true);
+        }, 2500);
+      } else {
+        timeout = setTimeout(() => {
+          setCurrentText(currentFullRole.slice(0, currentText.length + 1));
+        }, 150);
+      }
+    }
+
+    return () => clearTimeout(timeout);
+  }, [currentText, isDeleting, currentRoleIndex]);
+
   return (
     <section className="relative min-h-[90vh] flex flex-col items-center justify-between py-24 lg:py-32 overflow-hidden">
       {/* Background Decorative Circle */}
@@ -40,8 +79,13 @@ export default function Hero() {
             <h2 className="text-2xl md:text-3xl font-bold mb-4">
               Md Abdul Mamun
             </h2>
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-black tracking-tighter mb-8 text-primary uppercase leading-[1.1]">
-              Frontend <br /> <span className="text-foreground">Developer</span>
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight mb-8 leading-[1.05] min-h-[2.1em] lg:min-h-[2.1em]">
+              <span className="text-primary">{currentText}</span>
+              <span className="inline-block w-[3px] h-[0.9em] bg-primary ml-1 align-middle animate-pulse" />
+              <br />
+              <span className="text-foreground/80 text-lg sm:text-xl lg:text-2xl font-semibold">
+                Engineering Scalable & High-Performance Web Solutions
+              </span>
             </h1>
 
             {/* Social Icons */}
@@ -85,13 +129,13 @@ export default function Hero() {
             </div>
 
             {/* Stats Integration */}
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-8 p-8 rounded-3xl bg-card border shadow-sm max-w-2xl mx-auto lg:mx-0">
+            <div className="hidden grid-cols-2 md:grid-cols-3 gap-6 p-6 md:p-8 rounded-3xl bg-card/40 backdrop-blur-md border border-primary/10 shadow-xl shadow-primary/5 max-w-2xl mx-auto lg:mx-0">
               {stats.map((stat, idx) => (
                 <div
                   key={idx}
-                  className="flex flex-col border-r last:border-0 border-border"
+                  className="flex flex-col border-r last:border-0 border-border/50"
                 >
-                  <span className="text-2xl md:text-3xl font-black text-primary mb-1">
+                  <span className="text-2xl md:text-3xl font-bold text-primary mb-1">
                     {stat.value}
                   </span>
                   <span className="text-[10px] md:text-xs uppercase tracking-widest text-muted-foreground font-bold">

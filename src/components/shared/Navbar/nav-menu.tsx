@@ -34,9 +34,18 @@ export const NavMenu = ({ onClickMenu, ...props }: NavMenuProps) => {
     return pathname.startsWith(href);
   };
 
+  const isVertical = props.orientation === "vertical";
+
   return (
     <NavigationMenu {...props}>
-      <NavigationMenuList className="gap-2 text-sm font-bold uppercase tracking-widest">
+      <NavigationMenuList
+        className={cn(
+          "gap-2 text-sm font-bold uppercase",
+          isVertical
+            ? "flex-col items-start w-full gap-1 px-0 tracking-tight"
+            : "flex-row tracking-widest",
+        )}
+      >
         {navMenus.map((menu) => {
           const isActive = isActiveRoute(menu.href);
           return (
@@ -54,13 +63,27 @@ export const NavMenu = ({ onClickMenu, ...props }: NavMenuProps) => {
                 <Link
                   href={menu.href}
                   onClick={onClickMenu}
-                  className="flex flex-col items-center"
+                  className={cn(
+                    "flex items-center gap-3",
+                    isVertical ? "w-full py-2" : "flex-col",
+                  )}
                 >
-                  <span>{menu.label}</span>
+                  <span
+                    className={cn(
+                      isVertical ? "text-lg font-bold" : "text-sm",
+                    )}
+                  >
+                    {menu.label}
+                  </span>
                   {isActive && (
                     <motion.div
                       layoutId="activeNav"
-                      className="absolute -bottom-1 left-2 right-2 h-0.5 bg-primary rounded-full shadow-[0_0_15px_rgba(var(--primary-rgb),0.6)]"
+                      className={cn(
+                        "bg-primary rounded-full shadow-[0_0_15px_rgba(var(--primary-rgb),0.6)]",
+                        isVertical
+                          ? "w-1.5 h-6 absolute left-0"
+                          : "absolute -bottom-1 left-2 right-2 h-0.5",
+                      )}
                       transition={{
                         type: "spring",
                         stiffness: 380,

@@ -109,7 +109,7 @@ export default function Skills() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.1 }}
-            className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6"
+            className="text-4xl md:text-5xl font-extrabold mb-6 tracking-tight"
           >
             My Expertise in <span className="text-primary">Development</span>
           </motion.h2>
@@ -136,7 +136,7 @@ export default function Skills() {
             <motion.div
               key={idx}
               variants={itemVariants}
-              className="group relative p-8 rounded-3xl border border-border/50 bg-card/50 backdrop-blur-sm hover:border-primary/50 transition-all duration-500 overflow-hidden"
+              className="group relative p-10 rounded-[2.5rem] border border-border/40 bg-card/20 backdrop-blur-md hover:border-primary/40 transition-all duration-500 overflow-hidden shadow-sm hover:shadow-2xl hover:shadow-primary/5"
             >
               {/* Card Gradient Background */}
               <div
@@ -144,15 +144,17 @@ export default function Skills() {
               />
 
               <div className="relative z-10 flex flex-col items-start">
-                <div className="w-14 h-14 rounded-2xl bg-muted flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-500">
-                  <skill.icon className={`w-7 h-7 ${skill.iconColor}`} />
+                <div className="w-16 h-16 rounded-2xl bg-background flex items-center justify-center mb-8 group-hover:scale-110 group-hover:rotate-3 transition-all duration-500 shadow-sm">
+                  <skill.icon className={`w-8 h-8 ${skill.iconColor}`} />
                 </div>
 
-                <span className="text-[10px] md:text-xs font-bold text-primary tracking-widest uppercase mb-2">
+                <span className="text-[10px] font-bold text-primary tracking-[0.2em] uppercase mb-3">
                   {skill.subtitle}
                 </span>
-                <h3 className="text-xl font-bold mb-4">{skill.title}</h3>
-                <p className="text-muted-foreground text-sm md:text-base leading-relaxed transition-all duration-500">
+                <h3 className="text-2xl font-bold mb-4 tracking-tight">
+                  {skill.title}
+                </h3>
+                <p className="text-muted-foreground text-base leading-relaxed group-hover:text-foreground transition-colors duration-500">
                   {skill.description}
                 </p>
               </div>

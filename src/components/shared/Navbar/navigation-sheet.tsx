@@ -33,7 +33,7 @@ export const NavigationSheet = () => {
         side="left"
         className="w-[300px] h-full flex flex-col p-8 border-r border-border/50 bg-background/95 backdrop-blur-2xl"
       >
-        <SheetHeader className="text-left mb-10">
+        <SheetHeader className="text-left mb-5">
           <div className="flex items-center gap-3 mb-2">
             <Logo />
             <SheetTitle className="text-xl font-black tracking-tighter uppercase">
@@ -45,7 +45,7 @@ export const NavigationSheet = () => {
           </SheetDescription>
         </SheetHeader>
 
-        <div className="flex-1 -mx-4">
+        <div className="flex-1 overflow-y-auto mt-5">
           <NavMenu
             orientation="vertical"
             className="w-full"
@@ -59,15 +59,6 @@ export const NavigationSheet = () => {
           </p>
         </div>
 
-        {/* Custom close button for premium feel */}
-        <Button
-          variant="ghost"
-          size="icon"
-          onClick={() => setIsOpen(false)}
-          className="absolute top-6 right-6 rounded-full w-10 h-10 hover:bg-muted"
-        >
-          <X size={20} className="text-muted-foreground" />
-        </Button>
       </SheetContent>
     </Sheet>
   );

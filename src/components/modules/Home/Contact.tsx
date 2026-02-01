@@ -127,7 +127,7 @@ export default function Contact() {
                 <p className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-0.5">
                   Call Me
                 </p>
-                <p className="text-lg font-semibold">+880 1789 XXX XXX</p>
+                <p className="text-lg font-semibold">+880 1610 088 700</p>
               </div>
             </motion.div>
 
@@ -145,7 +145,7 @@ export default function Contact() {
                 <p className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-0.5">
                   Location
                 </p>
-                <p className="text-lg font-semibold">Dhaka, Bangladesh</p>
+                <p className="text-lg font-semibold">Sirajganj, Bangladesh</p>
               </div>
             </motion.div>
           </div>

@@ -73,25 +73,25 @@ export default function TechStack() {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}
-          className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 md:gap-6"
+          className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6"
         >
           {technologies.map((tech) => (
             <motion.div
               key={tech.name}
               variants={itemVariants}
               whileHover={{
-                scale: 1.05,
-                backgroundColor: "var(--background)",
-                boxShadow: "0 10px 30px -15px rgba(0,0,0,0.1)",
+                y: -5,
+                backgroundColor: "var(--card)",
+                borderColor: "var(--primary)",
               }}
-              className="flex flex-col items-center justify-center p-6 md:p-8 rounded-2xl border bg-card/50 backdrop-blur-sm transition-colors duration-300 group"
+              className="flex flex-col items-center justify-center p-8 rounded-3xl border border-border/50 bg-card/30 backdrop-blur-md transition-all duration-300 group shadow-sm hover:shadow-xl hover:shadow-primary/5"
             >
               <div
-                className={`p-3 md:p-4 rounded-xl bg-background shadow-sm mb-4 group-hover:shadow-md transition-shadow`}
+                className={`w-16 h-16 rounded-2xl bg-background flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300 shadow-inner`}
               >
-                <tech.icon className={`w-6 h-6 md:w-8 md:h-8 ${tech.color}`} />
+                <tech.icon className={`w-8 h-8 ${tech.color}`} />
               </div>
-              <span className="font-semibold text-xs md:text-base">
+              <span className="font-bold text-sm tracking-tight">
                 {tech.name}
               </span>
             </motion.div>

@@ -34,11 +34,11 @@ export const ProjectCard: React.FC<Project> = ({
         )}
 
         {/* Modern Hover Overlay */}
-        <div className="absolute inset-0 bg-primary/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center">
+        <Link href={`/project/${slug}`} className="absolute inset-0 bg-primary/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center">
           <div className="w-16 h-16 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center scale-75 group-hover:scale-100 transition-transform duration-500 shadow-2xl">
             <Eye className="text-white w-7 h-7" />
           </div>
-        </div>
+        </Link>
 
         <Badge className="absolute top-4 left-4 bg-background/90 backdrop-blur-md text-foreground border-none px-4 py-1.5 font-bold text-[10px] uppercase tracking-wider rounded-full shadow-lg">
           {type}
@@ -51,7 +51,9 @@ export const ProjectCard: React.FC<Project> = ({
           <h3 className="text-2xl font-extrabold group-hover:text-primary transition-colors duration-300 leading-tight">
             {title}
           </h3>
-          <ArrowUpRight className="text-muted-foreground w-6 h-6 shrink-0 mt-1 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 group-hover:-translate-y-1 transition-all duration-500" />
+          <Link href={`/project/${slug}`} className="text-muted-foreground w-6 h-6 shrink-0 mt-1 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 group-hover:-translate-y-1 transition-all duration-500">
+            <ArrowUpRight className="text-muted-foreground w-6 h-6" />
+          </Link>
         </div>
 
         <p className="text-muted-foreground text-base leading-relaxed line-clamp-2 mb-8 flex-1">
@@ -79,7 +81,7 @@ export const ProjectCard: React.FC<Project> = ({
         {/* Unified Action */}
         <Button
           variant="outline"
-          className="w-full h-14 rounded-2xl border-border/50 font-extrabold text-sm uppercase tracking-widest group-hover:bg-primary group-hover:text-white group-hover:border-primary group-hover:shadow-[0_10px_20px_-5px_rgba(var(--primary-rgb),0.4)] transition-all duration-300"
+          className="w-full h-12 rounded-xl border-border/50 font-extrabold text-sm uppercase tracking-widest group-hover:bg-primary group-hover:text-white group-hover:border-primary group-hover:shadow-[0_10px_20px_-5px_rgba(var(--primary-rgb),0.4)] transition-all duration-300"
           asChild
         >
           <Link href={`/project/${slug}`}>View Case Study</Link>
