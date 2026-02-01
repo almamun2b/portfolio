@@ -167,7 +167,7 @@ export default function Hero() {
                 src={mamun2}
                 alt="Md Abdul Mamun"
                 fill
-                className="object-contain object-bottom scale-90 sm:scale-95 filter grayscale hover:grayscale-0 transition-all duration-700 ease-in-out"
+                className="object-contain object-bottom scale-100 filter hover:scale-105 transition-all duration-700 ease-in-out"
                 priority
               />
             </div>

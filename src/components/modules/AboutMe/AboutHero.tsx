@@ -69,7 +69,7 @@ export const AboutHero = () => {
                   src={mamun2}
                   alt="Md Abdul Mamun"
                   fill
-                  className="object-cover object-top grayscale group-hover:grayscale-0 transition-all duration-700"
+                  className="object-cover object-top group-hover:scale-105 transition-all duration-700"
                   priority
                 />
                 <div className="absolute inset-0 bg-linear-to-t from-background/40 to-transparent" />
