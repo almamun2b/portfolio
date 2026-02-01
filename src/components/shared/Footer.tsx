@@ -15,7 +15,7 @@ const footerLinks = [
   {
     title: "Quick Links",
     links: [
-      { name: "About Me", href: "/#about" },
+      { name: "About Me", href: "/about-me" },
       { name: "Skills", href: "/#skills" },
       { name: "Projects", href: "/project" },
       { name: "Blog", href: "/blog" },
