@@ -104,7 +104,7 @@ export default function ContactUs() {
                   <p className="text-xs font-bold text-muted-foreground uppercase tracking-widest mb-1">
                     Call Me
                   </p>
-                  <p className="text-lg font-bold">+880 1789 XXX XXX</p>
+                  <p className="text-lg font-bold">+880 1610 088 700</p>
                 </div>
               </div>
 
@@ -116,7 +116,7 @@ export default function ContactUs() {
                   <p className="text-xs font-bold text-muted-foreground uppercase tracking-widest mb-1">
                     Location
                   </p>
-                  <p className="text-lg font-bold">Dhaka, Bangladesh</p>
+                  <p className="text-lg font-bold">Sirajganj, Bangladesh</p>
                 </div>
               </div>
             </div>
@@ -127,7 +127,7 @@ export default function ContactUs() {
             initial={{ opacity: 0, x: 50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8 }}
-            className="p-8 md:p-12 rounded-[3rem] border border-primary/20 bg-card/40 backdrop-blur-xl shadow-2xl relative overflow-hidden"
+            className="mt-20 p-8 md:p-12 rounded-[3rem] border border-primary/20 bg-card/40 backdrop-blur-xl shadow-2xl relative overflow-hidden"
           >
             {/* Decorative shapes */}
             <div className="absolute -top-20 -right-20 w-40 h-40 bg-primary/10 rounded-full blur-3xl -z-10" />

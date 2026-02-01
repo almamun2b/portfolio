@@ -62,11 +62,11 @@ export const BlogCard: React.FC<BlogCardProps> = ({
         />
 
         {/* Modern Hover Overlay */}
-        <div className="absolute inset-0 bg-primary/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center">
+        <Link href={`/blog/${slug}`} className="absolute inset-0 bg-primary/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center">
           <div className="w-14 h-14 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center scale-75 group-hover:scale-100 transition-transform duration-500">
             <Eye className="text-white w-6 h-6" />
           </div>
-        </div>
+        </Link>
 
         <Badge className="absolute top-4 left-4 bg-background/90 backdrop-blur-md text-foreground border-none px-4 py-1.5 font-bold text-[10px] uppercase tracking-wider rounded-full shadow-lg">
           {category.name}

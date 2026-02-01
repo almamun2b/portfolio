@@ -10,7 +10,7 @@ import Link from "next/link";
 const details = [
   { icon: User2, label: "Role", value: "Frontend Developer" },
   { icon: Calendar, label: "Experience", value: "3.5+ Years" },
-  { icon: MapPin, label: "Location", value: "Dhaka, Bangladesh" },
+  { icon: MapPin, label: "Location", value: "Sirajganj, Bangladesh" },
   { icon: CheckCircle2, label: "Status", value: "Available for Hire" },
 ];
 

@@ -15,7 +15,7 @@ const footerLinks = [
   {
     title: "Quick Links",
     links: [
-      { name: "About Me", href: "/#about" },
+      { name: "About Me", href: "/about-me" },
       { name: "Skills", href: "/#skills" },
       { name: "Projects", href: "/project" },
       { name: "Blog", href: "/blog" },
@@ -26,8 +26,6 @@ const footerLinks = [
     links: [
       { name: "Contact Me", href: "/contact-me" },
       { name: "Resume", href: "/mamun.pdf" },
-      { name: "Privacy Policy", href: "#" },
-      { name: "Terms of Service", href: "#" },
     ],
   },
 ];
@@ -53,7 +51,7 @@ export const Footer: React.FC = () => {
       <div className="container mx-auto py-20 px-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-8">
           {/* Logo & Info */}
-          <div className="lg:col-span-5 flex flex-col gap-8">
+          <div className="lg:col-span-6 flex flex-col gap-8">
             <div className="space-y-4">
               <h2 className="text-3xl font-bold tracking-tight text-foreground">
                 Md Abdul <span className="text-primary">Mamun</span>
@@ -67,7 +65,7 @@ export const Footer: React.FC = () => {
             <div className="space-y-4">
               <div className="flex items-center gap-3 text-muted-foreground hover:text-primary transition-colors cursor-default">
                 <MapPin size={20} className="text-primary" />
-                <span>Dhaka, Bangladesh</span>
+                <span>Sirajganj, Bangladesh</span>
               </div>
               <div className="flex items-center gap-3 text-muted-foreground hover:text-primary transition-colors cursor-default">
                 <Mail size={20} className="text-primary" />
@@ -92,7 +90,7 @@ export const Footer: React.FC = () => {
           </div>
 
           {/* Links Sections */}
-          <div className="lg:col-span-7 grid grid-cols-2 md:grid-cols-2 gap-12">
+          <div className="lg:col-span-6 grid grid-cols-1 sm:grid-cols-2 gap-12">
             {footerLinks.map((section) => (
               <div key={section.title} className="space-y-6">
                 <h3 className="text-sm font-bold uppercase tracking-widest text-foreground/80">
@@ -122,10 +120,16 @@ export const Footer: React.FC = () => {
             Next.js.
           </p>
           <div className="flex gap-8">
-            <Link href="#" className="hover:text-primary transition-colors">
+            <Link
+              href="/privacy-policy"
+              className="hover:text-primary transition-colors"
+            >
               Privacy Policy
             </Link>
-            <Link href="#" className="hover:text-primary transition-colors">
+            <Link
+              href="/terms-conditions"
+              className="hover:text-primary transition-colors"
+            >
               Terms Conditions
             </Link>
           </div>
