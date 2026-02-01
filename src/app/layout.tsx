@@ -16,8 +16,12 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Next Blog",
-  description: "A simple blog built with Next.js, Tailwind CSS, and shadcn/ui.",
+  title: "Md Abdul Mamun | Portfolio",
+  description:
+    "A passionate Software Engineer with 3.5+ years of experience building modern, scalable, and user-friendly applications using Next.js, Nuxt.js, Astro.js, and more.",
+  verification: {
+    google: "FrEB4FD5CYUogdl7GrnSGBmkcKr7RVWz2hUtWjTFojU",
+  },
 };
 
 export default function RootLayout({
