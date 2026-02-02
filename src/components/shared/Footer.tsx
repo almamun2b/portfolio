@@ -2,12 +2,12 @@
 
 import { motion } from "framer-motion";
 import {
-    Facebook,
-    Github,
-    Linkedin,
-    Mail,
-    MapPin,
-    Twitter,
+  Facebook,
+  Github,
+  Linkedin,
+  Mail,
+  MapPin,
+  Twitter,
 } from "lucide-react";
 import Link from "next/link";
 
@@ -34,7 +34,7 @@ const socialLinks = [
   { name: "Github", href: "https://github.com/almamun2b", icon: Github },
   {
     name: "LinkedIn",
-    href: "https://linkedin.com/in/almamun2b",
+    href: "https://linkedin.com/in/mamun-cse",
     icon: Linkedin,
   },
   { name: "Twitter", href: "https://twitter.com/almamun2b", icon: Twitter },

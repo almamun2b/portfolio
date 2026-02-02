@@ -22,7 +22,7 @@ const stats = [
 
 const socialLinks = [
   { icon: Github, href: "https://github.com/almamun2b" },
-  { icon: Linkedin, href: "https://linkedin.com/in/almamun2b" },
+  { icon: Linkedin, href: "https://linkedin.com/in/mamun-cse" },
   { icon: Twitter, href: "https://twitter.com/almamun2b" },
   { icon: Mail, href: "mailto:almamun2b@gmail.com" },
 ];

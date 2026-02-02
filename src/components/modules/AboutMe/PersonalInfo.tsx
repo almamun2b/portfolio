@@ -3,15 +3,15 @@
 import { Badge } from "@/components/ui/badge";
 import { motion } from "framer-motion";
 import {
-    Calendar,
-    CheckCircle2,
-    Github,
-    Globe,
-    Linkedin,
-    Mail,
-    MapPin,
-    Phone,
-    User2,
+  Calendar,
+  CheckCircle2,
+  Github,
+  Globe,
+  Linkedin,
+  Mail,
+  MapPin,
+  Phone,
+  User2,
 } from "lucide-react";
 import Link from "next/link";
 
@@ -39,7 +39,7 @@ const socialItems = [
   {
     icon: Linkedin,
     label: "LinkedIn",
-    href: "https://linkedin.com/in/almamun2b",
+    href: "https://linkedin.com/in/mamun-cse",
   },
 ];
 
