@@ -35,6 +35,7 @@ export default async function PortfolioLanding() {
     },
   );
   const blogsData = await blogsRes.json();
+  const showBlogs = false;
 
   return (
     <main className="flex flex-col min-h-dvh">
@@ -44,7 +45,7 @@ export default async function PortfolioLanding() {
       <Skills />
       <Experience />
       <Projects projectsData={projectsData} />
-      <Blogs blogsData={blogsData} />
+      {showBlogs && <Blogs blogsData={blogsData} />}
       <Contact />
       <CallToAction />
     </main>

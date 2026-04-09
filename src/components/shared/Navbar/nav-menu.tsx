@@ -22,7 +22,7 @@ export const NavMenu = ({ onClickMenu, ...props }: NavMenuProps) => {
   const navMenus = [
     { label: "Home", href: "/" },
     { label: "Projects", href: "/project" },
-    { label: "Blogs", href: "/blog" },
+    // { label: "Blogs", href: "/blog" },
     { label: "About", href: "/about-me" },
     { label: "Contact", href: "/contact-me" },
   ];
