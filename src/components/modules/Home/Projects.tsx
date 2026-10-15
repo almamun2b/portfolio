@@ -34,7 +34,8 @@ export const Projects = ({
 }: {
   projectsData: ProjectsResponse;
 }) => {
-  const { data } = projectsData;
+  const { data, success } = projectsData;
+  const hasError = !success && (!data.projects || data.projects.length === 0);
 
   return (
     <section id="projects" className="py-24 relative">
@@ -69,19 +70,32 @@ export const Projects = ({
           </motion.p>
         </div>
 
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-100px" }}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16"
-        >
-          {data.projects.map((project) => (
-            <motion.div key={project.title} variants={itemVariants}>
-              <ProjectCard {...project} />
-            </motion.div>
-          ))}
-        </motion.div>
+        {hasError ? (
+          <div className="max-w-xl mx-auto p-8 rounded-3xl border border-destructive/30 bg-destructive/5 text-center">
+            <p className="font-bold text-destructive mb-2">
+              Projects failed to load
+            </p>
+            <p className="text-muted-foreground text-sm">
+              The database is unreachable. If this is a deployment, verify that
+              the <code className="font-mono">DATABASE_URL</code> environment
+              variable is configured for this environment.
+            </p>
+          </div>
+        ) : (
+          <motion.div
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-100px" }}
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16"
+          >
+            {data.projects.map((project) => (
+              <motion.div key={project.title} variants={itemVariants}>
+                <ProjectCard {...project} />
+              </motion.div>
+            ))}
+          </motion.div>
+        )}
 
         <motion.div
           initial={{ opacity: 0, y: 20 }}
