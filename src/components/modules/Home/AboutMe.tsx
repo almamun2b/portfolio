@@ -8,8 +8,8 @@ import Image from "next/image";
 import Link from "next/link";
 
 const details = [
-  { icon: User2, label: "Role", value: "Frontend Developer" },
-  { icon: Calendar, label: "Experience", value: "3.5+ Years" },
+  { icon: User2, label: "Role", value: "Full-Stack Software Engineer" },
+  { icon: Calendar, label: "Experience", value: "4+ Years" },
   { icon: MapPin, label: "Location", value: "Sirajganj, Bangladesh" },
   { icon: CheckCircle2, label: "Status", value: "Available for Hire" },
 ];
@@ -62,22 +62,24 @@ export default function AboutMe() {
 
             <div className="space-y-6 text-muted-foreground text-base md:text-lg leading-relaxed mb-10">
               <p>
-                I am a passionate{" "}
+                I am a{" "}
                 <span className="text-foreground font-semibold">
-                  Frontend Developer
+                  Full-Stack Software Engineer
                 </span>{" "}
                 with over{" "}
-                <span className="text-foreground font-semibold">3.5 years</span>{" "}
-                of professional experience building modern, performant, and
-                scalable web applications.
+                <span className="text-foreground font-semibold">4 years</span>{" "}
+                of professional experience designing, building, and maintaining
+                scalable, secure, and high-performance web applications.
               </p>
               <p>
-                My core expertise lies in the React ecosystem, specifically{" "}
+                My core expertise lies in{" "}
                 <span className="text-foreground font-semibold">
-                  Next.js, TypeScript, and Tailwind CSS
+                  React, Next.js, and Vue/Nuxt
                 </span>
-                . I also have hands-on experience with Nuxt.js, Astro.js, and
-                backend technologies like Node.js and MongoDB.
+                , with strong full-stack capabilities across Node.js, Express.js,
+                REST APIs, PostgreSQL, and MongoDB. Currently at Xubitar, I build
+                eCommerce applications, Shopify-based apps, and inventory
+                management systems.
               </p>
             </div>
 

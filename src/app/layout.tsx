@@ -17,9 +17,9 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://portfolio-mamun.vercel.app"),
-  title: "Md Abdul Mamun | Portfolio",
+  title: "Md Abdul Mamun | Full-Stack Software Engineer",
   description:
-    "A passionate Software Engineer with 3.5+ years of experience building modern, scalable, and user-friendly applications using Next.js, Nuxt.js, Astro.js, and more.",
+    "Full-Stack Software Engineer with 4+ years of experience building scalable, secure, and high-performance web applications using React, Next.js, Vue/Nuxt, Node.js, Express.js, PostgreSQL, and MongoDB.",
   verification: {
     google: "FrEB4FD5CYUogdl7GrnSGBmkcKr7RVWz2hUtWjTFojU",
   },

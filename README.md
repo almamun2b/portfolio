@@ -6,9 +6,7 @@ A modern, full-stack portfolio and blog platform built with Next.js 15, featurin
 
 This is a professional portfolio website and blog platform for **Md Abdul Mamun**, a passionate Software Engineer with 3+ years of experience. The platform showcases projects, technical blogs, skills, and provides a complete admin dashboard for content management.
 
-### Live Frontent: https://portfolio-mamun.vercel.app/
-
-### Live Backend: https://portfolio-mamun-api.vercel.app/
+### Live Frontend: https://portfolio-mamun.vercel.app/
 
 ## ✨ Key Features
 
@@ -165,15 +163,16 @@ portfolio/
    Create a `.env.local` file in the root directory:
 
    ```env
+   DATABASE_URL=postgresql://<user>:<password>@<host>/<db>?sslmode=require
    NEXTAUTH_SECRET=your-nextauth-secret
    NEXTAUTH_URL=http://localhost:3000
-   NEXT_PUBLIC_BASE_API=your-api-base-url
    ```
 
 4. **Run the development server**
 
    ```bash
-   npm run dev
+   pnpm install   # also runs `prisma generate`
+   pnpm dev
    ```
 
 5. **Open your browser**

@@ -1,6 +1,6 @@
 import { ProjectCard } from "@/components/modules/Projects/ProjectCard";
 import PaginationCommon from "@/components/shared/pagination-common";
-import { ProjectsResponse } from "@/types";
+import { getProjects } from "@/lib/queries";
 import type { Metadata } from "next";
 
 interface ProjectPageProps {
@@ -13,17 +13,14 @@ export const metadata: Metadata = {
     "Explore a curated collection of my latest work, from full-stack applications to interactive frontend experiences.",
 };
 
+export const dynamic = "force-dynamic";
+
 const ProjectPage = async ({ searchParams }: ProjectPageProps) => {
   const { page } = await searchParams;
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_API}/project?limit=6&page=${page || 1}`,
-    {
-      next: {
-        tags: ["PROJECTS"],
-      },
-    },
-  );
-  const { data } = (await res.json()) as ProjectsResponse;
+  const { data } = await getProjects({
+    limit: 6,
+    page: Number(page) || 1,
+  });
 
   return (
     <main className="min-h-screen">

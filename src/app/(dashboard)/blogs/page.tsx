@@ -1,6 +1,6 @@
 import { BlogTable } from "@/components/modules/Blogs/BlogTable";
 import AllListLayout from "@/components/shared/AllListLayout";
-import { BlogsResponse } from "@/types";
+import { getBlogs } from "@/lib/queries";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -8,6 +8,8 @@ export const metadata: Metadata = {
   description:
     "Manage your blogs efficiently with our intuitive blog management tools.",
 };
+
+export const dynamic = "force-dynamic";
 
 interface BlogPageProps {
   searchParams: Promise<{
@@ -21,20 +23,10 @@ const BlogsPage = async ({ searchParams }: BlogPageProps) => {
   const currentPage = Number(page) || 1;
   const pageLimit = Number(limit) || 10;
 
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_API}/blog?page=${currentPage}&limit=${pageLimit}`,
-    {
-      next: {
-        tags: ["BLOGS"],
-      },
-    }
-  );
-
-  if (!res.ok) {
-    throw new Error(`Failed to fetch blogs: ${res.status}`);
-  }
-
-  const blogsResponse = (await res.json()) as BlogsResponse;
+  const blogsResponse = await getBlogs({
+    page: currentPage,
+    limit: pageLimit,
+  });
   const { posts, meta } = blogsResponse.data;
 
   return (

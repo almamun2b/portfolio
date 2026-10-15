@@ -2,35 +2,41 @@
 
 import { CreateBlogFormTypes } from "@/components/modules/Blogs/CreateBlogForm";
 import { getUserSession } from "@/helpers/getUserSession";
+import {
+  createBlogRecord,
+  deleteBlogRecord,
+  updateBlogRecord,
+} from "@/lib/queries";
 import { revalidateTag } from "next/cache";
+
+const toTagsArray = (tags: string | string[]) =>
+  (Array.isArray(tags) ? tags : tags.split(","))
+    .map((tag: string) => tag.trim())
+    .filter(Boolean);
 
 export const createBlog = async ({ data }: { data: CreateBlogFormTypes }) => {
   const session = await getUserSession();
-  const tagsArray = data.tags
-    .toString()
-    .split(",")
-    .map((tag: string) => tag.trim());
 
-  const modifiedBlogInfo = {
-    ...data,
-    tags: tagsArray,
-    categoryId: Number(data.categoryId),
-    authorId: session?.user?.id,
-  };
-
-  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/blog`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(modifiedBlogInfo),
-  });
-
-  const result = await res.json();
-  if (result.success) {
-    revalidateTag("BLOGS");
+  if (!session?.user?.id) {
+    return { success: false, message: "You must be logged in to create a blog" };
   }
-  return result;
+
+  try {
+    const blog = await createBlogRecord({
+      title: data.title,
+      description: data.description,
+      content: data.content,
+      image: data.image || null,
+      categoryId: Number(data.categoryId),
+      tags: toTagsArray(data.tags),
+      authorId: Number(session.user.id),
+    });
+    revalidateTag("BLOGS");
+    return { success: true, message: "Blog created successfully", data: blog };
+  } catch (error) {
+    console.error("createBlog failed:", error);
+    return { success: false, message: "Failed to create blog" };
+  }
 };
 
 export const updateBlog = async ({
@@ -40,45 +46,30 @@ export const updateBlog = async ({
   data: CreateBlogFormTypes;
   id: number;
 }) => {
-  const session = await getUserSession();
-  const tagsArray = data.tags
-    .toString()
-    .split(",")
-    .map((tag: string) => tag.trim());
-
-  const modifiedBlogInfo = {
-    ...data,
-    tags: tagsArray,
-    categoryId: Number(data.categoryId),
-    authorId: session?.user?.id,
-  };
-
-  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/blog/${id}`, {
-    method: "PATCH",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(modifiedBlogInfo),
-  });
-
-  const result = await res.json();
-  if (result.success) {
+  try {
+    const blog = await updateBlogRecord(id, {
+      title: data.title,
+      description: data.description,
+      content: data.content,
+      image: data.image || null,
+      categoryId: Number(data.categoryId),
+      tags: toTagsArray(data.tags),
+    });
     revalidateTag("BLOGS");
+    return { success: true, message: "Blog updated successfully", data: blog };
+  } catch (error) {
+    console.error("updateBlog failed:", error);
+    return { success: false, message: "Failed to update blog" };
   }
-  return result;
 };
 
 export const deleteBlog = async (id: number) => {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/blog/${id}`, {
-    method: "DELETE",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
-
-  const result = await res.json();
-  if (result.success) {
+  try {
+    await deleteBlogRecord(id);
     revalidateTag("BLOGS");
+    return { success: true, message: "Blog deleted successfully" };
+  } catch (error) {
+    console.error("deleteBlog failed:", error);
+    return { success: false, message: "Failed to delete blog" };
   }
-  return result;
 };
