@@ -4,12 +4,21 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
-    "build": "next build --turbopack",
+    "build": "next build --turbopack && prisma migrate deploy",
     "start": "next start",
     "lint": "eslint",
     "postinstall": "prisma generate",
-    "prisma:generate": "prisma generate",
-    "prisma:studio": "prisma studio"
+    "prisma:setup": "prisma generate && prisma migrate deploy",
+    "prisma:studio": "prisma studio",
+    "prisma:validate": "prisma validate",
+    "prisma:format": "prisma format",
+    "prisma:pull": "prisma db pull",
+    "prisma:push": "prisma db push",
+    "prisma:migrate:dev": "prisma migrate dev",
+    "prisma:migrate:deploy": "prisma migrate deploy",
+    "prisma:migrate:status": "prisma migrate status",
+    "prisma:migrate:reset": "prisma migrate reset",
+    "prisma:migrate:resolve": "prisma migrate resolve"
   },
   "pnpm": {
     "onlyBuiltDependencies": [
