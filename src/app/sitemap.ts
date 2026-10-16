@@ -1,9 +1,7 @@
-import { getAllProjects, getBlogs } from "@/lib/queries";
+import { BlogsResponse, ProjectsResponse } from "@/types";
 import { MetadataRoute } from "next";
 
 const baseUrl = process.env.NEXTAUTH_URL || "https://portfolio-mamun.vercel.app";
-
-export const dynamic = "force-dynamic";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // Static routes
@@ -22,12 +20,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: route === "" ? 1 : 0.8,
   }));
 
-  // Dynamic blog routes
+  // Fetch dynamic blog routes
   let blogRoutes: MetadataRoute.Sitemap = [];
   try {
-    const blogsData = await getBlogs({ limit: 100, page: 1 });
-    if (blogsData.success && blogsData.data.posts) {
-      blogRoutes = blogsData.data.posts.map((blog) => ({
+    const blogRes = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/blog`);
+    const blogData = (await blogRes.json()) as BlogsResponse;
+    if (blogData.success && blogData.data.posts) {
+      blogRoutes = blogData.data.posts.map((blog) => ({
         url: `${baseUrl}/blog/${blog.slug}`,
         lastModified: new Date(blog.updatedAt),
         changeFrequency: "weekly" as const,
@@ -38,16 +37,19 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     console.error("Error fetching blogs for sitemap:", error);
   }
 
-  // Dynamic project routes
+  // Fetch dynamic project routes
   let projectRoutes: MetadataRoute.Sitemap = [];
   try {
-    const projects = await getAllProjects();
-    projectRoutes = projects.map((project) => ({
-      url: `${baseUrl}/project/${project.slug}`,
-      lastModified: project.updatedAt,
-      changeFrequency: "monthly" as const,
-      priority: 0.7,
-    }));
+    const projectRes = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/project`);
+    const projectData = (await projectRes.json()) as ProjectsResponse;
+    if (projectData.success && projectData.data.projects) {
+      projectRoutes = projectData.data.projects.map((project) => ({
+        url: `${baseUrl}/project/${project.slug}`,
+        lastModified: new Date(project.updatedAt),
+        changeFrequency: "monthly" as const,
+        priority: 0.7,
+      }));
+    }
   } catch (error) {
     console.error("Error fetching projects for sitemap:", error);
   }

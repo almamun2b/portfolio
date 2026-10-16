@@ -4,7 +4,7 @@ export interface User {
   id: number;
   name: string;
   email: string;
-  password?: string | null;
+  password: string | null;
   role: Role;
   phone: string;
   picture: string | null;
@@ -31,7 +31,7 @@ export interface Project {
   image: string | null;
   type: string;
   projectUrl: string;
-  codeUrl: string | null;
+  codeUrl: string;
   technologies: string[];
   createdAt: Date;
   updatedAt: Date;

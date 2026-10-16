@@ -1,5 +1,5 @@
 import { BlogPageClient } from "@/components/modules/Blogs/blog-page-client";
-import { getBlogs, getCategories, getPopularBlogs } from "@/lib/queries";
+import { Blog, BlogsResponse, Category } from "@/types";
 import type { Metadata } from "next";
 
 interface BlogPageProps {
@@ -16,18 +16,60 @@ export const metadata: Metadata = {
     "Insightful articles on web development, modern technologies, and my professional journey as a software engineer.",
 };
 
-export const dynamic = "force-dynamic";
-
 const BlogPage = async ({ searchParams }: BlogPageProps) => {
   const { page, category, search } = await searchParams;
 
-  const [blogsResponse, popularBlogs, categoriesResponse] = await Promise.all([
-    getBlogs({ limit: 6, page: Number(page) || 1, category, search }),
-    getPopularBlogs(),
-    getCategories(),
-  ]);
+  // Fetch blogs from API
+  const blogsRes = await fetch(
+    `${process.env.NEXT_PUBLIC_BASE_API}/blog?limit=6&page=${page || 1}${
+      category ? `&category=${category}` : ""
+    }${search ? `&search=${search}` : ""}`,
+    {
+      next: {
+        tags: ["BLOGS"],
+      },
+    },
+  );
+  if (!blogsRes.ok) {
+    throw new Error(`Failed to fetch blogs: ${blogsRes.status}`);
+  }
 
-  const categories = categoriesResponse.data;
+  const blogsJson = await blogsRes.json();
+  const blogsResponse = blogsJson as BlogsResponse;
+
+  // Fetch popular blogs (sorted by views)
+  const popularRes = await fetch(
+    `${process.env.NEXT_PUBLIC_BASE_API}/blog/popular`,
+    {
+      next: {
+        tags: ["BLOGS"],
+      },
+    },
+  );
+
+  let popularBlogs: Blog[] = [];
+  if (popularRes.ok) {
+    const popularJson = await popularRes.json();
+    const { data } = popularJson as { data: Blog[] };
+    popularBlogs = data || [];
+  }
+
+  // Fetch categories
+  const categoriesRes = await fetch(
+    `${process.env.NEXT_PUBLIC_BASE_API}/category`,
+    {
+      next: {
+        tags: ["BLOGS"],
+      },
+    },
+  );
+
+  let categories: Category[] = [];
+  if (categoriesRes.ok) {
+    const categoriesJson = await categoriesRes.json();
+    const { data } = categoriesJson as { data: Category[] };
+    categories = data || [];
+  }
 
   const allTags = [
     "React",

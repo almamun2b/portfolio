@@ -35,10 +35,7 @@ const createProjectSchema = z.object({
     .string()
     .trim()
     .min(2, { message: "Content must be at least 2 characters long." }),
-  image: z
-    .string()
-    .trim()
-    .min(1, { message: "Please enter an image URL or path." }),
+  image: z.url({ message: "Please enter a valid image URL." }),
   type: z
     .string()
     .trim()

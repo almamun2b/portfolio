@@ -1,11 +1,6 @@
 "use server";
 
 import { CreateCategoryFormTypes } from "@/components/modules/Blogs/CreateCategoryForm";
-import {
-  createCategoryRecord,
-  deleteCategoryRecord,
-  updateCategoryRecord,
-} from "@/lib/queries";
 import { revalidateTag } from "next/cache";
 
 export const createCategory = async ({
@@ -13,18 +8,19 @@ export const createCategory = async ({
 }: {
   data: CreateCategoryFormTypes;
 }) => {
-  try {
-    const category = await createCategoryRecord({ name: data.name });
+  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/category`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  });
+
+  const result = await res.json();
+  if (result.success) {
     revalidateTag("CATEGORIES");
-    return {
-      success: true,
-      message: "Category created successfully",
-      data: category,
-    };
-  } catch (error) {
-    console.error("createCategory failed:", error);
-    return { success: false, message: "Failed to create category" };
   }
+  return result;
 };
 
 export const updateCategory = async ({
@@ -34,27 +30,38 @@ export const updateCategory = async ({
   data: CreateCategoryFormTypes;
   id: number;
 }) => {
-  try {
-    const category = await updateCategoryRecord(id, { name: data.name });
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_BASE_API}/category/${id}`,
+    {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    }
+  );
+
+  const result = await res.json();
+  if (result.success) {
     revalidateTag("CATEGORIES");
-    return {
-      success: true,
-      message: "Category updated successfully",
-      data: category,
-    };
-  } catch (error) {
-    console.error("updateCategory failed:", error);
-    return { success: false, message: "Failed to update category" };
   }
+  return result;
 };
 
 export const deleteCategory = async (id: number) => {
-  try {
-    await deleteCategoryRecord(id);
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_BASE_API}/category/${id}`,
+    {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
+
+  const result = await res.json();
+  if (result.success) {
     revalidateTag("CATEGORIES");
-    return { success: true, message: "Category deleted successfully" };
-  } catch (error) {
-    console.error("deleteCategory failed:", error);
-    return { success: false, message: "Failed to delete category" };
   }
+  return result;
 };

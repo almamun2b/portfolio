@@ -24,31 +24,31 @@ export const AboutHero = () => {
             </h1>
             <div className="space-y-6 text-muted-foreground text-lg leading-relaxed">
               <p>
-                A{" "}
+                A passionate{" "}
                 <span className="text-foreground font-semibold">
-                  Full-Stack Software Engineer
+                  Frontend Developer
                 </span>{" "}
                 with over
                 <span className="text-foreground font-semibold">
                   {" "}
-                  4+ years of professional experience
+                  3.5 years of professional experience
                 </span>{" "}
-                designing, building, and maintaining scalable, secure, and
-                high-performance web applications.
+                building modern, performant, and scalable web applications.
               </p>
               <p>
-                I specialize in frontend engineering with{" "}
+                My expertise lies in the React and Vue ecosystems, specifically
                 <span className="text-foreground font-semibold">
-                  React, Next.js, and Vue/Nuxt
+                  {" "}
+                  Next.js, Nuxt.js, and Astro.js
                 </span>
-                , crafting seamless digital experiences that balance aesthetic
-                beauty with technical precision.
+                . I focus on crafting seamless digital experiences that balance
+                aesthetic beauty with technical precision.
               </p>
               <p>
-                Beyond the frontend, I bring strong full-stack capabilities
-                across Node.js, Express.js, REST APIs, PostgreSQL, and MongoDB —
-                currently building eCommerce and Shopify-based applications at
-                Xubitar.
+                Beyond the frontend, I have deep hands-on knowledge in backend
+                technologies like Node.js, Express, and modern database
+                architectures, developed through rigorous real-world application
+                and personal exploration.
               </p>
             </div>
           </motion.div>

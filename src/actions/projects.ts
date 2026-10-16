@@ -1,43 +1,35 @@
 "use server";
 
 import { CreateProjectFormTypes } from "@/components/modules/Projects/CreateProjectForm";
-import {
-  createProjectRecord,
-  deleteProjectRecord,
-  updateProjectRecord,
-} from "@/lib/queries";
 import { revalidateTag } from "next/cache";
-
-const asProjectType = (type: string) =>
-  type === "Backend" || type === "Fullstack" ? type : "Frontend";
-
-const toTechArray = (technologies: string | string[]) =>
-  (Array.isArray(technologies) ? technologies : technologies.split(","))
-    .map((tech) => tech.trim())
-    .filter(Boolean);
 
 export const createProjects = async ({
   data,
 }: {
   data: CreateProjectFormTypes;
 }) => {
-  try {
-    const project = await createProjectRecord({
-      title: data.title,
-      description: data.description,
-      content: data.content,
-      image: data.image || null,
-      type: asProjectType(data.type),
-      projectUrl: data.projectUrl || null,
-      codeUrl: data.codeUrl || null,
-      technologies: toTechArray(data.technologies),
-    });
+  const technologyArray = data.technologies
+    .toString()
+    .split(",")
+    .map((tech) => tech.trim());
+
+  const modifiedProjectInfo = {
+    ...data,
+    technologies: technologyArray,
+  };
+  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/project`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(modifiedProjectInfo),
+  });
+
+  const result = await res.json();
+  if (result.success) {
     revalidateTag("PROJECTS");
-    return { success: true, message: "Project created successfully", data: project };
-  } catch (error) {
-    console.error("createProjects failed:", error);
-    return { success: false, message: "Failed to create project" };
   }
+  return result;
 };
 
 export const updateProject = async ({
@@ -47,32 +39,41 @@ export const updateProject = async ({
   data: CreateProjectFormTypes;
   id: number;
 }) => {
-  try {
-    const project = await updateProjectRecord(id, {
-      title: data.title,
-      description: data.description,
-      content: data.content,
-      image: data.image || null,
-      type: asProjectType(data.type),
-      projectUrl: data.projectUrl || null,
-      codeUrl: data.codeUrl || null,
-      technologies: toTechArray(data.technologies),
-    });
+  const technologyArray = data.technologies
+    .toString()
+    .split(",")
+    .map((tech) => tech.trim());
+
+  const modifiedProjectInfo = {
+    ...data,
+    technologies: technologyArray,
+  };
+  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/project/${id}`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(modifiedProjectInfo),
+  });
+
+  const result = await res.json();
+  if (result.success) {
     revalidateTag("PROJECTS");
-    return { success: true, message: "Project updated successfully", data: project };
-  } catch (error) {
-    console.error("updateProject failed:", error);
-    return { success: false, message: "Failed to update project" };
   }
+  return result;
 };
 
 export const deleteProject = async (id: number) => {
-  try {
-    await deleteProjectRecord(id);
+  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/project/${id}`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+
+  const result = await res.json();
+  if (result.success) {
     revalidateTag("PROJECTS");
-    return { success: true, message: "Project deleted successfully" };
-  } catch (error) {
-    console.error("deleteProject failed:", error);
-    return { success: false, message: "Failed to delete project" };
   }
+  return result;
 };

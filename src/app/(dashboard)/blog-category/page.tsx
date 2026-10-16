@@ -1,6 +1,6 @@
 import { BlogCategoryTable } from "@/components/modules/Blogs/BlogCategoryTable";
 import AllListLayout from "@/components/shared/AllListLayout";
-import { getCategories } from "@/lib/queries";
+import { CategoriesResponse } from "@/types";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -8,8 +8,6 @@ export const metadata: Metadata = {
   description:
     "Manage your blog categories efficiently with our intuitive category management tools.",
 };
-
-export const dynamic = "force-dynamic";
 
 interface BlogCategoryPageProps {
   searchParams: Promise<{
@@ -23,10 +21,23 @@ const BlogsCategoryPage = async ({ searchParams }: BlogCategoryPageProps) => {
   const currentPage = Number(page) || 1;
   const pageLimit = Number(limit) || 10;
 
-  const categoriesResponse = await getCategories();
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_BASE_API}/category?page=${currentPage}&limit=${pageLimit}`,
+    {
+      next: {
+        tags: ["CATEGORIES"],
+      },
+    }
+  );
+
+  if (!res.ok) {
+    throw new Error(`Failed to fetch categories: ${res.status}`);
+  }
+
+  const categoriesResponse = (await res.json()) as CategoriesResponse;
   const categories = categoriesResponse.data;
 
-  // Create a mock meta object since categories aren't paginated
+  // Create a mock meta object since the API doesn't provide pagination info for categories
   const meta = {
     page: currentPage,
     limit: pageLimit,

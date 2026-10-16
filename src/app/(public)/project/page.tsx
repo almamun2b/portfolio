@@ -1,6 +1,6 @@
 import { ProjectCard } from "@/components/modules/Projects/ProjectCard";
 import PaginationCommon from "@/components/shared/pagination-common";
-import { getProjects } from "@/lib/queries";
+import { ProjectsResponse } from "@/types";
 import type { Metadata } from "next";
 
 interface ProjectPageProps {
@@ -13,15 +13,17 @@ export const metadata: Metadata = {
     "Explore a curated collection of my latest work, from full-stack applications to interactive frontend experiences.",
 };
 
-export const dynamic = "force-dynamic";
-
 const ProjectPage = async ({ searchParams }: ProjectPageProps) => {
   const { page } = await searchParams;
-  const { data, success } = await getProjects({
-    limit: 6,
-    page: Number(page) || 1,
-  });
-  const hasError = !success && (!data.projects || data.projects.length === 0);
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_BASE_API}/project?limit=6&page=${page || 1}`,
+    {
+      next: {
+        tags: ["PROJECTS"],
+      },
+    },
+  );
+  const { data } = (await res.json()) as ProjectsResponse;
 
   return (
     <main className="min-h-screen">
@@ -48,35 +50,19 @@ const ProjectPage = async ({ searchParams }: ProjectPageProps) => {
       {/* Projects Grid */}
       <section className="pb-32 pt-20 relative">
         <div className="container mx-auto px-6">
-          {hasError ? (
-            <div className="max-w-xl mx-auto p-8 rounded-3xl border border-destructive/30 bg-destructive/5 text-center">
-              <p className="font-bold text-destructive mb-2">
-                Projects failed to load
-              </p>
-              <p className="text-muted-foreground text-sm">
-                The database is unreachable. If this is a deployment, verify
-                that the{" "}
-                <code className="font-mono">DATABASE_URL</code> environment
-                variable is configured for this environment.
-              </p>
-            </div>
-          ) : (
-            <>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10">
-                {data.projects.map((project) => (
-                  <ProjectCard key={project.id} {...project} />
-                ))}
-              </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10">
+            {data.projects.map((project) => (
+              <ProjectCard key={project.id} {...project} />
+            ))}
+          </div>
 
-              {data.meta.totalPages > 1 && (
-                <div className="mt-20 flex justify-center">
-                  <PaginationCommon
-                    currentPage={data.meta.page}
-                    totalPages={data.meta.totalPages}
-                  />
-                </div>
-              )}
-            </>
+          {data.meta.totalPages > 1 && (
+            <div className="mt-20 flex justify-center">
+              <PaginationCommon
+                currentPage={data.meta.page}
+                totalPages={data.meta.totalPages}
+              />
+            </div>
           )}
         </div>
       </section>
