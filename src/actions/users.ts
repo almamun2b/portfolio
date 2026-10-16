@@ -1,27 +1,33 @@
 "use server";
 
+import { prisma } from "@/lib/prisma";
 import { UpdateUserRequest } from "@/types";
 import { revalidateTag } from "next/cache";
+import bcrypt from "bcryptjs";
 
 export const getUserById = async (id: string) => {
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/user/${id}`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      next: {
-        tags: ["USER_PROFILE"],
+    const user = await prisma.user.findUnique({
+      where: { id: Number(id) },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        phone: true,
+        picture: true,
+        role: true,
+        status: true,
+        isVerified: true,
+        createdAt: true,
+        updatedAt: true,
       },
     });
 
-    if (!res.ok) {
-      console.error("Failed to fetch user:", await res.text());
+    if (!user) {
       return null;
     }
 
-    const result = await res.json();
-    return result;
+    return { success: true, message: "User retrieved successfully", data: user };
   } catch (error) {
     console.error("Error fetching user:", error);
     return null;
@@ -30,26 +36,22 @@ export const getUserById = async (id: string) => {
 
 export const updateUserById = async (id: string, data: UpdateUserRequest) => {
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/user/${id}`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
+    const user = await prisma.user.update({
+      where: { id: Number(id) },
+      data: {
+        ...(data.name && { name: data.name }),
+        ...(data.phone && { phone: data.phone }),
+        ...(data.picture && { picture: data.picture }),
       },
-      body: JSON.stringify(data),
     });
 
-    if (!res.ok) {
-      console.error("Failed to update user:", await res.text());
-      return null;
-    }
+    revalidateTag("USER_PROFILE");
 
-    const result = await res.json();
-
-    if (result.success) {
-      revalidateTag("USER_PROFILE");
-    }
-
-    return result;
+    return {
+      success: true,
+      message: "User updated successfully",
+      data: user,
+    };
   } catch (error) {
     console.error("Error updating user:", error);
     return null;
@@ -61,26 +63,33 @@ export const changeUserPassword = async (
   data: { currentPassword: string; newPassword: string }
 ) => {
   try {
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_API}/user/${id}/change-password`,
-      {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      }
-    );
+    const user = await prisma.user.findUnique({
+      where: { id: Number(id) },
+    });
 
-    if (!res.ok) {
-      console.error("Failed to change password:", await res.text());
-      return null;
+    if (!user || !user.password) {
+      return { success: false, message: "User not found" };
     }
 
-    const result = await res.json();
-    return result;
+    const isCurrentPasswordValid = await bcrypt.compare(
+      data.currentPassword,
+      user.password
+    );
+
+    if (!isCurrentPasswordValid) {
+      return { success: false, message: "Current password is incorrect" };
+    }
+
+    const hashedPassword = await bcrypt.hash(data.newPassword, 10);
+
+    await prisma.user.update({
+      where: { id: Number(id) },
+      data: { password: hashedPassword },
+    });
+
+    return { success: true, message: "Password changed successfully" };
   } catch (error) {
     console.error("Error changing password:", error);
-    return null;
+    return { success: false, message: "Failed to change password" };
   }
 };

@@ -1,5 +1,5 @@
 import CreateProjectForm from "@/components/modules/Projects/CreateProjectForm";
-import { SingleProjectResponse } from "@/types";
+import { getProject } from "@/lib/queries";
 import { Metadata } from "next";
 
 interface CreateProjectPageProps {
@@ -27,14 +27,8 @@ const CreateProjectPage = async ({
   } else if (slug === "edit" && !id) {
     throw new Error("Project ID is required for editing");
   } else if (slug === "edit" && id) {
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_API}/project/${id}`
-    );
-    if (!res.ok) {
-      throw new Error("Failed to fetch project");
-    }
-    const { data } = (await res.json()) as SingleProjectResponse;
-    project = data;
+    const response = await getProject(id);
+    project = response?.data ?? null;
   }
 
   return (

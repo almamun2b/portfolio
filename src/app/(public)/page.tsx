@@ -1,5 +1,4 @@
 import AboutMe from "@/components/modules/Home/AboutMe";
-import { Blogs } from "@/components/modules/Home/Blogs";
 import CallToAction from "@/components/modules/Home/CallToAction";
 import Contact from "@/components/modules/Home/Contact";
 import Experience from "@/components/modules/Home/Experience";
@@ -7,35 +6,19 @@ import Hero from "@/components/modules/Home/Hero";
 import { Projects } from "@/components/modules/Home/Projects";
 import Skills from "@/components/modules/Home/Skills";
 import TechStack from "@/components/modules/Home/TechStack";
+import { getProjects } from "@/lib/queries";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Md Abdul Mamun | Portfolio",
+  title: "Md Abdul Mamun | Full-Stack Software Engineer",
   description:
-    "A passionate Software Engineer with 3.5+ years of experience building modern, scalable, and user-friendly applications using Next.js, Nuxt.js, Astro.js, and more.",
+    "Full-Stack Software Engineer with 4+ years of experience building scalable, secure, and high-performance web applications using React, Next.js, Vue/Nuxt, Node.js, Express.js, PostgreSQL, and MongoDB.",
 };
 
-export default async function PortfolioLanding() {
-  const projectsRes = await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_API}/project?limit=6&page=1`,
-    {
-      next: {
-        tags: ["PROJECTS"],
-      },
-    },
-  );
-  const projectsData = await projectsRes.json();
+export const dynamic = "force-dynamic";
 
-  const blogsRes = await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_API}/blog?limit=3&page=1`,
-    {
-      next: {
-        tags: ["BLOGS"],
-      },
-    },
-  );
-  const blogsData = await blogsRes.json();
-  const showBlogs = false;
+export default async function PortfolioLanding() {
+  const projectsData = await getProjects({ limit: 6, page: 1 });
 
   return (
     <main className="flex flex-col min-h-dvh">
@@ -45,7 +28,6 @@ export default async function PortfolioLanding() {
       <Skills />
       <Experience />
       <Projects projectsData={projectsData} />
-      {showBlogs && <Blogs blogsData={blogsData} />}
       <Contact />
       <CallToAction />
     </main>
