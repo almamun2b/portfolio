@@ -9,7 +9,7 @@ const skills = [
     title: "Frontend Development",
     subtitle: "Modern & Responsive UI",
     description:
-      "Expertise in building high-performance, pixel-perfect interfaces using React, Next.js, and Tailwind CSS. Focused on user experience and accessibility.",
+      "Expertise in building high-performance, pixel-perfect interfaces using React, Next.js, Vue, and Nuxt with Tailwind CSS. Focused on user experience, accessibility, and Core Web Vitals.",
     gradient: "from-blue-500/20 to-cyan-500/20",
     iconColor: "text-blue-500",
   },
@@ -18,7 +18,7 @@ const skills = [
     title: "Backend Engineering",
     subtitle: "Scalable & Secure Logic",
     description:
-      "Architecting robust server-side solutions with Node.js, Express, and databases like PostgreSQL and MongoDB. Ensuring seamless data flow.",
+      "Architecting robust server-side solutions with Node.js, Express, and databases like PostgreSQL (Prisma) and MongoDB — plus REST APIs, webhooks, and Shopify API integrations.",
     gradient: "from-purple-500/20 to-pink-500/20",
     iconColor: "text-purple-500",
   },
@@ -27,7 +27,7 @@ const skills = [
     title: "Full-Stack Integration",
     subtitle: "Complete Digital Solutions",
     description:
-      "Bridging the gap between frontend and backend to deliver comprehensive web applications that are fast, reliable, and easy to maintain.",
+      "Bridging frontend and backend to deliver complete products — from REST API contracts and auth flows to third-party integrations, i18n, and SSR for global audiences.",
     gradient: "from-emerald-500/20 to-teal-500/20",
     iconColor: "text-emerald-500",
   },
@@ -42,19 +42,19 @@ const skills = [
   },
   {
     icon: Code2,
-    title: "Clean Architecture",
-    subtitle: "Maintainable Codebases",
+    title: "eCommerce & Shopify",
+    subtitle: "Storefronts That Sell",
     description:
-      "Writing clean, modular, and well-documented code following SOLID principles and best practices for long-term scalability and collaboration.",
-    gradient: "from-indigo-500/20 to-blue-500/20",
-    iconColor: "text-indigo-500",
+      "Building eCommerce applications and Shopify apps with the Admin API, Storefront API, and webhooks — inventory systems, order flows, and reporting included.",
+    gradient: "from-lime-500/20 to-emerald-500/20",
+    iconColor: "text-lime-600",
   },
   {
     icon: ShieldCheck,
-    title: "Quality Assurance",
-    subtitle: "Reliable & Bug-Free",
+    title: "Engineering Best Practices",
+    subtitle: "Maintainable & Reliable",
     description:
-      "Implementing comprehensive testing strategies and security best practices to protect user data and ensure application stability.",
+      "Clean, modular code with SOLID principles, code reviews, and agile collaboration — delivering production-grade systems that stay maintainable at scale.",
     gradient: "from-rose-500/20 to-orange-500/20",
     iconColor: "text-rose-500",
   },

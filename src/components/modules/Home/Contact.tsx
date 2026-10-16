@@ -127,7 +127,7 @@ export default function Contact() {
                 <p className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-0.5">
                   Call Me
                 </p>
-                <p className="text-lg font-semibold">+880 1610 088 700</p>
+                <p className="text-lg font-semibold">+880 1745-323411</p>
               </div>
             </motion.div>
 

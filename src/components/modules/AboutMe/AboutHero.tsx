@@ -24,31 +24,31 @@ export const AboutHero = () => {
             </h1>
             <div className="space-y-6 text-muted-foreground text-lg leading-relaxed">
               <p>
-                A passionate{" "}
+                A{" "}
                 <span className="text-foreground font-semibold">
-                  Frontend Developer
+                  Full-Stack Software Engineer
                 </span>{" "}
                 with over
                 <span className="text-foreground font-semibold">
                   {" "}
-                  3.5 years of professional experience
+                  4+ years of professional experience
                 </span>{" "}
-                building modern, performant, and scalable web applications.
+                designing, building, and maintaining scalable, secure, and
+                high-performance web applications.
               </p>
               <p>
-                My expertise lies in the React and Vue ecosystems, specifically
+                I specialize in frontend engineering with{" "}
                 <span className="text-foreground font-semibold">
-                  {" "}
-                  Next.js, Nuxt.js, and Astro.js
+                  React, Next.js, and Vue/Nuxt
                 </span>
-                . I focus on crafting seamless digital experiences that balance
-                aesthetic beauty with technical precision.
+                , crafting seamless digital experiences that balance aesthetic
+                beauty with technical precision.
               </p>
               <p>
-                Beyond the frontend, I have deep hands-on knowledge in backend
-                technologies like Node.js, Express, and modern database
-                architectures, developed through rigorous real-world application
-                and personal exploration.
+                Beyond the frontend, I bring strong full-stack capabilities
+                across Node.js, Express.js, REST APIs, PostgreSQL, and MongoDB —
+                currently building eCommerce and Shopify-based applications at
+                Xubitar.
               </p>
             </div>
           </motion.div>

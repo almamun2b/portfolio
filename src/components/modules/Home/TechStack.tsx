@@ -6,23 +6,29 @@ import {
   Cpu,
   Database,
   Globe,
+  Layers,
   Layout,
+  RefreshCcw,
   Rocket,
   Server,
   Zap
 } from "lucide-react";
 
 const technologies = [
-  { name: "Nuxt.js", icon: Zap, color: "text-green-500" },
-  { name: "Next.js", icon: Zap, color: "text-black dark:text-white" },
   { name: "React", icon: Layout, color: "text-blue-500" },
+  { name: "Next.js", icon: Zap, color: "text-black dark:text-white" },
+  { name: "Vue.js", icon: Zap, color: "text-emerald-400" },
+  { name: "Nuxt.js", icon: Zap, color: "text-green-500" },
   { name: "TypeScript", icon: Code2, color: "text-blue-600" },
   { name: "Tailwind CSS", icon: Globe, color: "text-sky-400" },
   { name: "Astro.js", icon: Rocket, color: "text-orange-500" },
   { name: "Node.js", icon: Server, color: "text-green-600" },
+  { name: "Express", icon: Cpu, color: "text-gray-500" },
+  { name: "Prisma", icon: Database, color: "text-slate-500 dark:text-slate-300" },
   { name: "PostgreSQL", icon: Database, color: "text-indigo-400" },
   { name: "MongoDB", icon: Database, color: "text-green-500" },
-  { name: "Express", icon: Cpu, color: "text-gray-500" },
+  { name: "Redux Toolkit", icon: Layers, color: "text-purple-500" },
+  { name: "TanStack Query", icon: RefreshCcw, color: "text-cyan-500" },
 ];
 
 const containerVariants: Variants = {

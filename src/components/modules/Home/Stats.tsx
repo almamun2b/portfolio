@@ -1,7 +1,7 @@
 import { Card, CardContent } from "@/components/ui/card";
 
 const stats = [
-  { label: "Experience", value: "3+" },
+  { label: "Experience", value: "4+" },
   { label: "Projects Completed", value: "30+" },
   { label: "Happy Clients", value: "20+" },
   { label: "Technologies", value: "10+" },
