@@ -26,17 +26,12 @@ const infoItems = [
   {
     icon: Phone,
     label: "Phone",
-    value: "+880 1745-323411",
-    href: "tel:+8801745323411",
+    value: "+880 1610 088 700",
+    href: "tel:+8801610088700",
   },
   { icon: MapPin, label: "Location", value: "Sirajganj, Bangladesh" },
   { icon: Calendar, label: "Age", value: "32 Years" },
-  {
-    icon: Globe,
-    label: "Website",
-    value: "portfolio-mamun.vercel.app",
-    href: "https://portfolio-mamun.vercel.app",
-  },
+  { icon: Globe, label: "Website", value: "mamun.dev", href: "/" },
 ];
 
 const socialItems = [

@@ -9,13 +9,13 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 
 const roles = [
-  "Full-Stack Software Engineer",
-  "Frontend Engineer",
-  "Backend Engineer",
+  "Frontend Developer",
+  "Backend Developer",
+  "Full Stack Developer",
 ];
 
 const stats = [
-  { label: "Experiences", value: "4+" },
+  { label: "Experiences", value: "3.5+" },
   { label: "Project done", value: "30+" },
   { label: "Happy Clients", value: "20+" },
 ];

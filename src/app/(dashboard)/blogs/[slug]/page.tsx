@@ -1,6 +1,5 @@
 import CreateBlogForm from "@/components/modules/Blogs/CreateBlogForm";
-import { getBlog, getCategories } from "@/lib/queries";
-import { Category } from "@/types";
+import { CategoriesResponse, Category, SingleBlogResponse } from "@/types";
 import { Metadata } from "next";
 
 interface CreateBlogPageProps {
@@ -29,13 +28,23 @@ const CreateBlogPage = async ({
   } else if (slug === "edit" && !id) {
     throw new Error("Blog ID is required for editing");
   } else if (slug === "edit" && id) {
-    const response = await getBlog(id);
-    blog = response?.data ?? null;
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/blog/${id}`);
+    if (!res.ok) {
+      throw new Error("Failed to fetch blog");
+    }
+    const { data } = (await res.json()) as SingleBlogResponse;
+    blog = data;
   }
 
   // Fetch categories for the dropdown
-  const categoriesResponse = await getCategories();
-  categories = categoriesResponse.data;
+  const categoriesRes = await fetch(
+    `${process.env.NEXT_PUBLIC_BASE_API}/category`
+  );
+  if (categoriesRes.ok) {
+    const categoriesResponse =
+      (await categoriesRes.json()) as CategoriesResponse;
+    categories = categoriesResponse.data;
+  }
 
   return (
     <div className="w-full h-full flex flex-col p-4">

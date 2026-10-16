@@ -47,7 +47,7 @@ const Navbar = () => {
                 Md Abdul <span className="text-primary italic">Mamun</span>
               </span>
               <span className="hidden xs:block text-[9px] sm:text-[10px] font-bold text-muted-foreground tracking-[0.1em] uppercase">
-                Full-Stack Software Engineer
+                Frontend Developer
               </span>
             </div>
           </Link>

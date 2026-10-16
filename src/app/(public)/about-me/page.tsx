@@ -9,7 +9,7 @@ import TechStack from "@/components/modules/Home/TechStack";
 export const metadata = {
   title: "About Me | Md Abdul Mamun",
   description:
-    "Learn more about Md Abdul Mamun, a Full-Stack Software Engineer with 4+ years of experience building scalable, high-performance web applications.",
+    "Learn more about Md Abdul Mamun, a passionate Frontend Developer with 3.5+ years of experience.",
 };
 
 export default function AboutPage() {

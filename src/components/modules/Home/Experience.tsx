@@ -5,45 +5,34 @@ import { Briefcase, Calendar, CheckCircle2 } from "lucide-react";
 
 const experiences = [
   {
-    company: "Xubitar",
-    role: "Full Stack Engineer",
-    period: "July 2026 – Present",
+    company: "Devxhub",
+    role: "Software Engineer",
+    period: "March 2022 – Present",
+    techStack: ["Nuxt.js", "Next.js", "Astro.js", "TypeScript", "TailwindCSS"],
+    contributions: [
+      "Developed and maintained production-grade web applications for clients across multiple domains.",
+      "Built responsive and accessible user interfaces with a focus on UX, performance, and SEO.",
+      "Collaborated with backend teams to integrate RESTful APIs and improve system performance.",
+      "Migrated projects from Nuxt 2 → Nuxt 3, ensuring smooth transitions.",
+      "Conducted code reviews and optimized build pipelines for better maintainability.",
+    ],
+  },
+  {
+    company: "Self-Driven",
+    role: "Personal Projects & Continuous Learning",
+    period: "Ongoing",
     techStack: [
       "React.js",
       "Next.js",
       "Node.js",
-      "Express.js",
+      "Express",
+      "Mongoose",
       "Prisma",
-      "PostgreSQL",
-      "Shopify APIs",
     ],
     contributions: [
-      "Design, develop, and maintain production-grade eCommerce web applications using React.js, Next.js, Express.js, Node.js, Prisma, and PostgreSQL.",
-      "Build and maintain Shopify-based eCommerce applications using the Shopify Admin API, Storefront API, and webhooks.",
-      "Build inventory management systems with stock tracking, low-stock alerts, purchase/sales flows, and reporting.",
-      "Build scalable backend services and RESTful APIs with a focus on performance, security, and maintainability.",
-      "Own ongoing maintenance, bug fixes, and performance optimization for live eCommerce applications.",
-    ],
-  },
-  {
-    company: "Developer eXperience Hub (Devxhub)",
-    role: "Software Engineer",
-    period: "March 2022 – February 2026",
-    techStack: [
-      "Nuxt.js",
-      "Next.js",
-      "React",
-      "Vue",
-      "TypeScript",
-      "TailwindCSS",
-    ],
-    contributions: [
-      "Designed, developed, and maintained production-grade web applications using Nuxt.js, Next.js, React, Vue, and TypeScript.",
-      "Delivered user-facing features across a Social Media Archiving System, Learning Management Systems (LMS), and eCommerce platforms.",
-      "Implemented REST API integrations covering contracts, auth, error handling, and data fetching.",
-      "Implemented scalable state management with Redux, Pinia, and Vuex.",
-      "Built responsive, accessible, and SEO-optimized user interfaces with a focus on Core Web Vitals and rendering performance.",
-      "Collaborated in Agile workflows — stand-ups, sprint planning, and peer code reviews.",
+      "Library Management System: Built a complete platform with borrowing workflows and admin dashboards.",
+      "Digital Wallet System: Developed secure wallet APIs with RBAC and transaction validation.",
+      "Tour Management System: Created an end-to-end booking solution with analytics and React frontend.",
     ],
   },
 ];
@@ -80,9 +69,8 @@ export default function Experience() {
             transition={{ delay: 0.2 }}
             className="text-muted-foreground text-base md:text-lg"
           >
-            Over 4 years of experience crafting scalable, secure, and
-            high-performance web applications — from eCommerce and Shopify apps
-            to LMS and archiving platforms.
+            Over 3.5 years of experience in crafting high-performance web
+            applications and leading technical migrations.
           </motion.p>
         </div>
 

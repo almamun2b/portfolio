@@ -8,8 +8,8 @@ import Image from "next/image";
 import Link from "next/link";
 
 const details = [
-  { icon: User2, label: "Role", value: "Full-Stack Software Engineer" },
-  { icon: Calendar, label: "Experience", value: "4+ Years" },
+  { icon: User2, label: "Role", value: "Frontend Developer" },
+  { icon: Calendar, label: "Experience", value: "3.5+ Years" },
   { icon: MapPin, label: "Location", value: "Sirajganj, Bangladesh" },
   { icon: CheckCircle2, label: "Status", value: "Available for Hire" },
 ];
@@ -62,24 +62,22 @@ export default function AboutMe() {
 
             <div className="space-y-6 text-muted-foreground text-base md:text-lg leading-relaxed mb-10">
               <p>
-                I am a{" "}
+                I am a passionate{" "}
                 <span className="text-foreground font-semibold">
-                  Full-Stack Software Engineer
+                  Frontend Developer
                 </span>{" "}
                 with over{" "}
-                <span className="text-foreground font-semibold">4 years</span>{" "}
-                of professional experience designing, building, and maintaining
-                scalable, secure, and high-performance web applications.
+                <span className="text-foreground font-semibold">3.5 years</span>{" "}
+                of professional experience building modern, performant, and
+                scalable web applications.
               </p>
               <p>
-                My core expertise lies in{" "}
+                My core expertise lies in the React ecosystem, specifically{" "}
                 <span className="text-foreground font-semibold">
-                  React, Next.js, and Vue/Nuxt
+                  Next.js, TypeScript, and Tailwind CSS
                 </span>
-                , with strong full-stack capabilities across Node.js, Express.js,
-                REST APIs, PostgreSQL, and MongoDB. Currently at Xubitar, I build
-                eCommerce applications, Shopify-based apps, and inventory
-                management systems.
+                . I also have hands-on experience with Nuxt.js, Astro.js, and
+                backend technologies like Node.js and MongoDB.
               </p>
             </div>
 
