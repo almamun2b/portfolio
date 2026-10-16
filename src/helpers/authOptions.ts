@@ -1,13 +1,14 @@
+import { prisma } from "@/lib/prisma";
 import type { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
+import bcrypt from "bcryptjs";
 
 export const authOptions: NextAuthOptions = {
-  // Configure one or more authentication providers
   providers: [
     CredentialsProvider({
       name: "Credentials",
       credentials: {
-        email: { label: "Username", type: "text" },
+        email: { label: "Email", type: "text" },
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
@@ -17,36 +18,39 @@ export const authOptions: NextAuthOptions = {
         }
 
         try {
-          const res = await fetch(
-            `${process.env.NEXT_PUBLIC_BASE_API}/auth/login`,
-            {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify({
-                email: credentials.email,
-                password: credentials.password,
-              }),
-            }
+          const user = await prisma.user.findUnique({
+            where: { email: credentials.email },
+          });
+
+          if (!user || !user.password) {
+            console.error("User not found");
+            return null;
+          }
+
+          if (user.status === "BLOCK") {
+            console.error("User is blocked");
+            return null;
+          }
+
+          const isPasswordValid = await bcrypt.compare(
+            credentials.password,
+            user.password
           );
-          if (!res?.ok) {
-            console.error("User login failed", await res.text());
+
+          if (!isPasswordValid) {
+            console.error("Invalid credentials");
             return null;
           }
-          const user = await res.json();
-          if (user.success) {
-            return {
-              id: user.data?.id,
-              name: user?.data.name,
-              email: user.data?.email,
-              image: user.data?.picture,
-            };
-          } else {
-            return null;
-          }
+
+          return {
+            id: String(user.id),
+            name: user.name,
+            email: user.email,
+            image: user.picture,
+            role: user.role,
+          };
         } catch (error) {
-          console.error("User login failed", error);
+          console.error("User login failed:", error);
           return null;
         }
       },
@@ -55,13 +59,15 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
-        token.id = user?.id;
+        token.id = user.id;
+        token.role = (user as { role?: string }).role;
       }
       return token;
     },
     async session({ session, token }) {
       if (session?.user) {
-        session.user.id = token?.id;
+        session.user.id = token.id as string;
+        session.user.role = token.role as string;
       }
       return session;
     },
@@ -70,6 +76,9 @@ export const authOptions: NextAuthOptions = {
       if (url.startsWith(baseUrl)) return url;
       return baseUrl; // fallback to homepage
     },
+  },
+  session: {
+    strategy: "jwt",
   },
   secret: process.env.NEXTAUTH_SECRET,
   pages: {

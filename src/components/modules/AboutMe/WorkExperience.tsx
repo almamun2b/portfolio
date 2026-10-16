@@ -3,31 +3,32 @@
 export const WorkExperience = () => {
   const experiences = [
     {
-      role: "Software Engineer (1)",
-      company: "Devxhub",
-      period: "Jan 2022 – Present",
+      role: "Full Stack Engineer",
+      company: "Xubitar",
+      period: "Jul 2026 – Present",
       description:
-        "Worked 3+ years at Devxhub as a Software Engineer specializing in Nuxt.js, Next.js, and Astro.js. Contributed to multiple production-grade projects including a social media archiving system (SharpArchive), e-learning platforms, and blogs sites.",
+        "Building production-grade eCommerce web applications, Shopify-based applications, and inventory management systems with a focus on performance, security, and maintainability.",
       responsibilities: [
-        "Implemented APIs and integrated backend services",
-        "Developed user-centric and responsive UI/UX",
-        "Implemented authentication and role-based access",
-        "Optimized performance and SEO for high-traffic platforms",
-        "Handled version upgrades and framework migrations",
-        "Collaborated with cross-functional teams for scalable solutions",
+        "Design, develop, and maintain eCommerce applications with React, Next.js, Express.js, Node.js, Prisma, and PostgreSQL",
+        "Build Shopify apps using the Shopify Admin API, Storefront API, and webhooks",
+        "Build inventory management systems — stock tracking, low-stock alerts, purchase/sales flows, and reporting",
+        "Build scalable backend services and RESTful APIs for performance, security, and maintainability",
+        "Own ongoing maintenance, bug fixes, and performance optimization for live eCommerce applications",
       ],
     },
     {
-      role: "Personal Projects & Continuous Learning",
-      company: "Self-Driven",
-      period: "Ongoing",
+      role: "Software Engineer",
+      company: "Developer eXperience Hub (Devxhub)",
+      period: "Mar 2022 – Feb 2026",
       description:
-        "Completed advanced video courses on React.js, Next.js, Node.js, Express, Mongoose, and Prisma with PostgreSQL. Built several personal projects to apply backend and full-stack concepts.",
+        "Worked nearly 4 years at Devxhub as a Software Engineer specializing in Nuxt.js, Next.js, React, and Vue. Delivered production-grade client projects including a social media archiving system, e-learning platforms, and eCommerce sites.",
       responsibilities: [
-        "Library Management System – book borrowing, aggregation, Mongoose middleware",
-        "Digital Wallet System – wallet transactions, authentication, role-based access",
-        "Tour Management System – end-to-end booking & management platform",
-        "Hands-on practice with real work environments and modern workflows",
+        "Delivered user-facing features across Social Media Archiving, LMS, and eCommerce platforms",
+        "Implemented REST API integrations covering contracts, auth, error handling, and data fetching",
+        "Implemented scalable state management with Redux, Pinia, and Vuex",
+        "Built reusable components and consistent UI/UX with Tailwind CSS and Vuetify",
+        "Built responsive, accessible, and SEO-optimized UIs with a focus on Core Web Vitals",
+        "Collaborated in Agile workflows — stand-ups, sprint planning, and peer code reviews",
       ],
     },
   ];

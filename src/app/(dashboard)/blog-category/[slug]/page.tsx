@@ -1,5 +1,5 @@
 import CreateCategoryForm from "@/components/modules/Blogs/CreateCategoryForm";
-import { SingleCategoryResponse } from "@/types";
+import { getCategory } from "@/lib/queries";
 import { Metadata } from "next";
 
 interface CreateBlogCategoryPageProps {
@@ -27,14 +27,8 @@ const CreateBlogCategoryPage = async ({
   } else if (slug === "edit" && !id) {
     throw new Error("Category ID is required for editing");
   } else if (slug === "edit" && id) {
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_API}/category/${id}`
-    );
-    if (!res.ok) {
-      throw new Error("Failed to fetch category");
-    }
-    const { data } = (await res.json()) as SingleCategoryResponse;
-    category = data;
+    const response = await getCategory(id);
+    category = response?.data ?? null;
   }
 
   return (

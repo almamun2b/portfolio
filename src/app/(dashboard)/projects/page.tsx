@@ -1,6 +1,6 @@
 import { ProjectsTable } from "@/components/modules/Projects/ProjectsTable";
 import AllListLayout from "@/components/shared/AllListLayout";
-import { ProjectsResponse } from "@/types";
+import { getProjects } from "@/lib/queries";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -8,6 +8,8 @@ export const metadata: Metadata = {
   description:
     "Manage your projects efficiently with our intuitive project management tools.",
 };
+
+export const dynamic = "force-dynamic";
 
 interface ProjectPageProps {
   searchParams: Promise<{
@@ -21,20 +23,10 @@ const ProjectPage = async ({ searchParams }: ProjectPageProps) => {
   const currentPage = Number(page) || 1;
   const pageLimit = Number(limit) || 10;
 
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_API}/project?page=${currentPage}&limit=${pageLimit}`,
-    {
-      next: {
-        tags: ["PROJECTS"],
-      },
-    }
-  );
-
-  if (!res.ok) {
-    throw new Error(`Failed to fetch projects: ${res.status}`);
-  }
-
-  const projectsResponse = (await res.json()) as ProjectsResponse;
+  const projectsResponse = await getProjects({
+    page: currentPage,
+    limit: pageLimit,
+  });
   const { projects, meta } = projectsResponse.data;
 
   return (
