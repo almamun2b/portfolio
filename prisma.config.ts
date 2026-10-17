@@ -8,7 +8,18 @@ import { defineConfig } from "prisma/config";
 // `prisma generate` (postinstall) never touches the database, so the URL is
 // optional here — it must be set only for migrate/studio commands. This keeps
 // installs working on Vercel even before environment variables are configured.
+//
+// Migrations take a Postgres advisory lock, which does not work through a
+// pooled (pgbouncer) connection such as Neon's `-pooler` host — it times out
+// with P1002. So the CLI prefers a direct/unpooled URL when one is provided
+// (DIRECT_URL, or DATABASE_URL_UNPOOLED from the Vercel Neon integration).
 dotenv.config({ path: ".env.local" });
+
+const cliUrl =
+  process.env.DIRECT_URL ??
+  process.env.DATABASE_URL_UNPOOLED ??
+  process.env.DATABASE_URL ??
+  "";
 
 export default defineConfig({
   schema: "prisma/schema.prisma",
@@ -16,6 +27,6 @@ export default defineConfig({
     path: "prisma/migrations",
   },
   datasource: {
-    url: process.env.DATABASE_URL ?? "",
+    url: cliUrl,
   },
 });
