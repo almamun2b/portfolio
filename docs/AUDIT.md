@@ -1,5 +1,7 @@
 # Project audit
 
+> Superseded by [AUDIT-2026-10-21.md](AUDIT-2026-10-21.md), the pre-launch audit of the finished portfolio. This file records the scaffold-era audit.
+
 **Date:** 2026-10-06 · **Commit:** `6b58d42` + uncommitted doc/ESLint/next.config changes · **Scope:** everything tracked in git, plus local tooling config.
 
 ## How this was checked
