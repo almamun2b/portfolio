@@ -32,9 +32,7 @@ yarn-error.log*
 
 # env files (can opt-in for committing if needed)
 .env*
-
-# prisma generated client
-src/generated
+!.env.example
 
 # vercel
 .vercel
@@ -42,3 +40,14 @@ src/generated
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# db (generated prisma client)
+/src/generated
+
+# mcp / local agent config
+opencode.jsonc
+.claude/settings.local.json
+
+# impeccable local state
+/.impeccable/*.local.json
+/.impeccable/hook.*.json

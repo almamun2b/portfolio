@@ -1,51 +1,93 @@
-import { Toaster } from "@/components/ui/sonner";
-import AuthProvider from "@/providers/AuthProvider";
-import { ThemeProvider } from "@/providers/theme-provider";
-import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import type { Metadata, Viewport } from "next";
+import { Inter, JetBrains_Mono, Space_Grotesk } from "next/font/google";
+import { ThemeProvider } from "@/components/providers/theme-provider";
+import { personJsonLd, serializeJsonLd, websiteJsonLd } from "@/lib/jsonld";
+import { site } from "@/lib/site";
+import { getExperience, getProfile, getSocials } from "@/server/dal/profile";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const inter = Inter({
   subsets: ["latin"],
+  display: "swap",
+  variable: "--font-inter",
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
+  display: "swap",
+  variable: "--font-space-grotesk",
+});
+
+// Only used for small labels and code: not worth a preload.
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-jetbrains-mono",
+  preload: false,
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://portfolio-mamun.vercel.app"),
-  title: "Md Abdul Mamun | Full-Stack Software Engineer",
-  description:
-    "Full-Stack Software Engineer with 4+ years of experience building scalable, secure, and high-performance web applications using React, Next.js, Vue/Nuxt, Node.js, Express.js, PostgreSQL, and MongoDB.",
-  verification: {
-    google: "FrEB4FD5CYUogdl7GrnSGBmkcKr7RVWz2hUtWjTFojU",
+  metadataBase: new URL(site.url),
+  title: { default: site.title, template: `%s · ${site.name}` },
+  description: site.description,
+  applicationName: site.name,
+  authors: [{ name: site.name, url: site.url }],
+  creator: site.name,
+  keywords: [
+    "Md Abdul Mamun",
+    "full-stack software engineer",
+    "React developer",
+    "Next.js developer",
+    "Node.js developer",
+    "Shopify app developer",
+    "PostgreSQL",
+    "Bangladesh",
+  ],
+  alternates: { canonical: "/" },
+  openGraph: {
+    type: "profile",
+    url: "/",
+    siteName: site.name,
+    title: site.title,
+    description: site.description,
+    locale: site.locale,
   },
+  twitter: {
+    card: "summary_large_image",
+    title: site.title,
+    description: site.description,
+    creator: site.twitter,
+  },
+  verification: { google: site.googleSiteVerification },
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+// Matches --background for the default (dark) theme.
+export const viewport: Viewport = {
+  themeColor: "#05090b",
+  colorScheme: "dark light",
+};
+
+export default async function RootLayout({ children }: LayoutProps<"/">) {
+  const [profile, socials, experience] = await Promise.all([
+    getProfile(),
+    getSocials(),
+    getExperience(),
+  ]);
+  const fonts = `${inter.variable} ${spaceGrotesk.variable} ${jetbrainsMono.variable}`;
+
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        <AuthProvider>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="dark"
-            enableSystem
-            disableTransitionOnChange
-          >
-            <Toaster richColors position="top-center" />
-            {children}
-          </ThemeProvider>
-        </AuthProvider>
+    <html lang="en" className={`dark ${fonts}`} suppressHydrationWarning>
+      <body>
+        <ThemeProvider>{children}</ThemeProvider>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: serializeJsonLd([
+              personJsonLd(profile, socials, experience),
+              websiteJsonLd(),
+            ]),
+          }}
+        />
       </body>
     </html>
   );

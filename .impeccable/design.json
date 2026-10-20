@@ -1,0 +1,549 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-20T20:16:31.662264+00:00",
+  "title": "Design System: Md Abdul Mamun — Portfolio",
+  "extensions": {
+    "colorMeta": {
+      "night-ground": {
+        "role": "neutral",
+        "displayName": "Night Ground",
+        "canonical": "#05090b",
+        "tonalRamp": [
+          "#020405",
+          "#05090b",
+          "#0a1215",
+          "#0b1517",
+          "#14252a",
+          "#2a4046",
+          "#6b8a86",
+          "#c9ded8"
+        ]
+      },
+      "mint-text": {
+        "role": "neutral",
+        "displayName": "Mint Text",
+        "canonical": "#ecfdf5",
+        "tonalRamp": [
+          "#064e3b",
+          "#065f46",
+          "#047857",
+          "#6ee7b7",
+          "#a7f3d0",
+          "#d1fae5",
+          "#ecfdf5",
+          "#f6fffb"
+        ]
+      },
+      "night-card-solid": {
+        "role": "neutral",
+        "displayName": "Night Card Solid",
+        "canonical": "#0a1215"
+      },
+      "night-popover": {
+        "role": "neutral",
+        "displayName": "Night Popover",
+        "canonical": "#0b1517"
+      },
+      "signal-emerald": {
+        "role": "primary",
+        "displayName": "Signal Emerald",
+        "canonical": "#10b981",
+        "tonalRamp": [
+          "#022c22",
+          "#064e3b",
+          "#065f46",
+          "#047857",
+          "#059669",
+          "#10b981",
+          "#34d399",
+          "#d1fae5"
+        ]
+      },
+      "emerald-strong": {
+        "role": "primary",
+        "displayName": "Emerald Strong",
+        "canonical": "#34d399",
+        "tonalRamp": [
+          "#064e3b",
+          "#047857",
+          "#059669",
+          "#10b981",
+          "#34d399",
+          "#6ee7b7",
+          "#a7f3d0",
+          "#ecfdf5"
+        ]
+      },
+      "signal-cyan": {
+        "role": "secondary",
+        "displayName": "Signal Cyan",
+        "canonical": "#22d3ee",
+        "tonalRamp": [
+          "#083344",
+          "#164e63",
+          "#155e75",
+          "#0e7490",
+          "#0891b2",
+          "#06b6d4",
+          "#22d3ee",
+          "#cffafe"
+        ]
+      },
+      "cyan-strong": {
+        "role": "secondary",
+        "displayName": "Cyan Strong",
+        "canonical": "#67e8f9",
+        "tonalRamp": [
+          "#164e63",
+          "#0e7490",
+          "#0891b2",
+          "#06b6d4",
+          "#22d3ee",
+          "#67e8f9",
+          "#a5f3fc",
+          "#ecfeff"
+        ]
+      },
+      "muted-mint": {
+        "role": "neutral",
+        "displayName": "Muted Mint",
+        "canonical": "rgb(236 253 245 / 0.64)"
+      },
+      "emerald-wash": {
+        "role": "neutral",
+        "displayName": "Emerald Wash",
+        "canonical": "rgb(16 185 129 / 0.08)"
+      },
+      "glass-card": {
+        "role": "neutral",
+        "displayName": "Glass Card",
+        "canonical": "rgb(255 255 255 / 0.035)"
+      },
+      "hairline-emerald": {
+        "role": "neutral",
+        "displayName": "Emerald Hairline",
+        "canonical": "rgb(16 185 129 / 0.14)"
+      },
+      "hairline-emerald-strong": {
+        "role": "neutral",
+        "displayName": "Emerald Hairline Strong",
+        "canonical": "rgb(16 185 129 / 0.3)"
+      },
+      "hairline-emerald-glow": {
+        "role": "neutral",
+        "displayName": "Emerald Hairline Glow",
+        "canonical": "rgb(16 185 129 / 0.55)"
+      },
+      "input-stroke": {
+        "role": "neutral",
+        "displayName": "Input Stroke",
+        "canonical": "rgb(52 211 153 / 0.55)"
+      },
+      "error-rose": {
+        "role": "status",
+        "displayName": "Error Rose",
+        "canonical": "#fb7185",
+        "tonalRamp": [
+          "#4c0519",
+          "#881337",
+          "#9f1239",
+          "#be123c",
+          "#e11d48",
+          "#f43f5e",
+          "#fb7185",
+          "#ffe4e6"
+        ]
+      },
+      "button-stop-emerald": {
+        "role": "primary",
+        "displayName": "Button Stop Emerald",
+        "canonical": "#047857"
+      },
+      "button-stop-cyan": {
+        "role": "secondary",
+        "displayName": "Button Stop Cyan",
+        "canonical": "#0e7490"
+      },
+      "day-ground": {
+        "role": "neutral",
+        "displayName": "Day Mint Ground",
+        "canonical": "#f4fbf8"
+      },
+      "day-ink": {
+        "role": "neutral",
+        "displayName": "Day Ink",
+        "canonical": "#0b1f1a"
+      },
+      "day-emerald": {
+        "role": "primary",
+        "displayName": "Day Emerald",
+        "canonical": "#047857"
+      },
+      "day-emerald-strong": {
+        "role": "primary",
+        "displayName": "Day Emerald Strong",
+        "canonical": "#065f46"
+      },
+      "day-teal": {
+        "role": "secondary",
+        "displayName": "Day Teal",
+        "canonical": "#14b8a6",
+        "tonalRamp": [
+          "#042f2e",
+          "#134e4a",
+          "#115e59",
+          "#0f766e",
+          "#0d9488",
+          "#14b8a6",
+          "#5eead4",
+          "#ccfbf1"
+        ]
+      },
+      "day-cyan-strong": {
+        "role": "secondary",
+        "displayName": "Deep Cyan",
+        "canonical": "#0e7490"
+      },
+      "day-display-start": {
+        "role": "primary",
+        "displayName": "Day Display Start",
+        "canonical": "#064e3b"
+      },
+      "day-muted-ink": {
+        "role": "neutral",
+        "displayName": "Day Muted Ink",
+        "canonical": "rgb(11 31 26 / 0.7)"
+      },
+      "day-error": {
+        "role": "status",
+        "displayName": "Day Error",
+        "canonical": "#be123c"
+      },
+      "whatsapp-green": {
+        "role": "brand-exception",
+        "displayName": "WhatsApp Green",
+        "canonical": "#25d366"
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "Hero name only, in the display gradient."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Inner-page h1."
+      },
+      "headline-section": {
+        "displayName": "Section headline",
+        "purpose": "Section h2; last words may carry the brand gradient."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Card and item titles."
+      },
+      "body-lead": {
+        "displayName": "Body lead",
+        "purpose": "Section descriptions and the hero pitch."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Card descriptions, muted."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Nav links, form labels, buttons."
+      },
+      "mono": {
+        "displayName": "Mono",
+        "purpose": "Code, file paths, years, data values only."
+      }
+    },
+    "shadows": [
+      {
+        "name": "card",
+        "value": "0 24px 64px rgb(0 0 0 / 0.5)",
+        "purpose": "Large floating panels and widget tooltips (night); day is 0 12px 40px rgb(4 120 87 / 0.12)."
+      },
+      {
+        "name": "lift",
+        "value": "0 20px 48px rgb(16 185 129 / 0.2)",
+        "purpose": "Hover state of interactive cards, primary buttons, chatbot launcher; day 0 18px 44px rgb(4 120 87 / 0.18)."
+      },
+      {
+        "name": "button",
+        "value": "0 6px 24px rgb(16 185 129 / 0.35)",
+        "purpose": "Resting glow under filled buttons and the launcher; day 0 6px 22px rgb(4 120 87 / 0.3)."
+      },
+      {
+        "name": "header-scrolled",
+        "value": "0 6px 40px rgb(16 185 129 / 0.14)",
+        "purpose": "Sticky header after 80px of scroll (CSS scroll-driven)."
+      },
+      {
+        "name": "input-focus-halo",
+        "value": "0 0 0 4px color-mix(in srgb, var(--primary) 22%, transparent)",
+        "purpose": "Focus halo on inputs."
+      },
+      {
+        "name": "whatsapp",
+        "value": "0 10px 30px rgb(37 211 102 / 0.35)",
+        "purpose": "WhatsApp floating button only (brand exception)."
+      }
+    ],
+    "motion": [
+      {
+        "name": "ease-spring",
+        "value": "cubic-bezier(0.34, 1.2, 0.64, 1)",
+        "purpose": "Hover lifts on buttons and cards (sanctioned exception)."
+      },
+      {
+        "name": "ease-bounce",
+        "value": "cubic-bezier(0.34, 1.56, 0.64, 1)",
+        "purpose": "Theme-switch knob only (sanctioned exception)."
+      },
+      {
+        "name": "ease-out-expo",
+        "value": "cubic-bezier(0.16, 1, 0.3, 1)",
+        "purpose": "Card hover bar, details open/close."
+      },
+      {
+        "name": "reveal-rise",
+        "value": "translateY(28px) scale(0.985) -> none, view() timeline, 36px stagger, done by 220px",
+        "purpose": "CSS scroll-driven reveal; never hides content by script; off under reduced motion."
+      },
+      {
+        "name": "smooth-scroll",
+        "value": "Lenis, lerp 0.1, anchors offset -96px",
+        "purpose": "Inertial document scroll; not started under reduced motion; stopped while any <dialog> is open; dialogs and [data-lenis-prevent] scroll natively. No CSS scroll-behavior: smooth."
+      },
+      {
+        "name": "slider",
+        "value": "Embla, duration 25 (0 under reduced motion)",
+        "purpose": "Case-study screenshot slider transitions."
+      },
+      {
+        "name": "reduced-motion",
+        "value": "animation/transition 0.01ms, 1 iteration",
+        "purpose": "All ambient loops stop; Lenis stays off; slider switches instantly."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "sm",
+        "value": "640px"
+      },
+      {
+        "name": "md",
+        "value": "768px"
+      },
+      {
+        "name": "lg",
+        "value": "1024px"
+      },
+      {
+        "name": "xl",
+        "value": "1280px"
+      },
+      {
+        "name": "wide",
+        "value": "1600px"
+      }
+    ],
+    "gradients": [
+      {
+        "name": "gradient-button",
+        "value": "linear-gradient(135deg, #047857 0%, #0e7490 100%)",
+        "purpose": "Only fill that carries white text/icons (>=5.3:1); filled buttons, logo tile, favicon, chatbot launcher. Same in both themes."
+      },
+      {
+        "name": "gradient-brand",
+        "value": "linear-gradient(135deg, #10b981 0%, #22d3ee 100%)",
+        "purpose": "Decorative: section-title highlight words, card hover bar, scrollbar thumb. Day uses #047857 -> #0e7490."
+      },
+      {
+        "name": "gradient-display",
+        "value": "linear-gradient(135deg, #ecfdf5 0%, #67e8f9 100%)",
+        "purpose": "Hero name only. Day #064e3b -> #0e7490."
+      },
+      {
+        "name": "gradient-tile",
+        "value": "linear-gradient(135deg, rgb(16 185 129 / 0.16), rgb(34 211 238 / 0.08))",
+        "purpose": "Icon tiles."
+      }
+    ],
+    "themes": {
+      "default": "dark (:root, .dark)",
+      "alternate": "light (.light)",
+      "followsSystem": false
+    }
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Gradient pill for the one main action in a block.",
+      "html": "<button class=\"ds-btn-primary\">View my work <svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M5 12h14\"/><path d=\"m12 5 7 7-7 7\"/></svg></button>",
+      "css": ".ds-btn-primary{display:inline-flex;align-items:center;gap:8px;height:44px;padding:0 24px;border:0;border-radius:9999px;background-image:var(--gradient-button,linear-gradient(135deg,#047857 0%,#0e7490 100%));color:#fff;font:600 0.95rem Inter,ui-sans-serif,sans-serif;box-shadow:var(--shadow-button,0 6px 24px rgb(16 185 129/.35));cursor:pointer;transition:translate .3s cubic-bezier(.34,1.2,.64,1),box-shadow .3s cubic-bezier(.34,1.2,.64,1),filter .3s}.ds-btn-primary:hover{translate:0 -2px;box-shadow:var(--shadow-lift,0 20px 48px rgb(16 185 129/.2));filter:brightness(1.1)}.ds-btn-primary:active{translate:0 0}.ds-btn-primary:focus-visible{outline:2px solid var(--ring,#34d399);outline-offset:3px}"
+    },
+    {
+      "name": "Outline Button",
+      "kind": "button",
+      "refersTo": "button-outline",
+      "description": "Glass pill for the secondary action (e.g. Download CV).",
+      "html": "<button class=\"ds-btn-outline\">Download CV</button>",
+      "css": ".ds-btn-outline{display:inline-flex;align-items:center;gap:8px;height:44px;padding:0 24px;border-radius:9999px;border:1px solid var(--border-strong,rgb(16 185 129/.3));background:var(--card,rgb(255 255 255/.035));backdrop-filter:blur(12px);color:var(--foreground,#ecfdf5);font:600 0.95rem Inter,ui-sans-serif,sans-serif;cursor:pointer;transition:translate .3s cubic-bezier(.34,1.2,.64,1),border-color .3s,background-color .3s}.ds-btn-outline:hover{translate:0 -2px;border-color:var(--primary,#10b981);background:var(--muted,rgb(16 185 129/.08))}.ds-btn-outline:focus-visible{outline:2px solid var(--ring,#34d399);outline-offset:3px}"
+    },
+    {
+      "name": "Badge",
+      "kind": "chip",
+      "refersTo": "badge",
+      "description": "Pill tag for project context and tech.",
+      "html": "<span class=\"ds-badge\">Personal project</span> <span class=\"ds-badge ds-badge-cyan\">Built at Xubitar</span>",
+      "css": ".ds-badge{display:inline-flex;align-items:center;height:24px;padding:0 10px;border-radius:9999px;border:1px solid var(--border-strong,rgb(16 185 129/.3));background:var(--muted,rgb(16 185 129/.08));color:var(--primary-strong,#34d399);font:500 .75rem Inter,ui-sans-serif,sans-serif}.ds-badge-cyan{border-color:rgb(34 211 238/.3);background:rgb(34 211 238/.1);color:var(--secondary-strong,#22d3ee)}"
+    },
+    {
+      "name": "Status Pill",
+      "kind": "chip",
+      "refersTo": "badge",
+      "description": "Availability pill with a pulsing dot.",
+      "html": "<span class=\"ds-status\"><span class=\"ds-status-dot\"></span>Open to new opportunities</span>",
+      "css": ".ds-status{display:inline-flex;align-items:center;gap:10px;padding:6px 16px;border-radius:9999px;border:1px solid rgb(52 211 153/.3);background:rgb(52 211 153/.1);color:var(--success,#34d399);font:500 .82rem Inter,ui-sans-serif,sans-serif}.ds-status-dot{width:8px;height:8px;border-radius:9999px;background:currentColor;animation:ds-pulse 2s ease-in-out infinite}@keyframes ds-pulse{0%,100%{box-shadow:0 0 0 0 color-mix(in srgb,currentColor 55%,transparent)}60%{box-shadow:0 0 0 6px transparent}}@media (prefers-reduced-motion:reduce){.ds-status-dot{animation:none}}"
+    },
+    {
+      "name": "Interactive Glass Card",
+      "kind": "card",
+      "refersTo": "card-glass",
+      "description": "Glass panel that lifts and grows a gradient bottom bar on hover.",
+      "html": "<article class=\"ds-card\" tabindex=\"0\"><h3 class=\"ds-card-title\">Full-stack product engineering</h3><p class=\"ds-card-body\">From data model to shipped UI, one person accountable for the whole path.</p></article>",
+      "css": ".ds-card{position:relative;overflow:hidden;max-width:360px;padding:24px;border-radius:24px;border:1px solid var(--border,rgb(16 185 129/.14));background:var(--card,rgb(255 255 255/.035));backdrop-filter:blur(16px) saturate(140%);color:var(--foreground,#ecfdf5);transition:translate .5s cubic-bezier(.34,1.2,.64,1),box-shadow .5s,border-color .5s}.ds-card::after{content:'';position:absolute;left:0;right:0;bottom:0;height:3px;background:var(--gradient-brand,linear-gradient(135deg,#10b981,#22d3ee));transform:scaleX(0);transform-origin:left;transition:transform .5s cubic-bezier(.16,1,.3,1)}.ds-card:hover,.ds-card:focus-visible{translate:0 -6px;border-color:var(--border-glow,rgb(16 185 129/.55));box-shadow:var(--shadow-lift,0 20px 48px rgb(16 185 129/.2));outline:none}.ds-card:hover::after,.ds-card:focus-visible::after{transform:scaleX(1)}.ds-card-title{margin:0 0 8px;font:600 1.125rem/1.375 'Space Grotesk',Inter,sans-serif;letter-spacing:-.02em}.ds-card-body{margin:0;font:400 .92rem/1.625 Inter,sans-serif;color:var(--muted-foreground,rgb(236 253 245/.64))}"
+    },
+    {
+      "name": "Text Input",
+      "kind": "input",
+      "refersTo": "input",
+      "description": "Glass field with emerald focus halo.",
+      "html": "<label class=\"ds-label\" for=\"ds-email\">Email</label><input class=\"ds-input\" id=\"ds-email\" type=\"email\" placeholder=\"you@company.com\">",
+      "css": ".ds-label{display:block;margin-bottom:8px;font:500 .875rem Inter,sans-serif;color:var(--foreground,#ecfdf5)}.ds-input{width:100%;max-width:360px;height:48px;padding:0 16px;border-radius:16px;border:1px solid var(--input,rgb(52 211 153/.55));background:var(--card,rgb(255 255 255/.035));color:var(--foreground,#ecfdf5);font:400 .95rem Inter,sans-serif;transition:border-color .2s,box-shadow .2s}.ds-input::placeholder{color:rgb(236 253 245/.5)}.ds-input:hover{border-color:rgb(16 185 129/.7)}.ds-input:focus-visible{outline:none;border-color:var(--primary,#10b981);box-shadow:0 0 0 4px color-mix(in srgb,var(--primary,#10b981) 22%,transparent)}"
+    },
+    {
+      "name": "Desktop Nav",
+      "kind": "nav",
+      "refersTo": "nav-link",
+      "description": "Glass pill nav with the current page outlined in emerald.",
+      "html": "<nav class=\"ds-nav\" aria-label=\"Main\"><a class=\"ds-nav-link\" aria-current=\"page\" href=\"#\">Home</a><a class=\"ds-nav-link\" href=\"#\">About</a><a class=\"ds-nav-link\" href=\"#\">Projects</a><a class=\"ds-nav-link\" href=\"#\">Contact</a></nav>",
+      "css": ".ds-nav{display:inline-flex;gap:4px;padding:6px;border-radius:9999px;border:1px solid var(--border,rgb(16 185 129/.14));background:var(--card,rgb(255 255 255/.035));backdrop-filter:blur(16px) saturate(140%)}.ds-nav-link{display:inline-flex;align-items:center;height:36px;padding:0 16px;border-radius:9999px;font:500 .875rem Inter,sans-serif;color:var(--muted-foreground,rgb(236 253 245/.64));text-decoration:none;transition:color .2s,background-color .2s}.ds-nav-link:hover{background:var(--muted,rgb(16 185 129/.08));color:var(--foreground,#ecfdf5)}.ds-nav-link[aria-current=page]{background:rgb(16 185 129/.12);color:var(--foreground,#ecfdf5);box-shadow:inset 0 0 0 1.5px var(--primary,#10b981),0 0 14px color-mix(in srgb,var(--primary,#10b981) 25%,transparent)}.ds-nav-link:focus-visible{outline:2px solid var(--ring,#34d399);outline-offset:2px}"
+    },
+    {
+      "name": "Section Title",
+      "kind": "custom",
+      "refersTo": "headline-section",
+      "description": "Section h2 whose last words carry the brand gradient.",
+      "html": "<h2 class=\"ds-h2\">Selected <span class=\"ds-grad\">work</span></h2>",
+      "css": ".ds-h2{margin:0;font:700 clamp(1.85rem,4vw,3rem)/1.1 'Space Grotesk',Inter,sans-serif;letter-spacing:-.025em;color:var(--foreground,#ecfdf5)}.ds-grad{background-image:var(--gradient-brand,linear-gradient(135deg,#10b981,#22d3ee));-webkit-background-clip:text;background-clip:text;color:transparent}"
+    },
+    {
+      "name": "Chatbot Launcher",
+      "kind": "custom",
+      "refersTo": "floating-action",
+      "description": "56px gradient pill in the bottom-right floating stack; opens the assistant Sheet.",
+      "html": "<button class=\"ds-fab\" aria-label=\"Ask my portfolio assistant\"><svg width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M12 8V4H8\"/><rect width=\"16\" height=\"12\" x=\"4\" y=\"8\" rx=\"2\"/><path d=\"M2 14h2\"/><path d=\"M20 14h2\"/><path d=\"M15 13v2\"/><path d=\"M9 13v2\"/></svg></button>",
+      "css": ".ds-fab{display:grid;place-items:center;width:56px;height:56px;border:0;border-radius:9999px;background-image:var(--gradient-button,linear-gradient(135deg,#047857 0%,#0e7490 100%));color:#fff;box-shadow:var(--shadow-button,0 6px 24px rgb(16 185 129/.35));cursor:pointer;transition:translate .3s cubic-bezier(.34,1.2,.64,1),box-shadow .3s cubic-bezier(.34,1.2,.64,1)}.ds-fab:hover{translate:0 -4px;box-shadow:var(--shadow-lift,0 20px 48px rgb(16 185 129/.2))}.ds-fab:focus-visible{outline:2px solid var(--ring,#34d399);outline-offset:3px}"
+    },
+    {
+      "name": "WhatsApp Button",
+      "kind": "custom",
+      "refersTo": "floating-action-whatsapp",
+      "description": "56px WhatsApp-green pill under the launcher; the only place that green appears (brand exception).",
+      "html": "<a class=\"ds-fab-wa\" href=\"#\" aria-label=\"Chat on WhatsApp (opens in a new tab)\"><svg width=\"28\" height=\"28\" viewBox=\"0 0 24 24\" fill=\"currentColor\" aria-hidden=\"true\"><path d=\"M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm5.2 13.9c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .2-3.3-.7-2.8-1.1-4.6-4-4.7-4.2-.1-.2-1.1-1.5-1.1-2.9s.7-2.1 1-2.4c.3-.3.6-.3.8-.3h.6c.2 0 .4 0 .6.5l.9 2.1c.1.2.1.4 0 .6l-.3.5-.4.5c-.1.1-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.2 1 2.1 1.4 2.4 1.5.3.1.5.1.7-.1l1-1.2c.2-.3.4-.2.7-.1l2 1c.3.1.5.2.6.3.1.2.1.8-.1 1.4z\"/></svg></a>",
+      "css": ".ds-fab-wa{display:grid;place-items:center;width:56px;height:56px;border-radius:9999px;background:#25d366;color:#fff;box-shadow:0 10px 30px rgb(37 211 102/.35);transition:translate .3s cubic-bezier(.34,1.2,.64,1),box-shadow .3s cubic-bezier(.34,1.2,.64,1)}.ds-fab-wa:hover{translate:0 -4px;box-shadow:0 14px 36px rgb(37 211 102/.45)}.ds-fab-wa:focus-visible{outline:2px solid var(--ring,#34d399);outline-offset:3px}"
+    },
+    {
+      "name": "Screenshot Slider Stage",
+      "kind": "custom",
+      "refersTo": null,
+      "description": "Shared 16:10 object-contain stage with device pill, thumbnail strip, and mono n / N counter.",
+      "html": "<div class=\"ds-slider\"><div class=\"ds-stage\"><span class=\"ds-device\">desktop</span></div><div class=\"ds-slider-foot\"><div class=\"ds-thumbs\"><button class=\"ds-thumb\" aria-current=\"true\" aria-label=\"Show screenshot 1\"></button><button class=\"ds-thumb\" aria-label=\"Show screenshot 2\"></button><button class=\"ds-thumb\" aria-label=\"Show screenshot 3\"></button></div><p class=\"ds-count\">1 / 3</p></div></div>",
+      "css": ".ds-slider{display:flex;flex-direction:column;gap:16px;max-width:520px}.ds-stage{position:relative;aspect-ratio:16/10;border-radius:24px;border:1px solid var(--border-strong,rgb(16 185 129/.3));background:var(--card-solid,#0a1215);overflow:hidden}.ds-device{position:absolute;top:16px;left:16px;padding:4px 10px;border-radius:9999px;border:1px solid var(--border,rgb(16 185 129/.14));background:rgb(5 9 11/.8);color:var(--foreground,#ecfdf5);font:500 .75rem Inter,sans-serif}.ds-slider-foot{display:flex;align-items:center;justify-content:space-between;gap:16px}.ds-thumbs{display:flex;gap:8px}.ds-thumb{width:88px;height:56px;border-radius:12px;border:2px solid var(--border,rgb(16 185 129/.14));background:var(--card-solid,#0a1215);opacity:.6;cursor:pointer;transition:border-color .2s,opacity .2s}.ds-thumb:hover{opacity:1}.ds-thumb[aria-current=true]{border-color:var(--primary,#10b981);opacity:1}.ds-thumb:focus-visible{outline:2px solid var(--ring,#34d399);outline-offset:2px}.ds-count{margin:0;font:400 .75rem 'JetBrains Mono',ui-monospace,monospace;font-variant-numeric:tabular-nums;color:var(--muted-foreground,rgb(236 253 245/.64))}"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Emerald Night Console",
+    "overview": "The engineer stands at the centre of his own stack, under a cool near-black sky (#05090b) lit by two soft lights: emerald top-left, cyan bottom-right. Content sits on frosted glass panels edged with emerald hairlines; actions are pills; a Three.js constellation of emerald and cyan points drifts behind the page and leans toward the cursor. The palette is the owner's own emerald → cyan identity: two colours, two-stop gradients, nothing else. The layout and motion vocabulary (glass panels, pill controls, spring lifts, gradient last words) was inspired by a reference site; the colour is the owner's.\n\nDark is the default and the server-rendered theme: `:root, .dark` carry the night tokens, `.light` carries the day tokens (a pale mint ground with deep emerald and deep cyan). `next-themes` runs with `defaultTheme=\"dark\"` and `enableSystem={false}`, so the OS preference is deliberately ignored; the day/night switch in the header is the only way in. Tailwind exposes `dark:` and `light:` custom variants; components are written for night first and use `light:` only where day genuinely differs.\n\nDensity is generous: wide sections, short copy, one strong action per block. Motion is inertial smooth scrolling, a spring lift on hover, a staggered rise on scroll, and a slow ambient drift, and all of it stops under reduced motion.",
+    "keyCharacteristics": [
+      "Cool near-black ground with two soft radial glows (`--page-glow`), emerald top-left (11%) and cyan bottom-right (7%), fixed to the viewport.",
+      "Two colours only: emerald and cyan. Every gradient has exactly two stops.",
+      "Glass panels: 3.5% white fill, 16px blur, emerald hairline borders, 24px corners.",
+      "Pill-shaped everything that you press or read as a tag.",
+      "Space Grotesk headings with the last words of a section title in the brand gradient.",
+      "Real screenshots in a fixed frame, or designed, labelled cover illustrations; never stock imagery."
+    ],
+    "rules": [
+      {
+        "name": "The Two Colours Rule",
+        "body": "The palette is emerald and cyan, and every gradient has exactly two stops, emerald first. No third hue, no violet, purple, or pink, no three-stop gradients. Error rose is a status colour, not a brand colour.",
+        "section": "colors"
+      },
+      {
+        "name": "The Deep Stops Rule",
+        "body": "White text and white icons only ever sit on `--gradient-button` (#047857 → #0e7490). Never put white on `--gradient-brand`; its bright stops fail contrast.",
+        "section": "colors"
+      },
+      {
+        "name": "The Strong-For-Text Rule",
+        "body": "A hue used as text uses its `-strong` token (`text-primary-strong`, `text-secondary-strong`, `text-accent-strong`). The base tokens are for fills, glows, and borders.",
+        "section": "colors"
+      },
+      {
+        "name": "The Brand Exception Rule",
+        "body": "WhatsApp green (`whatsapp-green`) appears on the floating WhatsApp button and nowhere else. Third-party brand colours stay inside their own marks.",
+        "section": "colors"
+      },
+      {
+        "name": "The Mono Is Data Rule",
+        "body": "JetBrains Mono appears only on code, file paths, years, counters, and data values. Never on headings, buttons, or running prose.",
+        "section": "typography"
+      },
+      {
+        "name": "The Gradient Last Words Rule",
+        "body": "A section title may end in a `text-gradient` highlight (one phrase, at the end). The hero name uses `text-gradient-display`. No other text is gradient-filled. (Sanctioned detector exception in `.impeccable/config.json`; the utilities are defined once in globals.css.)",
+        "section": "typography"
+      },
+      {
+        "name": "The Explicit Base Rule",
+        "body": "Every responsive grid declares `grid-cols-1` (or another explicit count) at the base, and every `fr` track is written `minmax(0,…fr)` so long words, code, or images can never force overflow. Check at 375px.",
+        "section": "layout"
+      },
+      {
+        "name": "The Lift Rule",
+        "body": "Interactive surfaces rise on hover (buttons −2px, floating actions −4px, cards −6px) on the spring easing and gain `--shadow-lift`; they return on `:active`. Nothing else moves on hover.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "**Do** use semantic token utilities only; the hex values in this file are documentation, `globals.css` is the source.",
+      "**Do** keep to emerald and cyan, with two-stop gradients that start on emerald.",
+      "**Do** design for night first and add `light:` overrides only where day differs.",
+      "**Do** put white text and icons only on `--gradient-button`.",
+      "**Do** use the `-strong` token whenever a hue is text.",
+      "**Do** keep muted text at 0.64 (night) / 0.7 (day) alpha.",
+      "**Do** give every responsive grid an explicit base column count and wrap `fr` tracks in `minmax(0,…)`.",
+      "**Do** show screenshots `object-contain` in a fixed frame (16:10 slider stage, fixed-height lightbox stage) so the frame never jumps.",
+      "**Do** build interactive primitives on `<dialog>`, `<details>`, and ARIA patterns in `src/components/ui/`.",
+      "**Do** stop every loop and smooth scrolling under `prefers-reduced-motion`."
+    ],
+    "donts": [
+      "**Don't** reintroduce violet, purple, pink, or any third brand hue, or a three-stop gradient.",
+      "**Don't** use WhatsApp green anywhere but the WhatsApp button.",
+      "**Don't** add shadcn, Radix, or a second dialog/tab/carousel implementation.",
+      "**Don't** add CSS `scroll-behavior: smooth`; Lenis owns smooth scrolling.",
+      "**Don't** follow the OS colour scheme or make light the default.",
+      "**Don't** hide content with JavaScript for reveal effects.",
+      "**Don't** gradient-fill text beyond the section-title highlight and the hero name.",
+      "**Don't** set headings, buttons, or prose in JetBrains Mono.",
+      "**Don't** use stock photos or unlabelled fake screenshots; use real screenshots or a labelled illustration.",
+      "**Don't** introduce hard offset shadows or glow colours outside emerald and cyan."
+    ]
+  }
+}

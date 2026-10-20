@@ -1,194 +1,445 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
-@custom-variant dark (&:is(.dark *));
+/* Dark is the default theme. next-themes puts `dark` or `light` on <html>;
+   the server renders `dark`, so visitors without JS get the dark theme. */
+@custom-variant dark (&:where(.dark, .dark *));
+@custom-variant light (&:where(.light, .light *));
 
-:root {
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.141 0.005 285.823);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.141 0.005 285.823);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.141 0.005 285.823);
-  --primary: oklch(0.646 0.222 41.116);
-  --primary-foreground: oklch(0.98 0.016 73.684);
-  --secondary: oklch(0.967 0.001 286.375);
-  --secondary-foreground: oklch(0.21 0.006 285.885);
-  --muted: oklch(0.967 0.001 286.375);
-  --muted-foreground: oklch(0.552 0.016 285.938);
-  --accent: oklch(0.967 0.001 286.375);
-  --accent-foreground: oklch(0.21 0.006 285.885);
-  --destructive: oklch(0.577 0.245 27.325);
-  --destructive-foreground: oklch(1 0 0);
-  --border: oklch(0.92 0.004 286.32);
-  --input: oklch(0.92 0.004 286.32);
-  --ring: oklch(0.75 0.183 55.934);
-  --chart-1: oklch(0.837 0.128 66.29);
-  --chart-2: oklch(0.705 0.213 47.604);
-  --chart-3: oklch(0.646 0.222 41.116);
-  --chart-4: oklch(0.553 0.195 38.402);
-  --chart-5: oklch(0.47 0.157 37.304);
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.141 0.005 285.823);
-  --sidebar-primary: oklch(0.646 0.222 41.116);
-  --sidebar-primary-foreground: oklch(0.98 0.016 73.684);
-  --sidebar-accent: oklch(0.967 0.001 286.375);
-  --sidebar-accent-foreground: oklch(0.21 0.006 285.885);
-  --sidebar-border: oklch(0.92 0.004 286.32);
-  --sidebar-ring: oklch(0.75 0.183 55.934);
-  --font-sans:
-    ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
-    Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif,
-    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-  --font-serif: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
-  --font-mono:
-    ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
-    "Courier New", monospace;
-  --radius: 0.625rem;
-  --shadow-x: 0;
-  --shadow-y: 1px;
-  --shadow-blur: 3px;
-  --shadow-spread: 0px;
-  --shadow-opacity: 0.1;
-  --shadow-color: oklch(0 0 0);
-  --shadow-2xs: 0 1px 3px 0px hsl(0 0% 0% / 0.05);
-  --shadow-xs: 0 1px 3px 0px hsl(0 0% 0% / 0.05);
-  --shadow-sm:
-    0 1px 3px 0px hsl(0 0% 0% / 0.1), 0 1px 2px -1px hsl(0 0% 0% / 0.1);
-  --shadow: 0 1px 3px 0px hsl(0 0% 0% / 0.1), 0 1px 2px -1px hsl(0 0% 0% / 0.1);
-  --shadow-md:
-    0 1px 3px 0px hsl(0 0% 0% / 0.1), 0 2px 4px -1px hsl(0 0% 0% / 0.1);
-  --shadow-lg:
-    0 1px 3px 0px hsl(0 0% 0% / 0.1), 0 4px 6px -1px hsl(0 0% 0% / 0.1);
-  --shadow-xl:
-    0 1px 3px 0px hsl(0 0% 0% / 0.1), 0 8px 10px -1px hsl(0 0% 0% / 0.1);
-  --shadow-2xl: 0 1px 3px 0px hsl(0 0% 0% / 0.25);
-  --primary-rgb: 234 88 12;
-  --tracking-normal: 0em;
-  --spacing: 0.25rem;
+/* ── Tokens: dark (default) ────────────────────────────────────────────────
+   The owner's emerald → cyan identity on a cool near-black. Two colours,
+   two-stop gradients. Text pairs are contrast-checked (DESIGN.md). */
+:root,
+.dark {
+  color-scheme: dark;
+
+  --background: #05090b;
+  --foreground: #ecfdf5;
+  --card: rgb(255 255 255 / 0.035);
+  --card-solid: #0a1215;
+  --card-foreground: #ecfdf5;
+  --popover: #0b1517;
+  --popover-foreground: #ecfdf5;
+
+  --primary: #10b981; /* 7.9:1 on background */
+  --primary-strong: #34d399; /* text accents, 10.4:1 */
+  --primary-foreground: #ffffff;
+  --secondary: #22d3ee;
+  --secondary-strong: #22d3ee;
+  --accent: #22d3ee;
+  --accent-strong: #67e8f9;
+
+  --muted: rgb(16 185 129 / 0.08);
+  --muted-foreground: rgb(236 253 245 / 0.64);
+
+  --border: rgb(16 185 129 / 0.14);
+  --border-strong: rgb(16 185 129 / 0.3);
+  --border-glow: rgb(16 185 129 / 0.55);
+  --input: rgb(52 211 153 / 0.55);
+  --ring: #34d399;
+
+  --success: #34d399;
+  --error: #fb7185;
+
+  --header: rgb(5 9 11 / 0.82);
+  --header-scrolled: rgb(5 9 11 / 0.94);
+
+  /* White text and icons only ever sit on --gradient-button: both stops are
+     ≥ 5.3:1 with white. --gradient-brand is decorative (rules, bars, words). */
+  --gradient-button: linear-gradient(135deg, #047857 0%, #0e7490 100%);
+  --gradient-brand: linear-gradient(135deg, #10b981 0%, #22d3ee 100%);
+  --gradient-display: linear-gradient(135deg, #ecfdf5 0%, #67e8f9 100%);
+  --gradient-tile: linear-gradient(
+    135deg,
+    rgb(16 185 129 / 0.16),
+    rgb(34 211 238 / 0.08)
+  );
+
+  --glow-primary: rgb(16 185 129 / 0.4);
+  --glow-secondary: rgb(34 211 238 / 0.3);
+  --shadow-card: 0 24px 64px rgb(0 0 0 / 0.5);
+  --shadow-lift: 0 20px 48px rgb(16 185 129 / 0.2);
+  --shadow-button: 0 6px 24px rgb(16 185 129 / 0.35);
+
+  --page-glow:
+    radial-gradient(
+      ellipse 80% 60% at 20% 0%,
+      rgb(16 185 129 / 0.11) 0%,
+      transparent 62%
+    ),
+    radial-gradient(
+      ellipse 70% 55% at 80% 100%,
+      rgb(34 211 238 / 0.07) 0%,
+      transparent 60%
+    );
+
+  /* Read by the Three.js constellation (components/effects/constellation). */
+  --scene-point: #10b981;
+  --scene-a: #10b981;
+  --scene-b: #22d3ee;
+  --scene-c: #34d399;
+  --scene-opacity: 1;
 }
 
-.dark {
-  --background: oklch(0.141 0.005 285.823);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.21 0.006 285.885);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.21 0.006 285.885);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.705 0.213 47.604);
-  --primary-foreground: oklch(0.98 0.016 73.684);
-  --secondary: oklch(0.274 0.006 286.033);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.274 0.006 286.033);
-  --muted-foreground: oklch(0.705 0.015 286.067);
-  --accent: oklch(0.274 0.006 286.033);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
-  --destructive-foreground: oklch(0.985 0 0);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.408 0.123 38.172);
-  --chart-1: oklch(0.837 0.128 66.29);
-  --chart-2: oklch(0.705 0.213 47.604);
-  --chart-3: oklch(0.646 0.222 41.116);
-  --chart-4: oklch(0.553 0.195 38.402);
-  --chart-5: oklch(0.47 0.157 37.304);
-  --sidebar: oklch(0.21 0.006 285.885);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.705 0.213 47.604);
-  --sidebar-primary-foreground: oklch(0.98 0.016 73.684);
-  --sidebar-accent: oklch(0.274 0.006 286.033);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.408 0.123 38.172);
-  --font-sans:
-    ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
-    Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif,
-    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-  --font-serif: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
-  --font-mono:
-    ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
-    "Courier New", monospace;
-  --radius: 0.625rem;
-  --shadow-x: 0;
-  --shadow-y: 1px;
-  --shadow-blur: 3px;
-  --shadow-spread: 0px;
-  --shadow-opacity: 0.1;
-  --shadow-color: oklch(0 0 0);
-  --shadow-2xs: 0 1px 3px 0px hsl(0 0% 0% / 0.05);
-  --shadow-xs: 0 1px 3px 0px hsl(0 0% 0% / 0.05);
-  --shadow-sm:
-    0 1px 3px 0px hsl(0 0% 0% / 0.1), 0 1px 2px -1px hsl(0 0% 0% / 0.1);
-  --shadow: 0 1px 3px 0px hsl(0 0% 0% / 0.1), 0 1px 2px -1px hsl(0 0% 0% / 0.1);
-  --shadow-md:
-    0 1px 3px 0px hsl(0 0% 0% / 0.1), 0 2px 4px -1px hsl(0 0% 0% / 0.1);
-  --shadow-lg:
-    0 1px 3px 0px hsl(0 0% 0% / 0.1), 0 4px 6px -1px hsl(0 0% 0% / 0.1);
-  --shadow-xl:
-    0 1px 3px 0px hsl(0 0% 0% / 0.1), 0 8px 10px -1px hsl(0 0% 0% / 0.1);
-  --shadow-2xl: 0 1px 3px 0px hsl(0 0% 0% / 0.25);
-  --primary-rgb: 249 115 22;
+/* ── Tokens: light ("day") ──────────────────────────────────────────────── */
+.light {
+  color-scheme: light;
+
+  --background: #f4fbf8;
+  --foreground: #0b1f1a;
+  --card: rgb(255 255 255 / 0.8);
+  --card-solid: #ffffff;
+  --card-foreground: #0b1f1a;
+  --popover: #ffffff;
+  --popover-foreground: #0b1f1a;
+
+  --primary: #047857; /* 5.2:1 on background */
+  --primary-strong: #065f46;
+  --primary-foreground: #ffffff;
+  --secondary: #14b8a6;
+  --secondary-strong: #0e7490;
+  --accent: #14b8a6;
+  --accent-strong: #0e7490;
+
+  --muted: rgb(4 120 87 / 0.07);
+  --muted-foreground: rgb(11 31 26 / 0.7);
+
+  --border: rgb(4 120 87 / 0.16);
+  --border-strong: rgb(4 120 87 / 0.3);
+  --border-glow: rgb(4 120 87 / 0.5);
+  --input: rgb(4 120 87 / 0.6);
+  --ring: #047857;
+
+  --success: #047857;
+  --error: #be123c;
+
+  --header: rgb(244 251 248 / 0.8);
+  --header-scrolled: rgb(244 251 248 / 0.94);
+
+  --gradient-button: linear-gradient(135deg, #047857 0%, #0e7490 100%);
+  --gradient-brand: linear-gradient(135deg, #047857 0%, #0e7490 100%);
+  --gradient-display: linear-gradient(135deg, #064e3b 0%, #0e7490 100%);
+  --gradient-tile: linear-gradient(
+    135deg,
+    rgb(4 120 87 / 0.12),
+    rgb(14 116 144 / 0.08)
+  );
+
+  --glow-primary: rgb(16 185 129 / 0.28);
+  --glow-secondary: rgb(20 184 166 / 0.22);
+  --shadow-card: 0 12px 40px rgb(4 120 87 / 0.12);
+  --shadow-lift: 0 18px 44px rgb(4 120 87 / 0.18);
+  --shadow-button: 0 6px 22px rgb(4 120 87 / 0.3);
+
+  --page-glow:
+    radial-gradient(
+      ellipse 80% 60% at 20% 0%,
+      rgb(16 185 129 / 0.1) 0%,
+      transparent 62%
+    ),
+    radial-gradient(
+      ellipse 70% 55% at 80% 100%,
+      rgb(20 184 166 / 0.08) 0%,
+      transparent 60%
+    );
+
+  --scene-point: #059669;
+  --scene-a: #059669;
+  --scene-b: #0d9488;
+  --scene-c: #10b981;
+  --scene-opacity: 0.7;
 }
 
 @theme inline {
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-display:
+    var(--font-space-grotesk), var(--font-inter), ui-sans-serif, sans-serif;
+  --font-mono:
+    var(--font-jetbrains-mono), ui-monospace, SFMono-Regular, Consolas,
+    monospace;
+
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
+  --color-card-solid: var(--card-solid);
   --color-card-foreground: var(--card-foreground);
   --color-popover: var(--popover);
   --color-popover-foreground: var(--popover-foreground);
   --color-primary: var(--primary);
+  --color-primary-strong: var(--primary-strong);
   --color-primary-foreground: var(--primary-foreground);
   --color-secondary: var(--secondary);
-  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary-strong: var(--secondary-strong);
+  --color-accent: var(--accent);
+  --color-accent-strong: var(--accent-strong);
   --color-muted: var(--muted);
   --color-muted-foreground: var(--muted-foreground);
-  --color-accent: var(--accent);
-  --color-accent-foreground: var(--accent-foreground);
-  --color-destructive: var(--destructive);
-  --color-destructive-foreground: var(--destructive-foreground);
   --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+  --color-border-glow: var(--border-glow);
   --color-input: var(--input);
   --color-ring: var(--ring);
-  --color-chart-1: var(--chart-1);
-  --color-chart-2: var(--chart-2);
-  --color-chart-3: var(--chart-3);
-  --color-chart-4: var(--chart-4);
-  --color-chart-5: var(--chart-5);
-  --color-sidebar: var(--sidebar);
-  --color-sidebar-foreground: var(--sidebar-foreground);
-  --color-sidebar-primary: var(--sidebar-primary);
-  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-  --color-sidebar-accent: var(--sidebar-accent);
-  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-  --color-sidebar-border: var(--sidebar-border);
-  --color-sidebar-ring: var(--sidebar-ring);
+  --color-success: var(--success);
+  --color-error: var(--error);
 
-  --font-sans: var(--font-sans);
-  --font-mono: var(--font-mono);
-  --font-serif: var(--font-serif);
-
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 4px);
-
-  --shadow-2xs: var(--shadow-2xs);
-  --shadow-xs: var(--shadow-xs);
-  --shadow-sm: var(--shadow-sm);
-  --shadow: var(--shadow);
-  --shadow-md: var(--shadow-md);
-  --shadow-lg: var(--shadow-lg);
-  --shadow-xl: var(--shadow-xl);
-  --shadow-2xl: var(--shadow-2xl);
+  --shadow-card: var(--shadow-card);
+  --shadow-lift: var(--shadow-lift);
+  --shadow-button: var(--shadow-button);
 }
 
+@theme {
+  --ease-spring: cubic-bezier(0.34, 1.2, 0.64, 1);
+  --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+
+  --radius-4xl: 2rem;
+
+  --animate-marquee: marquee 38s linear infinite;
+  --animate-orbit: orbit var(--orbit-duration, 40s) linear infinite;
+  --animate-orbit-reverse: orbit-reverse var(--orbit-duration, 40s) linear
+    infinite;
+  --animate-glow-float: glow-float 8s ease-in-out infinite;
+  --animate-pulse-dot: pulse-dot 2s ease-in-out infinite;
+  --animate-bob: bob var(--bob-duration, 4.2s) ease-in-out infinite;
+  --animate-caret: caret 1s steps(1) infinite;
+  --animate-shimmer: shimmer 2.4s linear infinite;
+
+  @keyframes marquee {
+    to {
+      transform: translateX(-50%);
+    }
+  }
+  @keyframes orbit {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  @keyframes orbit-reverse {
+    to {
+      transform: rotate(-360deg);
+    }
+  }
+  @keyframes glow-float {
+    50% {
+      transform: translateY(-30px) scale(1.05);
+    }
+  }
+  @keyframes pulse-dot {
+    0%,
+    100% {
+      box-shadow: 0 0 0 0 color-mix(in srgb, currentColor 55%, transparent);
+    }
+    60% {
+      box-shadow: 0 0 0 6px transparent;
+    }
+  }
+  @keyframes bob {
+    50% {
+      transform: translateY(-10px);
+    }
+  }
+  @keyframes caret {
+    50% {
+      opacity: 0;
+    }
+  }
+  @keyframes shimmer {
+    to {
+      background-position: 200% 0;
+    }
+  }
+}
+
+/* ── Utilities ─────────────────────────────────────────────────────────── */
+@utility glass {
+  background-color: var(--card);
+  backdrop-filter: blur(16px) saturate(140%);
+  -webkit-backdrop-filter: blur(16px) saturate(140%);
+}
+
+@utility text-gradient {
+  background-image: var(--gradient-brand);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+@utility text-gradient-display {
+  background-image: var(--gradient-display);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+@utility bg-gradient-button {
+  background-image: var(--gradient-button);
+}
+
+@utility bg-gradient-brand {
+  background-image: var(--gradient-brand);
+}
+
+@utility bg-gradient-tile {
+  background-image: var(--gradient-tile);
+}
+
+@utility hairline {
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--border-strong),
+    transparent
+  );
+}
+
+/* Focus ring shared by every interactive primitive (DESIGN.md §6). */
+@utility focus-ring {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+  &:focus-visible {
+    outline-color: var(--ring);
+  }
+}
+
+/* ── Base ──────────────────────────────────────────────────────────────── */
 @layer base {
   * {
-    @apply border-border outline-ring/50;
+    @apply border-border;
   }
+
+  html {
+    @apply font-sans;
+    scroll-padding-top: 6rem;
+    -webkit-tap-highlight-color: transparent;
+    scrollbar-color: var(--primary) transparent;
+    scrollbar-width: thin;
+  }
+
+  /* A modal <dialog> locks page scroll without JS bookkeeping. */
+  html:has(dialog[open]:modal) {
+    overflow: hidden;
+    scrollbar-gutter: stable;
+  }
+
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground antialiased;
+    background-image: var(--page-glow);
+    background-attachment: fixed;
+    caret-color: var(--primary);
+    min-height: 100dvh;
+    text-rendering: optimizeLegibility;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-display text-balance;
+    letter-spacing: -0.02em;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  ::selection {
+    background-color: color-mix(in srgb, var(--primary) 38%, transparent);
+    color: var(--foreground);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 3px;
+  }
+
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--gradient-brand);
+    border-radius: 9999px;
+  }
+
+  /* Tabular figures wherever numbers are compared. */
+  time,
+  data {
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+/* ── Scroll reveal (components/effects/reveal.tsx) ──────────────────────
+   Pure CSS: scroll-driven where supported, plainly visible everywhere else
+   (no-JS, Firefox, reduced motion). Content is never hidden by script. */
+@keyframes reveal-rise {
+  from {
+    opacity: 0;
+    transform: translateY(28px) scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    [data-reveal] {
+      animation: reveal-rise linear both;
+      animation-timeline: view();
+      /* Fixed distances, not percentages: a tall card is fully shown once
+         220px of it has entered, instead of staying half-faded at the fold. */
+      animation-range: entry calc(var(--reveal-index, 0) * 36px) entry
+        calc(220px + var(--reveal-index, 0) * 36px);
+    }
+  }
+}
+
+/* ── Sticky header scrolled state (components/layout/site-header.tsx) ── */
+@keyframes header-scrolled {
+  to {
+    background-color: var(--header-scrolled);
+    border-color: var(--border-strong);
+    box-shadow: 0 6px 40px rgb(16 185 129 / 0.14);
+  }
+}
+
+@supports (animation-timeline: scroll()) {
+  [data-site-header] {
+    animation: header-scrolled linear both;
+    animation-timeline: scroll(root block);
+    animation-range: 0 80px;
+  }
+}
+
+/* ── Reduced motion: stop every ambient loop ─────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  ::before,
+  ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ── <details> open/close (components/ui/accordion.tsx) ──────────────── */
+@supports (interpolate-size: allow-keywords) {
+  :root {
+    interpolate-size: allow-keywords;
+  }
+  details::details-content {
+    block-size: 0;
+    overflow-y: clip;
+    transition:
+      block-size 0.4s var(--ease-out-expo),
+      content-visibility 0.4s allow-discrete;
+  }
+  details[open]::details-content {
+    block-size: auto;
   }
 }

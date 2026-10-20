@@ -1,46 +1,64 @@
-import * as React from "react"
-import { Slot } from "@radix-ui/react-slot"
-import { cva, type VariantProps } from "class-variance-authority"
+import { cva, type VariantProps } from "class-variance-authority";
+import { cn } from "cn";
+import type { ComponentProps } from "react";
 
-import { cn } from "@/lib/utils"
-
-const badgeVariants = cva(
-  "inline-flex items-center justify-center rounded-md border px-2 py-0.5 text-xs font-medium w-fit whitespace-nowrap shrink-0 [&>svg]:size-3 gap-1 [&>svg]:pointer-events-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive transition-[color,box-shadow] overflow-hidden",
+export const badgeVariants = cva(
+  "inline-flex items-center gap-1.5 rounded-full border font-medium whitespace-nowrap [&_svg]:size-3.5 [&_svg]:shrink-0",
   {
     variants: {
       variant: {
-        default:
-          "border-transparent bg-primary text-primary-foreground [a&]:hover:bg-primary/90",
-        secondary:
-          "border-transparent bg-secondary text-secondary-foreground [a&]:hover:bg-secondary/90",
-        destructive:
-          "border-transparent bg-destructive text-white [a&]:hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 dark:bg-destructive/60",
-        outline:
-          "text-foreground [a&]:hover:bg-accent [a&]:hover:text-accent-foreground",
+        default: "border-border-strong bg-muted text-primary-strong",
+        outline: "border-border-strong bg-transparent text-muted-foreground",
+        secondary: "border-secondary/30 bg-secondary/10 text-secondary-strong",
+        success: "border-success/30 bg-success/10 text-success",
+        solid: "border-transparent bg-gradient-button text-primary-foreground",
+      },
+      size: {
+        sm: "h-6 px-2.5 text-xs",
+        md: "h-7 px-3 text-[0.8rem]",
       },
     },
-    defaultVariants: {
-      variant: "default",
-    },
-  }
-)
+    defaultVariants: { variant: "default", size: "sm" },
+  },
+);
 
-function Badge({
+export function Badge({
   className,
   variant,
-  asChild = false,
+  size,
   ...props
-}: React.ComponentProps<"span"> &
-  VariantProps<typeof badgeVariants> & { asChild?: boolean }) {
-  const Comp = asChild ? Slot : "span"
-
+}: ComponentProps<"span"> & VariantProps<typeof badgeVariants>) {
   return (
-    <Comp
-      data-slot="badge"
-      className={cn(badgeVariants({ variant }), className)}
+    <span
+      className={cn(badgeVariants({ variant, size }), className)}
       {...props}
     />
-  )
+  );
 }
 
-export { Badge, badgeVariants }
+/** Status pill with a pulsing dot, e.g. availability. */
+export function StatusPill({
+  className,
+  tone = "secondary",
+  children,
+  ...props
+}: ComponentProps<"span"> & { tone?: "secondary" | "success" }) {
+  return (
+    <span
+      className={cn(
+        "inline-flex items-center gap-2.5 rounded-full border px-4 py-1.5 text-[0.82rem] font-medium backdrop-blur-md",
+        tone === "success"
+          ? "border-success/30 bg-success/10 text-success"
+          : "border-border-strong bg-muted text-secondary-strong",
+        className,
+      )}
+      {...props}
+    >
+      <span
+        aria-hidden="true"
+        className="size-2 shrink-0 rounded-full bg-current motion-safe:animate-pulse-dot"
+      />
+      {children}
+    </span>
+  );
+}

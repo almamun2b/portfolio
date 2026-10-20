@@ -1,61 +1,36 @@
-"use client"
+import { cn } from "cn";
+import { cloneElement, type ReactElement } from "react";
 
-import * as React from "react"
-import * as TooltipPrimitive from "@radix-ui/react-tooltip"
-
-import { cn } from "@/lib/utils"
-
-function TooltipProvider({
-  delayDuration = 0,
-  ...props
-}: React.ComponentProps<typeof TooltipPrimitive.Provider>) {
-  return (
-    <TooltipPrimitive.Provider
-      data-slot="tooltip-provider"
-      delayDuration={delayDuration}
-      {...props}
-    />
-  )
-}
-
-function Tooltip({
-  ...props
-}: React.ComponentProps<typeof TooltipPrimitive.Root>) {
-  return (
-    <TooltipProvider>
-      <TooltipPrimitive.Root data-slot="tooltip" {...props} />
-    </TooltipProvider>
-  )
-}
-
-function TooltipTrigger({
-  ...props
-}: React.ComponentProps<typeof TooltipPrimitive.Trigger>) {
-  return <TooltipPrimitive.Trigger data-slot="tooltip-trigger" {...props} />
-}
-
-function TooltipContent({
-  className,
-  sideOffset = 0,
+// CSS-only tooltip: shown on hover and keyboard focus, wired to the trigger
+// with aria-describedby. Use it for supplementary text only; the trigger must
+// already have an accessible name of its own.
+export function Tooltip({
+  id,
+  content,
+  side = "top",
   children,
-  ...props
-}: React.ComponentProps<typeof TooltipPrimitive.Content>) {
+}: {
+  id: string;
+  content: string;
+  side?: "top" | "bottom";
+  children: ReactElement<{ "aria-describedby"?: string }>;
+}) {
   return (
-    <TooltipPrimitive.Portal>
-      <TooltipPrimitive.Content
-        data-slot="tooltip-content"
-        sideOffset={sideOffset}
+    <span className="group/tooltip relative inline-flex">
+      {cloneElement(children, { "aria-describedby": id })}
+      <span
+        role="tooltip"
+        id={id}
         className={cn(
-          "bg-foreground text-background animate-in fade-in-0 zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 z-50 w-fit origin-(--radix-tooltip-content-transform-origin) rounded-md px-3 py-1.5 text-xs text-balance",
-          className
+          "pointer-events-none absolute left-1/2 z-50 -translate-x-1/2 rounded-lg border border-border-strong bg-popover px-2.5 py-1 text-xs font-medium whitespace-nowrap text-popover-foreground opacity-0 shadow-card transition-[opacity,translate] duration-200",
+          "group-focus-within/tooltip:opacity-100 group-hover/tooltip:opacity-100",
+          side === "top"
+            ? "bottom-full mb-2 translate-y-1 group-focus-within/tooltip:translate-y-0 group-hover/tooltip:translate-y-0"
+            : "top-full mt-2 -translate-y-1 group-focus-within/tooltip:translate-y-0 group-hover/tooltip:translate-y-0",
         )}
-        {...props}
       >
-        {children}
-        <TooltipPrimitive.Arrow className="bg-foreground fill-foreground z-50 size-2.5 translate-y-[calc(-50%_-_2px)] rotate-45 rounded-[2px]" />
-      </TooltipPrimitive.Content>
-    </TooltipPrimitive.Portal>
-  )
+        {content}
+      </span>
+    </span>
+  );
 }
-
-export { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider }
