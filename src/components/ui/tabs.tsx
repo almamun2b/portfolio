@@ -1,66 +1,166 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import * as TabsPrimitive from "@radix-ui/react-tabs"
+import { cn } from "cn";
+import {
+  createContext,
+  use,
+  useId,
+  useState,
+  type KeyboardEvent,
+  type ReactNode,
+} from "react";
 
-import { cn } from "@/lib/utils"
+// WAI-ARIA tabs with automatic activation: Arrow keys move and select,
+// Home/End jump to the ends, Tab leaves the list. Inactive panels stay in the
+// DOM (hidden) so server-rendered content remains indexable.
 
-function Tabs({
-  className,
-  ...props
-}: React.ComponentProps<typeof TabsPrimitive.Root>) {
-  return (
-    <TabsPrimitive.Root
-      data-slot="tabs"
-      className={cn("flex flex-col gap-2", className)}
-      {...props}
-    />
-  )
+interface TabsState {
+  value: string;
+  select: (value: string) => void;
+  baseId: string;
 }
 
-function TabsList({
+const TabsContext = createContext<TabsState | null>(null);
+
+function useTabs() {
+  const ctx = use(TabsContext);
+  if (!ctx) throw new Error("Tabs parts must be used inside <Tabs>");
+  return ctx;
+}
+
+const safe = (value: string) => value.replace(/[^a-zA-Z0-9_-]/g, "-");
+
+export function Tabs({
+  defaultValue,
+  value: controlled,
+  onValueChange,
   className,
-  ...props
-}: React.ComponentProps<typeof TabsPrimitive.List>) {
+  children,
+}: {
+  defaultValue: string;
+  value?: string;
+  onValueChange?: (value: string) => void;
+  className?: string;
+  children: ReactNode;
+}) {
+  const [uncontrolled, setUncontrolled] = useState(defaultValue);
+  const baseId = useId();
+  const value = controlled ?? uncontrolled;
+  const select = (next: string) => {
+    if (controlled === undefined) setUncontrolled(next);
+    onValueChange?.(next);
+  };
   return (
-    <TabsPrimitive.List
-      data-slot="tabs-list"
+    <TabsContext value={{ value, select, baseId }}>
+      <div className={className}>{children}</div>
+    </TabsContext>
+  );
+}
+
+export function TabsList({
+  label,
+  className,
+  children,
+}: {
+  label: string;
+  className?: string;
+  children: ReactNode;
+}) {
+  const onKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
+    const tabs = Array.from(
+      event.currentTarget.querySelectorAll<HTMLButtonElement>(
+        '[role="tab"]:not([disabled])',
+      ),
+    );
+    const current = tabs.findIndex((tab) => tab === document.activeElement);
+    const last = tabs.length - 1;
+    const target = {
+      ArrowRight: current === last ? 0 : current + 1,
+      ArrowLeft: current <= 0 ? last : current - 1,
+      Home: 0,
+      End: last,
+    }[event.key];
+    if (target === undefined) return;
+    event.preventDefault();
+    tabs[target]?.focus();
+    tabs[target]?.click();
+  };
+
+  return (
+    <div
+      role="tablist"
+      aria-label={label}
+      aria-orientation="horizontal"
+      onKeyDown={onKeyDown}
       className={cn(
-        "bg-muted text-muted-foreground inline-flex h-9 w-fit items-center justify-center rounded-lg p-[3px]",
-        className
+        "inline-flex w-fit max-w-full [scrollbar-width:none] gap-1 overflow-x-auto rounded-full border border-border bg-muted p-1 backdrop-blur-md",
+        className,
       )}
-      {...props}
-    />
-  )
+    >
+      {children}
+    </div>
+  );
 }
 
-function TabsTrigger({
+export function TabsTrigger({
+  value,
   className,
-  ...props
-}: React.ComponentProps<typeof TabsPrimitive.Trigger>) {
+  children,
+}: {
+  value: string;
+  className?: string;
+  children: ReactNode;
+}) {
+  const { value: active, select, baseId } = useTabs();
+  const selected = active === value;
   return (
-    <TabsPrimitive.Trigger
-      data-slot="tabs-trigger"
+    <button
+      type="button"
+      role="tab"
+      id={`${baseId}-tab-${safe(value)}`}
+      aria-controls={`${baseId}-panel-${safe(value)}`}
+      aria-selected={selected}
+      tabIndex={selected ? 0 : -1}
+      onClick={() => {
+        select(value);
+      }}
       className={cn(
-        "data-[state=active]:bg-background dark:data-[state=active]:text-foreground focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:outline-ring dark:data-[state=active]:border-input dark:data-[state=active]:bg-input/30 text-foreground dark:text-muted-foreground inline-flex h-[calc(100%-1px)] flex-1 items-center justify-center gap-1.5 rounded-md border border-transparent px-2 py-1 text-sm font-medium whitespace-nowrap transition-[color,box-shadow] focus-visible:ring-[3px] focus-visible:outline-1 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:shadow-sm [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
-        className
+        "inline-flex min-h-10 shrink-0 cursor-pointer items-center gap-2 rounded-full px-4 text-sm font-medium whitespace-nowrap transition-[background-color,color,box-shadow] duration-300",
+        "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring",
+        selected
+          ? "bg-gradient-button text-primary-foreground shadow-button"
+          : "text-muted-foreground hover:bg-primary/10 hover:text-foreground",
+        className,
       )}
-      {...props}
-    />
-  )
+    >
+      {children}
+    </button>
+  );
 }
 
-function TabsContent({
+export function TabsPanel({
+  value,
   className,
-  ...props
-}: React.ComponentProps<typeof TabsPrimitive.Content>) {
+  children,
+}: {
+  value: string;
+  className?: string;
+  children: ReactNode;
+}) {
+  const { value: active, baseId } = useTabs();
   return (
-    <TabsPrimitive.Content
-      data-slot="tabs-content"
-      className={cn("flex-1 outline-none", className)}
-      {...props}
-    />
-  )
+    <div
+      role="tabpanel"
+      id={`${baseId}-panel-${safe(value)}`}
+      aria-labelledby={`${baseId}-tab-${safe(value)}`}
+      hidden={active !== value}
+      tabIndex={0}
+      className={cn(
+        "rounded-3xl focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring",
+        className,
+      )}
+    >
+      {children}
+    </div>
+  );
 }
-
-export { Tabs, TabsList, TabsTrigger, TabsContent }

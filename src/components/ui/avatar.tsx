@@ -1,53 +1,52 @@
-"use client"
+import { cn } from "cn";
+import Image, { type StaticImageData } from "next/image";
 
-import * as React from "react"
-import * as AvatarPrimitive from "@radix-ui/react-avatar"
+const SIZES = { sm: 40, md: 56, lg: 96, xl: 160 } as const;
 
-import { cn } from "@/lib/utils"
+function initials(name: string) {
+  return name
+    .split(/\s+/)
+    .filter(Boolean)
+    .slice(-2)
+    .map((part) => part[0]?.toUpperCase() ?? "")
+    .join("");
+}
 
-function Avatar({
+/** Round avatar: an image when there is one, initials otherwise. */
+export function Avatar({
+  name,
+  src,
+  size = "md",
   className,
-  ...props
-}: React.ComponentProps<typeof AvatarPrimitive.Root>) {
+}: {
+  name: string;
+  src?: StaticImageData | string;
+  size?: keyof typeof SIZES;
+  className?: string;
+}) {
+  const px = SIZES[size];
   return (
-    <AvatarPrimitive.Root
-      data-slot="avatar"
+    <span
       className={cn(
-        "relative flex size-8 shrink-0 overflow-hidden rounded-full",
-        className
+        "relative inline-flex shrink-0 items-center justify-center overflow-hidden rounded-full bg-gradient-button font-display font-semibold text-primary-foreground ring-2 ring-border-strong",
+        className,
       )}
-      {...props}
-    />
-  )
-}
-
-function AvatarImage({
-  className,
-  ...props
-}: React.ComponentProps<typeof AvatarPrimitive.Image>) {
-  return (
-    <AvatarPrimitive.Image
-      data-slot="avatar-image"
-      className={cn("aspect-square size-full", className)}
-      {...props}
-    />
-  )
-}
-
-function AvatarFallback({
-  className,
-  ...props
-}: React.ComponentProps<typeof AvatarPrimitive.Fallback>) {
-  return (
-    <AvatarPrimitive.Fallback
-      data-slot="avatar-fallback"
-      className={cn(
-        "bg-muted flex size-full items-center justify-center rounded-full",
-        className
+      style={{ width: px, height: px, fontSize: px * 0.36 }}
+    >
+      {src ? (
+        <Image
+          src={src}
+          alt={name}
+          width={px}
+          height={px}
+          sizes={`${String(px)}px`}
+          className="size-full object-cover"
+        />
+      ) : (
+        <span aria-label={name} role="img">
+          {initials(name)}
+        </span>
       )}
-      {...props}
-    />
-  )
+    </span>
+  );
 }
-
-export { Avatar, AvatarImage, AvatarFallback }

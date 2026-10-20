@@ -1,26 +1,41 @@
-"use client";
+import { ArrowLeft, FolderGit2 } from "lucide-react";
+import type { Metadata } from "next";
+import { Container } from "@/components/layout/container";
+import { SiteChrome } from "@/components/layout/site-chrome";
+import { ButtonLink } from "@/components/ui/button-link";
 
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
+export const metadata: Metadata = {
+  title: "Page not found",
+  robots: { index: false },
+};
 
-export default function NotFoundPage() {
+// Root 404 sits outside the (site) group, so it brings the chrome itself.
+export default function NotFound() {
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center bg-gray-50 px-4">
-      <div className="max-w-md text-center">
-        <h1 className="text-6xl font-bold text-gray-800">404</h1>
-        <h2 className="mt-2 text-2xl font-semibold text-gray-700">
-          Page not found
-        </h2>
-        <p className="mt-2 text-gray-500">
-          Sorry, we couldn’t find the page you’re looking for.
+    <SiteChrome>
+      <Container className="flex min-h-[60dvh] flex-col items-start justify-center gap-6 py-20">
+        <p className="font-mono text-sm text-secondary-strong">
+          <span className="text-muted-foreground">$</span> GET {"<this page>"}
+          <span className="ml-2 rounded-md bg-error/15 px-2 py-0.5 text-error">
+            404
+          </span>
         </p>
-
-        <div className="mt-6">
-          <Button asChild>
-            <Link href="/">Go Home</Link>
-          </Button>
+        <h1 className="text-[clamp(2.2rem,5vw,3.6rem)] leading-tight font-bold tracking-tight">
+          This page <span className="text-gradient">doesn&apos;t exist.</span>
+        </h1>
+        <p className="max-w-xl text-lg text-muted-foreground">
+          The link may be old, or the address mistyped. The projects and the
+          homepage are still where you left them.
+        </p>
+        <div className="flex flex-col gap-3 sm:flex-row">
+          <ButtonLink href="/" size="lg">
+            <ArrowLeft aria-hidden="true" /> Back to home
+          </ButtonLink>
+          <ButtonLink href="/projects" variant="outline" size="lg">
+            <FolderGit2 aria-hidden="true" /> Browse projects
+          </ButtonLink>
         </div>
-      </div>
-    </div>
+      </Container>
+    </SiteChrome>
   );
 }
