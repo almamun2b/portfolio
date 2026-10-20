@@ -26,17 +26,17 @@ pnpm dev                    # http://localhost:3000
 
 ## Scripts
 
-| Script                         | What it does                                                                             |
-| ------------------------------ | ---------------------------------------------------------------------------------------- |
-| `pnpm dev`                     | Dev server (Turbopack)                                                                   |
-| `pnpm build` / `pnpm start`    | Standalone production build (static assets copied in) / run `.next/standalone/server.js` |
-| `pnpm typecheck`               | Generate route types (`next typegen`), then `tsc --noEmit`                               |
-| `pnpm lint` / `lint:fix`       | ESLint (Next.js + typescript-eslint strict, type-aware)                                  |
-| `pnpm format` / `format:check` | Format with Prettier / check formatting (CI)                                             |
-| `pnpm db:generate`             | Generate the Prisma client (run after every schema change)                               |
-| `pnpm db:migrate`              | Create and apply a migration in development                                              |
-| `pnpm db:push`                 | Push the schema without a migration (prototyping only)                                   |
-| `pnpm db:seed`                 | Run `prisma/seed.ts`                                                                     |
+| Script                         | What it does                                                                                                                |
+| ------------------------------ | --------------------------------------------------------------------------------------------------------------------------- |
+| `pnpm dev`                     | Dev server (Turbopack)                                                                                                      |
+| `pnpm build` / `pnpm start`    | Generate the Prisma client, then a standalone production build (static assets copied in) / run `.next/standalone/server.js` |
+| `pnpm typecheck`               | Generate route types (`next typegen`), then `tsc --noEmit`                                                                  |
+| `pnpm lint` / `lint:fix`       | ESLint (Next.js + typescript-eslint strict, type-aware)                                                                     |
+| `pnpm format` / `format:check` | Format with Prettier / check formatting (CI)                                                                                |
+| `pnpm db:generate`             | Generate the Prisma client (run after every schema change)                                                                  |
+| `pnpm db:migrate`              | Create and apply a migration in development                                                                                 |
+| `pnpm db:push`                 | Push the schema without a migration (prototyping only)                                                                      |
+| `pnpm db:seed`                 | Run `prisma/seed.ts`                                                                                                        |
 
 ## Project layout
 
@@ -64,6 +64,8 @@ See [`.env.example`](.env.example). The full list of planned variables is in [AR
 ## Deployment
 
 `pnpm build` produces a standalone Node server in `.next/standalone` and copies `.next/static` (and `public/`, if present) into it. `pnpm start` runs that server.
+
+`pnpm build` runs `prisma generate` first, because `src/generated/` is gitignored. Hosts that build from a clean checkout (such as Vercel) need no extra step and no `DATABASE_URL` while the site is static.
 
 **Prisma Compute:** put the production values (at least `DATABASE_URL` for the hosted database) in `.env.compute`, which is gitignored. `prisma.compute.ts` deploys with that file. Never put production values in `.env`: every local command (`pnpm dev`, `db:migrate`, `db:seed`) reads it. Then run:
 

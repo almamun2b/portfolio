@@ -1,5 +1,5 @@
 import { config } from "dotenv";
-import { defineConfig, env } from "prisma/config";
+import { defineConfig } from "prisma/config";
 
 config({ quiet: true });
 
@@ -10,6 +10,9 @@ export default defineConfig({
     seed: "tsx ./prisma/seed.ts",
   },
   datasource: {
-    url: env("DATABASE_URL"),
+    // Not env("DATABASE_URL"): that throws when the variable is unset, and
+    // `prisma generate` runs in builds (Vercel) that have no database. Commands
+    // that connect (migrate, db, studio) still fail clearly without it.
+    url: process.env.DATABASE_URL,
   },
 });
