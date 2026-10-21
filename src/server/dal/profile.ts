@@ -45,8 +45,13 @@ const skillGroups = z.array(skillGroupSchema).parse(rawSkills);
 const processSteps = z.array(processStepSchema).parse(rawProcess);
 const faq = z.array(faqSchema).parse(rawFaq);
 
+/** `{years}` in the bio is filled from careerStart, so it never goes stale. */
 export function getProfile(): Promise<Profile> {
-  return Promise.resolve(profile);
+  const years = String(yearsSince(profile.careerStart));
+  return Promise.resolve({
+    ...profile,
+    about: profile.about.map((p) => p.replaceAll("{years}", years)),
+  });
 }
 
 export function getSocials(): Promise<Social[]> {

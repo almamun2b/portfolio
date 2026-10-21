@@ -5,14 +5,17 @@ import {
   createContext,
   use,
   useId,
+  useRef,
   useState,
   type KeyboardEvent,
   type ReactNode,
 } from "react";
+import { SlidingIndicator, useSlidingIndicator } from "./sliding-indicator";
 
 // WAI-ARIA tabs with automatic activation: Arrow keys move and select,
 // Home/End jump to the ends, Tab leaves the list. Inactive panels stay in the
-// DOM (hidden) so server-rendered content remains indexable.
+// DOM (hidden) so server-rendered content remains indexable. The selected
+// pill slides between tabs (SlidingIndicator).
 
 interface TabsState {
   value: string;
@@ -66,6 +69,13 @@ export function TabsList({
   className?: string;
   children: ReactNode;
 }) {
+  const { value } = useTabs();
+  const listRef = useRef<HTMLDivElement>(null);
+  const indicator = useSlidingIndicator(
+    listRef,
+    '[role="tab"][aria-selected="true"]',
+    value,
+  );
   const onKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
     const tabs = Array.from(
       event.currentTarget.querySelectorAll<HTMLButtonElement>(
@@ -88,15 +98,18 @@ export function TabsList({
 
   return (
     <div
+      ref={listRef}
       role="tablist"
       aria-label={label}
       aria-orientation="horizontal"
       onKeyDown={onKeyDown}
+      data-indicator={indicator.box ? "ready" : undefined}
       className={cn(
-        "inline-flex w-fit max-w-full [scrollbar-width:none] gap-1 overflow-x-auto rounded-full border border-border bg-muted p-1 backdrop-blur-md",
+        "group/pills relative inline-flex w-fit max-w-full [scrollbar-width:none] gap-1 overflow-x-auto rounded-full border border-border bg-muted p-1 backdrop-blur-md",
         className,
       )}
     >
+      <SlidingIndicator state={indicator} />
       {children}
     </div>
   );
@@ -125,10 +138,10 @@ export function TabsTrigger({
         select(value);
       }}
       className={cn(
-        "inline-flex min-h-10 shrink-0 cursor-pointer items-center gap-2 rounded-full px-4 text-sm font-medium whitespace-nowrap transition-[background-color,color,box-shadow] duration-300",
+        "relative inline-flex min-h-10 shrink-0 cursor-pointer items-center gap-2 rounded-full px-4 text-sm font-medium whitespace-nowrap transition-[background-color,color,box-shadow] duration-300",
         "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring",
         selected
-          ? "bg-gradient-button text-primary-foreground shadow-button"
+          ? "bg-gradient-button text-primary-foreground shadow-button group-data-[indicator=ready]/pills:bg-none group-data-[indicator=ready]/pills:shadow-none"
           : "text-muted-foreground hover:bg-primary/10 hover:text-foreground",
         className,
       )}

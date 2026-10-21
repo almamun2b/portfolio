@@ -1,5 +1,7 @@
+import portrait from "@/assets/portrait-square.jpg";
 import type { Experience, Profile, Project, Social } from "./schemas/content";
 import { absoluteUrl, projectHref, site } from "./site";
+import { getTech } from "./tech";
 
 type JsonLd = Record<string, unknown>;
 
@@ -23,7 +25,7 @@ export function personJsonLd(
     jobTitle: profile.role,
     description: profile.pitch,
     url: site.url,
-    image: absoluteUrl("/opengraph-image"),
+    image: absoluteUrl(portrait.src),
     email: `mailto:${profile.email}`,
     address: {
       "@type": "PostalAddress",
@@ -44,16 +46,7 @@ export function personJsonLd(
         }
       : {}),
     knowsAbout: [
-      "React",
-      "Next.js",
-      "Vue.js",
-      "Nuxt",
-      "TypeScript",
-      "Node.js",
-      "Express",
-      "PostgreSQL",
-      "Prisma",
-      "MongoDB",
+      ...profile.stack.map((id) => getTech(id).label),
       "Shopify app development",
     ],
     sameAs: socials.map((s) => s.href),
@@ -87,7 +80,18 @@ export function breadcrumbJsonLd(
   };
 }
 
+/** For / and /about: Google's profile-page rich result, about the Person. */
+export function profilePageJsonLd(path: string): JsonLd {
+  return {
+    "@context": "https://schema.org",
+    "@type": "ProfilePage",
+    url: absoluteUrl(path),
+    mainEntity: { "@id": absoluteUrl("/#person") },
+  };
+}
+
 export function projectJsonLd(project: Project): JsonLd {
+  const shot = project.media.shots[0];
   return {
     "@context": "https://schema.org",
     "@type": "CreativeWork",
@@ -97,6 +101,7 @@ export function projectJsonLd(project: Project): JsonLd {
     dateCreated: project.year,
     creator: { "@id": absoluteUrl("/#person") },
     keywords: project.stack.join(", "),
+    ...(shot ? { image: absoluteUrl(shot.src) } : {}),
     ...(project.links.live ? { sameAs: project.links.live } : {}),
   };
 }

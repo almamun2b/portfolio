@@ -65,29 +65,6 @@ export const capturedMedia: Record<string, Shot[]> = {
       device: "mobile",
     },
   ],
-  widerml: [
-    {
-      src: "/projects/widerml/desktop-1.jpg",
-      width: 1440,
-      height: 900,
-      alt: "WiderML: first screen on desktop",
-      device: "desktop",
-    },
-    {
-      src: "/projects/widerml/desktop-2.jpg",
-      width: 1440,
-      height: 900,
-      alt: "WiderML: further down the page on desktop",
-      device: "desktop",
-    },
-    {
-      src: "/projects/widerml/mobile-1.jpg",
-      width: 780,
-      height: 1688,
-      alt: "WiderML: first screen on a phone",
-      device: "mobile",
-    },
-  ],
   "library-management-system": [
     {
       src: "/projects/library-management-system/desktop-1.jpg",
@@ -131,6 +108,45 @@ export const capturedMedia: Record<string, Shot[]> = {
       width: 780,
       height: 1688,
       alt: "RemoteRecruit landing page: first screen on a phone",
+      device: "mobile",
+    },
+  ],
+  "nextjs-starter-template": [
+    {
+      src: "/projects/nextjs-starter-template/desktop-1.jpg",
+      width: 1440,
+      height: 900,
+      alt: "Next.js starter template: starter home page in dark mode, with a login link and dashboard call to action",
+      device: "desktop",
+    },
+    {
+      src: "/projects/nextjs-starter-template/mobile-1.jpg",
+      width: 780,
+      height: 1688,
+      alt: "Next.js starter template: starter home page on a phone",
+      device: "mobile",
+    },
+  ],
+  "team-hub": [
+    {
+      src: "/projects/team-hub/desktop-1.jpg",
+      width: 1440,
+      height: 900,
+      alt: "Collaborative Team Hub: landing page",
+      device: "desktop",
+    },
+    {
+      src: "/projects/team-hub/desktop-2.jpg",
+      width: 1440,
+      height: 900,
+      alt: "Collaborative Team Hub: feature overview further down the landing page",
+      device: "desktop",
+    },
+    {
+      src: "/projects/team-hub/mobile-1.jpg",
+      width: 780,
+      height: 1688,
+      alt: "Collaborative Team Hub: landing page on a phone",
       device: "mobile",
     },
   ],

@@ -12,6 +12,8 @@ function luma(hex: string) {
 /**
  * A technology's logo (simple-icons) or a neutral glyph. Decorative by
  * default: pair it with a visible label, or pass `title` to expose it.
+ * Logos are <use> references into /tech-sprite.svg (app/tech-sprite.svg),
+ * which the browser fetches once and caches across pages.
  */
 export function TechIcon({
   id,
@@ -55,7 +57,7 @@ export function TechIcon({
       data-tech={label}
       {...a11y}
     >
-      <path d={icon.path} />
+      <use href={`/tech-sprite.svg#${id}`} />
     </svg>
   );
 }

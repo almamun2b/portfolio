@@ -19,7 +19,7 @@ This is the personal portfolio of Md Abdul Mamun (full-stack software engineer):
 Content lives in `src/content/*.ts` as plain typed data, validated by the zod schemas in `src/lib/schemas/content.ts`, and is read **only** through async getters in `src/server/dal/*` (`getProfile`, `getProjects`, `getProjectBySlug`, …). Pages never import `src/content` (ESLint `no-restricted-imports` enforces this; `navigation.ts` is the one exception). Moving a domain to Postgres means rewriting its DAL file and keeping the function signatures and DTO shapes.
 
 - Project screenshots: `pnpm screenshots [slug…]` (scripts/capture-screenshots.ts, Playwright with the cached Chromium) writes `public/projects/<slug>/*.jpg` and `src/content/project-media.generated.ts`. Review the images before committing. Hand-picked images for private work go in `project-media.manual.ts`, after checking them for client names, logos, store URLs, and personal data.
-- Xubitar client work is **anonymized**: no client, product, or store names anywhere, including alt text. Projects without public screenshots use a designed cover labelled "illustration".
+- Xubitar and Devxhub client work is **anonymized**: no client, product, or store names anywhere, including alt text, and no links to the client's product. Projects without public screenshots use a designed cover labelled "illustration".
 - Never add testimonials, client logos, or unverifiable numbers; stats are derived from content.
 
 ## This is not the Next.js or Prisma you remember
@@ -56,7 +56,7 @@ pnpm exec prisma migrate status
 pnpm exec prisma studio
 ```
 
-Planned scripts (not yet in `package.json`; add them when you set up the tooling): `test` (Vitest; a single test is `pnpm test path/to/file.test.ts -t "name"`), `test:e2e` (Playwright; a single test is `pnpm test:e2e tests/e2e/auth.spec.ts -g "name"`).
+Tests: `pnpm test` (Vitest, `tests/unit`; a single test is `pnpm test tests/unit/dates.test.ts -t "name"`) and `pnpm test:e2e` (Playwright + axe smoke tests in `tests/e2e`, run against the standalone build, so `pnpm build` first or set `BASE_URL`; a single test is `pnpm test:e2e tests/e2e/smoke.spec.ts -g "name"`). Both run in CI.
 
 Tooling is pinned on purpose: **ESLint 9** (the plugins inside `eslint-config-next` don't support ESLint 10 yet) and **TypeScript `~6.0`** (typescript-eslint doesn't support TypeScript 7 yet). Don't bump either major until `eslint-config-next` and `typescript-eslint` support it.
 
@@ -137,7 +137,7 @@ ESLint enforces these as errors, so `pnpm lint`, the pre-commit hook, and CI all
 
 Before you call a change complete:
 
-1. `pnpm typecheck`, `pnpm lint`, and `pnpm format:check` are clean. Once they exist, `pnpm test` and the relevant `pnpm test:e2e` specs pass (e2e includes axe checks).
+1. `pnpm typecheck`, `pnpm lint`, `pnpm format:check`, and `pnpm test` are clean, and the relevant `pnpm test:e2e` specs pass (e2e includes axe checks).
 2. For any schema change: the migration is committed and `pnpm db:generate` has run.
 3. For UI changes: run the dev server and exercise the flow in a browser, including keyboard-only use and a narrow (375px) viewport. Passing type checks do not prove a feature works.
 4. Update ARCHITECTURE.md's Implementation status table (and DESIGN.md's Setup status and token tables for UI/theme changes), and update `.env.example` and README.md if setup changed.

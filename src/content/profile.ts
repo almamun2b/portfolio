@@ -16,7 +16,7 @@ export const profile = {
   pitch:
     "I design, build, and maintain production web apps end to end: React, Next.js, and Vue on the front, Node.js, Express, and PostgreSQL behind them, and Shopify apps that stores run on every day.",
   about: [
-    "I'm a full-stack software engineer with over four years of professional experience building scalable, secure, high-performance web applications.",
+    "I'm a full-stack software engineer with over {years} years of professional experience building scalable, secure, high-performance web applications.",
     "My strongest side is the frontend: React, Next.js, and Vue/Nuxt, with a focus on accessibility, Core Web Vitals, and components a team can keep using. Behind that I build the rest of the system: Node.js and Express services, REST APIs, PostgreSQL with Prisma, MongoDB, webhooks, and third-party integrations.",
     "At Xubitar I build e-commerce systems: Shopify apps, multi-store order fulfilment, and inventory management. Before that I spent four years at Devxhub shipping client products, from a social media archiving system to e-learning and e-commerce platforms.",
   ],
@@ -32,6 +32,34 @@ export const profile = {
       "Full-time roles (remote or on-site) and contract work on web apps, Shopify apps, and integrations.",
   },
   careerStart: "2022-03",
+  primaryStack: [
+    "react",
+    "nextjs",
+    "vue",
+    "nuxt",
+    "nodejs",
+    "postgresql",
+    "shopify",
+  ],
+  // The first ten form the hero orbits (six outer, four inner).
+  stack: [
+    "react",
+    "nextjs",
+    "typescript",
+    "nodejs",
+    "postgresql",
+    "shopify",
+    "prisma",
+    "tailwind",
+    "vue",
+    "express",
+    "nuxt",
+    "mongodb",
+    "graphql",
+    "redux",
+    "tanstack-query",
+    "docker",
+  ],
   resume: {
     href: "/resume.pdf",
     fileName: "Md-Abdul-Mamun-Full-Stack-Software-Engineer.pdf",

@@ -1,32 +1,35 @@
 import { z } from "zod";
+import { CONTACT_LIMITS, type ContactInput } from "@/lib/contact";
 
-// Shared by the contact form today (client-side, composes an email) and by
-// the Server Action that will store messages once the backend exists.
+// Server-side twin of validateContact() in lib/contact.ts, for the Server
+// Action that will store messages once the backend exists. The client form
+// uses the zod-free validator so zod stays out of the browser bundle.
 export const contactSchema = z.object({
-  name: z.string().trim().min(2, "Enter your name (at least 2 characters)."),
+  name: z
+    .string()
+    .trim()
+    .min(CONTACT_LIMITS.nameMin, "Enter your name (at least 2 characters)."),
   email: z.email("Enter an email address like name@example.com."),
   subject: z
     .string()
     .trim()
-    .max(120, "Keep the subject under 120 characters.")
+    .max(CONTACT_LIMITS.subjectMax, "Keep the subject under 120 characters.")
     .optional(),
   body: z
     .string()
     .trim()
-    .min(20, "Tell me a little more: at least 20 characters.")
-    .max(4000, "Keep the message under 4,000 characters."),
-});
+    .min(
+      CONTACT_LIMITS.bodyMin,
+      "Tell me a little more: at least 20 characters.",
+    )
+    .max(
+      CONTACT_LIMITS.bodyMax,
+      "Keep the message under 1,200 characters so it fits in an email link.",
+    ),
+}) satisfies z.ZodType<ContactInput>;
 
-export type ContactInput = z.infer<typeof contactSchema>;
-export type ContactField = keyof ContactInput;
-
-/** A mailto: URL with the message pre-filled, signed with the sender's details. */
-export function composeMailto(to: string, input: ContactInput) {
-  const custom = input.subject?.trim() ?? "";
-  const subject =
-    custom !== "" ? custom : `Portfolio enquiry from ${input.name}`;
-  const body = `${input.body}\n\n—\n${input.name}\n${input.email}`;
-  const params = new URLSearchParams({ subject, body });
-  // URLSearchParams encodes spaces as "+", which mail clients show literally.
-  return `mailto:${to}?${params.toString().replace(/\+/g, "%20")}`;
-}
+export {
+  composeMailto,
+  type ContactField,
+  type ContactInput,
+} from "@/lib/contact";

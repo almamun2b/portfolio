@@ -1,12 +1,27 @@
 import { ImageResponse } from "next/og";
 import { OG_SIZE, OgFrame } from "@/lib/og";
-import { CONTEXT_LABELS } from "@/lib/schemas/content";
+import { CONTEXT_LABELS } from "@/lib/content-labels";
 import { getTech } from "@/lib/tech";
 import { getProjectBySlug, getProjectSlugs } from "@/server/dal/projects";
 
-export const alt = "Project case study by Md Abdul Mamun";
-export const size = OG_SIZE;
-export const contentType = "image/png";
+// One card per case study, with alt text naming the project (a fixed `alt`
+// export would give all of them the same description).
+export async function generateImageMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
+  const { slug } = await params;
+  const project = await getProjectBySlug(slug);
+  return [
+    {
+      id: "card",
+      alt: `${project?.title ?? "Project"}: case study by Md Abdul Mamun`,
+      size: OG_SIZE,
+      contentType: "image/png",
+    },
+  ];
+}
 
 export async function generateStaticParams() {
   const slugs = await getProjectSlugs();
@@ -69,6 +84,6 @@ export default async function ProjectOgImage({
         </div>
       </div>
     </OgFrame>,
-    size,
+    OG_SIZE,
   );
 }

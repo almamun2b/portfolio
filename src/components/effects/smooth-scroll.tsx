@@ -7,8 +7,7 @@ import { useEffect } from "react";
 /**
  * Inertial smooth scrolling (Lenis) for the whole page. It drives the real
  * document scroll, so CSS scroll-driven reveals and the sticky header keep
- * working. Off under reduced motion, paused while a modal dialog is open,
- * and in-page anchors land below the sticky header.
+ * working. Off under reduced motion and paused while a modal dialog is open.
  */
 export function SmoothScroll() {
   useEffect(() => {
@@ -17,7 +16,9 @@ export function SmoothScroll() {
     const lenis = new Lenis({
       autoRaf: true,
       lerp: 0.1,
-      anchors: { offset: -96 },
+      // No `anchors`: in-page links land below the sticky header through CSS
+      // scroll-padding-top (globals.css). Offsetting here as well put them a
+      // second header-height lower (audit #16).
       // Let dialogs, the chat panel, and other scrollable boxes scroll natively.
       prevent: (node) => node.closest("dialog, [data-lenis-prevent]") !== null,
     });

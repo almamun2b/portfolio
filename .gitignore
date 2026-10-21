@@ -48,6 +48,16 @@ next-env.d.ts
 opencode.jsonc
 .claude/settings.local.json
 
+# impeccable's prebuilt binaries (~16 MB each): install with the skill's own
+# tooling instead of committing them.
+/.agents/skills/impeccable/scripts/bin/
+/.claude/skills/impeccable/scripts/bin/
+
 # impeccable local state
 /.impeccable/*.local.json
 /.impeccable/hook.*.json
+
+# Playwright
+/test-results/
+/playwright-report/
+/blob-report/

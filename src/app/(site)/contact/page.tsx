@@ -26,25 +26,25 @@ function Method({
   children: ReactNode;
 }) {
   return (
-    <div className="flex items-start gap-4">
-      <span
-        aria-hidden="true"
-        className="grid size-11 shrink-0 place-items-center rounded-2xl bg-gradient-tile text-primary-strong"
-      >
-        {icon}
-      </span>
-      <div className="flex min-w-0 flex-col gap-0.5">
-        <dt className="text-xs font-semibold tracking-wider text-muted-foreground uppercase">
-          {label}
-        </dt>
-        <dd className="break-words text-foreground">{children}</dd>
-      </div>
+    // dt/dd must be the group's only children, so the icon sits inside the
+    // dt, positioned into the left gutter.
+    <div className="relative flex min-h-11 min-w-0 flex-col gap-0.5 pl-15">
+      <dt className="text-xs font-semibold tracking-wider text-muted-foreground uppercase">
+        <span
+          aria-hidden="true"
+          className="absolute top-0 left-0 grid size-11 place-items-center rounded-2xl bg-gradient-tile text-primary-strong"
+        >
+          {icon}
+        </span>
+        {label}
+      </dt>
+      <dd className="break-words text-foreground">{children}</dd>
     </div>
   );
 }
 
 const link =
-  "rounded-sm font-medium hover:text-primary-strong focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring";
+  "inline-flex min-h-6 items-center rounded-sm font-medium hover:text-primary-strong focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring";
 
 export default async function ContactPage() {
   const [profile, socials, faq] = await Promise.all([

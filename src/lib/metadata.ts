@@ -1,5 +1,16 @@
 import type { Metadata } from "next";
+import { OG_SIZE } from "./og";
 import { site } from "./site";
+
+// Next merges metadata per top-level key, so a page's `openGraph` replaces the
+// root layout's and drops the image that src/app/opengraph-image.tsx attached.
+// Pages therefore carry the default card explicitly. Routes with their own
+// opengraph-image file (case studies) still win: file metadata takes priority.
+const defaultImage = {
+  url: "/opengraph-image",
+  ...OG_SIZE,
+  alt: `${site.name}, Full-Stack Software Engineer`,
+};
 
 /**
  * Per-page metadata with a canonical URL and matching Open Graph / Twitter
@@ -28,12 +39,15 @@ export function pageMetadata({
       description,
       siteName: site.name,
       locale: site.locale,
+      images: [defaultImage],
     },
     twitter: {
       card: "summary_large_image",
       title: title ? `${title} · ${site.name}` : site.title,
       description,
+      site: site.twitter,
       creator: site.twitter,
+      images: [defaultImage],
     },
   };
 }
