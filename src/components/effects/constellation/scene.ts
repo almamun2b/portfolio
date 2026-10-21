@@ -113,20 +113,44 @@ function createShapes(scene: Scene, palette: Palette) {
   return { shapes, rings: [ringA, ringB] as const, materials };
 }
 
-export function createConstellation(
-  canvas: HTMLCanvasElement,
-): (() => void) | undefined {
-  let renderer: WebGLRenderer;
+function createRenderer(canvas: HTMLCanvasElement) {
   try {
-    renderer = new WebGLRenderer({
+    // No antialiasing: the scene is soft, ambient detail, and MSAA is the
+    // costliest part of each frame on weak GPUs.
+    return new WebGLRenderer({
       canvas,
       alpha: true,
-      antialias: true,
+      antialias: false,
       powerPreference: "low-power",
     });
   } catch {
-    return undefined; // No WebGL: the CSS glows stay as the background.
+    return undefined;
   }
+}
+
+function disposeScene(scene: Scene) {
+  scene.traverse((object) => {
+    if (
+      object instanceof Mesh ||
+      object instanceof Points ||
+      object instanceof LineSegments
+    ) {
+      (object.geometry as BufferGeometry).dispose();
+      const material = object.material as
+        { dispose: () => void } | { dispose: () => void }[];
+      for (const m of Array.isArray(material) ? material : [material])
+        m.dispose();
+    }
+  });
+}
+
+const FRAME_MS = 1000 / 30;
+
+export function createConstellation(
+  canvas: HTMLCanvasElement,
+): (() => void) | undefined {
+  const renderer = createRenderer(canvas);
+  if (!renderer) return undefined; // No WebGL: the CSS glows stay.
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
   renderer.setSize(window.innerWidth, window.innerHeight, false);
 
@@ -165,12 +189,16 @@ export function createConstellation(
   const pointer = { x: 0, y: 0 };
   let frame = 0;
   let raf = 0;
+  let last = 0;
 
   const render = () => {
     renderer.render(scene, camera);
   };
-  const tick = () => {
+  // Capped at 30 fps; the scene is ambient and doesn't need more.
+  const tick = (now: number) => {
     raf = requestAnimationFrame(tick);
+    if (now - last < FRAME_MS) return;
+    last = now;
     frame += 1;
     particles.step();
     points.rotation.y += 0.0004;
@@ -189,9 +217,13 @@ export function createConstellation(
     camera.lookAt(scene.position);
     render();
   };
+  const paused = () =>
+    reduceMotion.matches ||
+    document.hidden ||
+    document.documentElement.dataset.motion === "paused";
   const play = () => {
     cancelAnimationFrame(raf);
-    if (reduceMotion.matches || document.hidden) {
+    if (paused()) {
       links.update();
       render();
       return;
@@ -216,7 +248,7 @@ export function createConstellation(
     materials[0].color.copy(palette.a);
     materials[1].color.copy(palette.b);
     materials[2].color.copy(palette.c);
-    render();
+    play();
   });
 
   window.addEventListener("pointermove", onPointer, { passive: true });
@@ -225,7 +257,7 @@ export function createConstellation(
   reduceMotion.addEventListener("change", play);
   theme.observe(document.documentElement, {
     attributes: true,
-    attributeFilter: ["class"],
+    attributeFilter: ["class", "data-motion"],
   });
   play();
 
@@ -236,19 +268,7 @@ export function createConstellation(
     document.removeEventListener("visibilitychange", play);
     reduceMotion.removeEventListener("change", play);
     theme.disconnect();
-    scene.traverse((object) => {
-      if (
-        object instanceof Mesh ||
-        object instanceof Points ||
-        object instanceof LineSegments
-      ) {
-        (object.geometry as BufferGeometry).dispose();
-        const material = object.material as
-          { dispose: () => void } | { dispose: () => void }[];
-        for (const m of Array.isArray(material) ? material : [material])
-          m.dispose();
-      }
-    });
+    disposeScene(scene);
     renderer.dispose();
     renderer.forceContextLoss();
   };

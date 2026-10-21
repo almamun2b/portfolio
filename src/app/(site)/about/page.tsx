@@ -8,6 +8,7 @@ import { ExperienceList } from "@/components/sections/experience-list";
 import { FaqList } from "@/components/sections/faq-list";
 import { ProfileFile } from "@/components/sections/profile-file";
 import { ButtonLink } from "@/components/ui/button-link";
+import { profilePageJsonLd, serializeJsonLd } from "@/lib/jsonld";
 import { pageMetadata } from "@/lib/metadata";
 import {
   getEducation,
@@ -39,6 +40,12 @@ export default async function AboutPage() {
 
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: serializeJsonLd(profilePageJsonLd("/about")),
+        }}
+      />
       <PageHero
         path="about"
         title="Hi, I'm"

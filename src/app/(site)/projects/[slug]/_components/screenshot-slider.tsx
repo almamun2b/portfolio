@@ -150,7 +150,7 @@ function SlideStage({
         sizes="(min-width: 1280px) 76rem, 100vw"
         className={cn(
           "object-contain",
-          shot.device === "detail" ? "bg-[#f5f5f7] p-6" : "bg-card-solid",
+          shot.device === "detail" ? "bg-surface-light p-6" : "bg-card-solid",
           shot.device === "mobile" && "py-4",
         )}
       />

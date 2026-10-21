@@ -48,8 +48,8 @@ A frontend-strong full-stack engineer who ships production systems end to end: R
 - Resume: `public/resume.pdf` (same file as `Resume_Software_Engineer_Md_Abdul_Mamun.pdf`).
 - Experience: Xubitar, Full Stack Engineer, July 2026 to present. Devxhub (Developer eXperience Hub), Software Engineer, March 2022 to February 2026.
 - Education: B.Sc. in Computer Science and Engineering, Begum Rokeya University, Rangpur, 2021. Languages: Bangla (native), English (professional working proficiency).
-- Contact: almamun2b@gmail.com, +880 1610-088700 (also WhatsApp), Sirajganj, Bangladesh. GitHub `almamun2b`, LinkedIn `mamun-cse`, X `almamun2b`.
-- Public projects with live sites: Travel Buddy, Digital Wallet, Now Health, Library Management System, Next.js starter template and Express + Prisma boilerplate, Preorder Manager, Team Hub, RemoteRecruit landing page. Devxhub work: WiderML, a social media archiving platform, an e-learning platform.
+- Contact: almamun2b@gmail.com, +880 1610-088700 (also WhatsApp), Sirajganj, Bangladesh. GitHub `almamun2b`, LinkedIn `mamun-cse`, X `almamun2b`, Facebook `almamun2b`.
+- Public projects with live sites: Travel Buddy, Digital Wallet, Now Health, Library Management System, Next.js starter template and Express + Prisma boilerplate, Preorder Manager, Team Hub, RemoteRecruit landing page. Devxhub work: an AI go-to-market platform, a social media archiving platform, an e-learning platform. Devxhub client work is anonymized like Xubitar work: no client or product names, and no links to the client's product.
 - Portrait photos: `~/Desktop/workspace/files/mamun images/mamun/`.
 - **No testimonials, client logos, awards, certifications, or blog posts exist.** Don't invent them. Don't use project, client, or satisfaction counts that can't be checked; derive any stat from the content itself.
 

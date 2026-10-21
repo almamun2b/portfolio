@@ -181,12 +181,12 @@ export const projects = [
     coverArt: "dashboard",
   },
   {
-    slug: "lead-enrichment-pipeline",
-    title: "B2B lead-enrichment pipeline",
+    slug: "linkedin-lead-generation",
+    title: "LinkedIn lead-generation platform",
     tagline:
-      "Turns structured searches into an enriched prospect list, designed to run unattended.",
+      "Turns filtered LinkedIn searches into a lead list with names, websites, and contact emails.",
     summary:
-      "A self-hosted pipeline that runs structured searches, builds a prospect list, and enriches each lead with a website and a verified contact email, built so long-running jobs keep going without supervision.",
+      "A self-hosted platform that runs filtered LinkedIn searches for people, companies, and services, scrapes the matching profiles into a lead list, and enriches each lead with a website and a contact email. It is built to run slowly and unattended without burning the LinkedIn account.",
     context: "xubitar",
     contribution: "lead",
     role: "Lead developer · designed and built it",
@@ -205,17 +205,18 @@ export const projects = [
       "pm2",
     ],
     problem:
-      "Prospecting by hand was slow, and earlier scripts died halfway through long runs and lost their progress.",
+      "Prospecting on LinkedIn by hand was slow, and earlier scripts died halfway through long runs, lost their progress, or got the account restricted.",
     approach: [
-      "A job queue built only on PostgreSQL (FOR UPDATE SKIP LOCKED, leases, and a reaper process), so no Redis to run.",
-      "One active session per account, enforced with pg_advisory_lock.",
-      "Shared rate budgets updated atomically, a circuit breaker on challenge pages, and active-hours pacing.",
-      "Credentials encrypted with AES-256-GCM, with key rotation.",
-      "Raw pages stored compressed, so parsers can be improved and re-run offline.",
+      "A job chain (start run, open session, fetch search pages, scrape profiles, finalise) on a queue built only on PostgreSQL: FOR UPDATE SKIP LOCKED, leases, and a reaper process, so no Redis to run.",
+      "Search filters for people, companies, and services, applied through LinkedIn's own filter controls.",
+      "One active session per LinkedIn account, enforced with pg_advisory_lock.",
+      "Shared rate budgets updated atomically, a hard circuit breaker on challenge pages, and active-hours pacing.",
+      "Account credentials encrypted with AES-256-GCM, with key rotation; raw pages stored compressed so parsers can be improved and re-run offline.",
     ],
     outcomes: [
-      "Web app, worker, and scheduler run as separate processes under PM2.",
-      "A separate website-crawl step finds contact emails and scores them by confidence.",
+      "Web app, worker pool, and scheduler run as separate processes under PM2 and share one Postgres database.",
+      "A website-crawl stage finds contact emails for each lead and scores them by confidence.",
+      "Automated collection is against LinkedIn's terms, so the design reduces and contains account risk rather than claiming to remove it.",
     ],
     coverArt: "terminal",
   },
@@ -373,12 +374,51 @@ export const projects = [
     coverArt: "inbox",
   },
   {
-    slug: "fullstack-starter-kit",
-    title: "Full-stack starter templates",
+    slug: "nextjs-starter-template",
+    title: "Next.js starter template",
     tagline:
-      "A Next.js frontend and an Express + Prisma API, ready on day one.",
+      "A Next.js 16, React 19, and Tailwind v4 frontend with the setup already done.",
     summary:
-      "Two templates that remove repetitive setup: a Next.js 16 + React 19 + Tailwind v4 frontend, and an Express + Prisma + PostgreSQL API with auth, user management, and role-based access built in.",
+      "A frontend template that removes repetitive setup: Next.js 16 App Router, React 19, Tailwind CSS v4, and shadcn/ui, with forms, validation, dark mode, and a typed fetch utility already wired in.",
+    context: "personal",
+    contribution: "owner",
+    role: "Sole developer",
+    year: "2026",
+    categories: ["frontend"],
+    featured: false,
+    stack: [
+      "nextjs",
+      "react",
+      "typescript",
+      "tailwind",
+      "shadcn",
+      "react-hook-form",
+      "zod",
+    ],
+    problem:
+      "Every new frontend re-implemented the same tooling, theming, forms, and data fetching before the first real feature.",
+    approach: [
+      "Next.js App Router with React 19, Tailwind CSS v4, and shadcn/ui components.",
+      "React Hook Form with Zod schemas, Sonner toasts, and next-themes dark mode.",
+      "A production-ready, typed fetch utility for talking to the API.",
+      "Prettier with Tailwind class sorting, ESLint, and Husky + lint-staged pre-commit hooks.",
+    ],
+    outcomes: [
+      "Public and deployed; pairs with the Express + Prisma API boilerplate.",
+    ],
+    links: {
+      live: "https://nextjs-starter-mamun.vercel.app",
+      source: "https://github.com/almamun2b/nextjs-starter-template",
+    },
+    coverArt: "terminal",
+  },
+  {
+    slug: "express-prisma-starter",
+    title: "Express + Prisma API boilerplate",
+    tagline:
+      "A production-ready REST API starter with auth, roles, and a type-safe query builder.",
+    summary:
+      "An API template on Express 5, Prisma 7, and PostgreSQL with authentication, user management, and role-based access built in, plus a query builder for filtering, search, and pagination.",
     context: "personal",
     contribution: "owner",
     role: "Sole developer",
@@ -386,10 +426,9 @@ export const projects = [
     categories: ["fullstack"],
     featured: false,
     stack: [
-      "nextjs",
-      "react",
-      "tailwind",
+      "nodejs",
       "express",
+      "typescript",
       "prisma",
       "postgresql",
       "redis",
@@ -397,18 +436,16 @@ export const projects = [
       "zod",
     ],
     problem:
-      "Every new project re-implemented the same auth, validation, error handling, and tooling before any real feature.",
+      "Every new API re-implemented the same auth, validation, error handling, and query plumbing before the first real feature.",
     approach: [
-      "API: layered modules, a type-safe query builder with filtering and cursor or offset pagination, and global error classification.",
-      "Access and refresh tokens in HTTP-only cookies, Redis-backed token blacklist, email OTP verification, and rate limiting.",
-      "Frontend: Next.js App Router, shadcn/ui, typed fetch utility, Prettier, ESLint, and Husky hooks.",
+      "Layered modules (routes, controllers, services) in strict TypeScript, with global error classification and custom error codes.",
+      "A type-safe query builder with filtering, search, range queries, and cursor or offset pagination.",
+      "Access and refresh tokens in HTTP-only cookies, a Redis-backed token blacklist, email OTP verification, and rate limiting.",
     ],
-    outcomes: ["Both templates are public and deployed."],
+    outcomes: ["Public repository with a deployed demo API."],
     links: {
-      live: "https://nextjs-starter-mamun.vercel.app",
-      source: "https://github.com/almamun2b/nextjs-starter-template",
+      source: "https://github.com/almamun2b/express-prisma",
       api: "https://express-prisma-dlf5.onrender.com",
-      apiSource: "https://github.com/almamun2b/express-prisma",
     },
     coverArt: "terminal",
   },
@@ -449,13 +486,13 @@ export const projects = [
     coverArt: "dashboard",
   },
   {
-    slug: "widerml",
-    title: "WiderML",
+    slug: "ai-go-to-market-platform",
+    title: "AI go-to-market platform",
     tagline:
       "An AI platform that generates a business's website, marketing content, and launch plan.",
     summary:
       "An AI-powered go-to-market platform that auto-generates websites, marketing content, and launch strategies. I worked on its interactive editing experience.",
-    context: "client",
+    context: "devxhub",
     contribution: "contributor",
     role: "Frontend engineer",
     year: "2025",
@@ -468,8 +505,7 @@ export const projects = [
       "Interactive canvas editing with Konva.",
       "Server state handled with TanStack Query and Axios for responsive editing.",
     ],
-    outcomes: ["Shipped on the live product."],
-    links: { live: "https://widerml.com" },
+    outcomes: ["Shipped on the live product, as client work at Devxhub."],
     coverArt: "editor",
   },
   {
@@ -580,12 +616,12 @@ export const projects = [
     coverArt: "dashboard",
   },
   {
-    slug: "contact-discovery-cli",
-    title: "Contact discovery CLI",
+    slug: "website-email-scraper",
+    title: "Website email scraper (CLI)",
     tagline:
-      "Crawls a list of websites and extracts their published contact emails.",
+      "Crawls a list of websites responsibly and extracts their published contact emails.",
     summary:
-      "A command-line crawler that visits every website in a CSV and extracts published contact emails, attaching a person or business name where it can, with safeguards for responsible crawling.",
+      "A command-line crawler that respects robots.txt, blocks private network addresses, and keeps a time budget per site while it visits every website in a CSV and extracts the contact emails each one publishes, attaching a person or business name where it can.",
     context: "personal",
     contribution: "owner",
     role: "Sole developer",

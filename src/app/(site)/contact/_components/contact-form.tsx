@@ -1,40 +1,42 @@
 "use client";
 
-import { CircleCheck, Send } from "lucide-react";
+import { Send } from "lucide-react";
 import { useRef, useState, type ComponentProps } from "react";
 import { Button } from "@/components/ui/button";
 import { Field, Input, Textarea, fieldIds } from "@/components/ui/field";
 import {
+  CONTACT_LIMITS,
   composeMailto,
-  contactSchema,
-  type ContactField,
-} from "@/lib/schemas/contact";
-
-type Errors = Partial<Record<ContactField, string>>;
+  composeWebmail,
+  validateContact,
+  type ContactErrors,
+} from "@/lib/contact";
+import { MailFallback } from "./mail-fallback";
 
 /**
  * Works without JS: the form submits to `mailto:` with `subject` and `body`
- * fields, which mail apps understand. With JS it validates first and builds a
- * signed message. When the backend lands, swap `onSubmit` for a Server Action
- * (useActionState) that validates with the same schema and stores it.
+ * fields, which mail apps understand (the sender's name and address come
+ * from their own mail account). With JS it validates first, builds a signed
+ * message, and then offers webmail links, because whether a mail app opened
+ * can't be detected. When the backend lands, swap `onSubmit` for a Server
+ * Action (useActionState) that validates with `contactSchema` and stores it.
  */
 export function ContactForm({ to }: { to: string }) {
   const formRef = useRef<HTMLFormElement>(null);
-  const [errors, setErrors] = useState<Errors>({});
-  const [sentTo, setSentTo] = useState<string | null>(null);
+  const [errors, setErrors] = useState<ContactErrors>({});
+  const [length, setLength] = useState(0);
+  const [webmail, setWebmail] = useState<ReturnType<
+    typeof composeWebmail
+  > | null>(null);
 
   const onSubmit: NonNullable<ComponentProps<"form">["onSubmit"]> = (event) => {
     event.preventDefault();
-    const data = Object.fromEntries(new FormData(event.currentTarget));
-    const result = contactSchema.safeParse(data);
-    if (!result.success) {
-      const next: Errors = {};
-      for (const issue of result.error.issues) {
-        const key = issue.path[0] as ContactField;
-        next[key] ??= issue.message;
-      }
-      setErrors(next);
-      const first = Object.keys(next)[0];
+    const result = validateContact(
+      Object.fromEntries(new FormData(event.currentTarget)),
+    );
+    if (!result.ok) {
+      setErrors(result.errors);
+      const first = Object.keys(result.errors)[0];
       if (first)
         formRef.current
           ?.querySelector<HTMLElement>(`[name="${first}"]`)
@@ -43,7 +45,7 @@ export function ContactForm({ to }: { to: string }) {
     }
     setErrors({});
     window.location.href = composeMailto(to, result.data);
-    setSentTo(to);
+    setWebmail(composeWebmail(to, result.data));
   };
 
   return (
@@ -88,13 +90,23 @@ export function ContactForm({ to }: { to: string }) {
           {...fieldIds("subject", { hint: true, error: errors.subject })}
         />
       </Field>
-      <Field id="body" label="Message" required error={errors.body}>
+      <Field
+        id="body"
+        label="Message"
+        required
+        hint={`${String(length)} / ${String(CONTACT_LIMITS.bodyMax)} characters`}
+        error={errors.body}
+      >
         <Textarea
           name="body"
           required
           rows={6}
+          maxLength={CONTACT_LIMITS.bodyMax}
+          onInput={(event) => {
+            setLength(event.currentTarget.value.length);
+          }}
           placeholder="What are you building, and where could I help?"
-          {...fieldIds("body", { error: errors.body })}
+          {...fieldIds("body", { hint: true, error: errors.body })}
         />
       </Field>
       <div className="flex flex-col items-start gap-4 sm:flex-row sm:items-center sm:justify-between">
@@ -106,18 +118,7 @@ export function ContactForm({ to }: { to: string }) {
           <Send aria-hidden="true" /> Send message
         </Button>
       </div>
-      <p role="status" className="min-h-6 text-sm">
-        {sentTo ? (
-          <span className="inline-flex items-start gap-2 text-success">
-            <CircleCheck
-              aria-hidden="true"
-              className="mt-0.5 size-4 shrink-0"
-            />
-            Your email app should now be open with the message ready. If it
-            didn&apos;t open, write to {sentTo} directly.
-          </span>
-        ) : null}
-      </p>
+      {webmail ? <MailFallback to={to} {...webmail} /> : null}
     </form>
   );
 }

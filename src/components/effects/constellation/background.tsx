@@ -6,7 +6,8 @@ import { useEffect, useRef } from "react";
  * Fixed, full-screen constellation behind the page (ported from uniqtrix).
  * Three.js is loaded only after the page is idle, so it never competes with
  * the first paint, and is skipped entirely on Save-Data. The page's CSS
- * glows remain as the fallback when WebGL is unavailable.
+ * glows remain as the fallback when WebGL is unavailable. It renders at
+ * 30 fps and stops under reduced motion, "Pause animations", and hidden tabs.
  */
 export function ConstellationBackground() {
   const ref = useRef<HTMLCanvasElement>(null);

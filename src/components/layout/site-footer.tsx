@@ -1,13 +1,14 @@
-import { ArrowRight, Mail, MapPin, Phone } from "lucide-react";
+import { Mail, MapPin, Phone } from "lucide-react";
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { SocialIcon } from "@/components/icons/social-icon";
 import { mainNav } from "@/content/navigation";
-import { CATEGORY_LABELS, PROJECT_CATEGORIES } from "@/lib/schemas/content";
+import { CATEGORY_LABELS, PROJECT_CATEGORIES } from "@/lib/content-labels";
 import { getProfile, getSocials } from "@/server/dal/profile";
 import { Container } from "./container";
 import { FooterCta } from "./footer-cta";
 import { Logo } from "./logo";
+import { MotionToggle } from "./motion-toggle";
 
 const linkClass =
   "group inline-flex min-h-6 items-center gap-1.5 rounded-md py-0.5 text-sm text-muted-foreground transition-[color,translate] duration-200 hover:translate-x-1 hover:text-primary-strong focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring";
@@ -89,14 +90,28 @@ export async function SiteFooter() {
         </FooterColumn>
       </Container>
       <div className="border-t border-border bg-background/40">
-        <Container className="flex flex-col items-center justify-between gap-3 py-5 text-[0.8rem] text-muted-foreground sm:flex-row">
+        <Container className="flex flex-col items-center justify-between gap-3 py-5 text-[0.8rem] text-muted-foreground max-sm:pb-24 sm:flex-row">
           <p>
             © {year} {profile.name}. Designed and built by me.
           </p>
-          <Link href="/contact" className={linkClass}>
-            Start a conversation{" "}
-            <ArrowRight aria-hidden="true" className="size-3.5" />
-          </Link>
+          <div className="flex flex-col items-center gap-3 sm:flex-row sm:gap-6">
+            <MotionToggle />
+            <nav aria-label="Legal">
+              <ul className="flex items-center gap-3">
+                <li>
+                  <Link href="/privacy-policy" className={linkClass}>
+                    Privacy policy
+                  </Link>
+                </li>
+                <li aria-hidden="true">·</li>
+                <li>
+                  <Link href="/terms-and-conditions" className={linkClass}>
+                    Terms and conditions
+                  </Link>
+                </li>
+              </ul>
+            </nav>
+          </div>
         </Container>
       </div>
     </footer>

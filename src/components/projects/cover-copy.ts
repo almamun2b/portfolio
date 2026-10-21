@@ -67,7 +67,7 @@ export const COVER_COPY: Record<
       "Book added",
     ],
   },
-  "lead-enrichment-pipeline": {
+  "linkedin-lead-generation": {
     lines: [
       "pnpm worker",
       "queue: claimed job (FOR UPDATE SKIP LOCKED)",
@@ -87,17 +87,27 @@ export const COVER_COPY: Record<
       "publish: store 1 ✓  store 2 ✓",
     ],
   },
-  "fullstack-starter-kit": {
+  "nextjs-starter-template": {
     lines: [
-      "pnpm create app",
-      "auth: access + refresh tokens (httpOnly)",
-      "rbac: user · admin",
-      "query builder: filter, search, paginate",
-      "redis: token blacklist ready",
+      "pnpm dev",
+      "next 16 · react 19 · tailwind v4",
+      "shadcn/ui components ready",
+      "forms: react-hook-form + zod",
+      "theme: dark mode via next-themes",
       "husky + lint-staged installed",
     ],
   },
-  "contact-discovery-cli": {
+  "express-prisma-starter": {
+    lines: [
+      "pnpm dev",
+      "auth: access + refresh tokens (httpOnly)",
+      "otp: verification email sent",
+      "rbac: user · admin",
+      "query builder: filter, search, paginate",
+      "redis: token blacklist ready",
+    ],
+  },
+  "website-email-scraper": {
     lines: [
       "pnpm crawl websites/list.csv",
       "robots.txt respected · sitemap seeded",
@@ -120,7 +130,7 @@ export const COVER_COPY: Record<
     lines: ["YOUR LOGO", "Front", "Back", "Left", "Right", "Text", "Upload"],
     image: "/projects/product-design-customizer/blank-cap.png",
   },
-  widerml: {
+  "ai-go-to-market-platform": {
     lines: ["YOUR BRAND", "Hero", "Features", "Pricing", "Launch plan"],
   },
   "team-hub": {

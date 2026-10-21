@@ -6,7 +6,7 @@ import { ButtonLink } from "@/components/ui/button-link";
 
 export const metadata: Metadata = {
   title: "Page not found",
-  robots: { index: false },
+  // Next already emits `noindex` for not-found responses.
 };
 
 // Root 404 sits outside the (site) group, so it brings the chrome itself.

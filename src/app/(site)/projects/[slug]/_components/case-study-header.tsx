@@ -7,8 +7,8 @@ import {
   CATEGORY_LABELS,
   CONTEXT_LABELS,
   CONTRIBUTION_LABELS,
-  type Project,
-} from "@/lib/schemas/content";
+} from "@/lib/content-labels";
+import type { Project } from "@/lib/schemas/content";
 
 export function CaseStudyHeader({ project }: { project: Project }) {
   const { links } = project;
@@ -24,7 +24,7 @@ export function CaseStudyHeader({ project }: { project: Project }) {
             <li>
               <Link
                 href="/projects"
-                className="rounded-sm hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+                className="inline-flex min-h-6 items-center rounded-sm hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
               >
                 projects
               </Link>
@@ -90,16 +90,18 @@ export function CaseStudyHeader({ project }: { project: Project }) {
             <dd className="font-medium">
               {links.live
                 ? "Live demo"
-                : links.source
-                  ? "Open source"
-                  : project.context === "personal"
-                    ? "Not deployed publicly"
-                    : "Private client work"}
+                : links.api
+                  ? "Live API"
+                  : links.source
+                    ? "Open source"
+                    : project.context === "personal"
+                      ? "Not deployed publicly"
+                      : "Private client work"}
             </dd>
           </div>
         </dl>
 
-        {links.live || links.source || links.api ? (
+        {links.live || links.source || links.api || links.apiSource ? (
           <div className="flex flex-wrap gap-3">
             {links.live ? (
               <ButtonLink href={links.live as `https://${string}`}>
@@ -112,6 +114,14 @@ export function CaseStudyHeader({ project }: { project: Project }) {
                 variant="outline"
               >
                 <Code aria-hidden="true" /> Source code
+              </ButtonLink>
+            ) : null}
+            {links.api ? (
+              <ButtonLink
+                href={links.api as `https://${string}`}
+                variant={links.live ? "outline" : "primary"}
+              >
+                Live API <ArrowUpRight aria-hidden="true" />
               </ButtonLink>
             ) : null}
             {links.apiSource ? (

@@ -2,6 +2,7 @@
 
 import { cn } from "cn";
 import { useEffect, useRef } from "react";
+import { motionAllowed } from "@/lib/motion";
 
 const TYPE_MS = 55;
 const DELETE_MS = 28;
@@ -11,7 +12,7 @@ const GAP_MS = 350;
 /**
  * Cycles through `words`, typing and deleting. The server renders the first
  * word; screen readers get the full list once, never the keystrokes. Stops on
- * the first word under reduced motion.
+ * the first word under reduced motion or when animations are paused.
  */
 export function Typewriter({
   words,
@@ -25,7 +26,7 @@ export function Typewriter({
   useEffect(() => {
     const el = ref.current;
     if (!el || words.length < 2) return;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (!motionAllowed()) return;
 
     let timer = 0;
     let index = 0;
@@ -34,6 +35,14 @@ export function Typewriter({
 
     const step = () => {
       const word = words[index] ?? "";
+      // Paused mid-cycle: show the whole word and check again later.
+      if (!motionAllowed()) {
+        el.textContent = word;
+        length = word.length;
+        deleting = true;
+        timer = window.setTimeout(step, HOLD_MS);
+        return;
+      }
       if (deleting) {
         length -= 1;
         if (length <= 0) {

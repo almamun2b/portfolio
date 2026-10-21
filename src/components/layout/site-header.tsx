@@ -10,7 +10,7 @@ import { ThemeToggle } from "./theme-toggle";
 
 /**
  * Sticky glass header (no top bar). Its scrolled state, a deeper fill and a
- * violet glow, is a CSS scroll-driven animation (`[data-site-header]` in
+ * emerald glow, is a CSS scroll-driven animation (`[data-site-header]` in
  * globals.css), so it costs no JavaScript.
  */
 export async function SiteHeader() {

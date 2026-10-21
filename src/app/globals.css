@@ -61,6 +61,21 @@
   --shadow-lift: 0 20px 48px rgb(16 185 129 / 0.2);
   --shadow-button: 0 6px 24px rgb(16 185 129 / 0.35);
 
+  /* Theme-independent surfaces: window-chrome dots on mock-ups, the light
+     stage behind detail screenshots (they're captured on white), and the
+     dark device body in cover art. Defined once here; :root applies them in
+     both themes. */
+  --traffic-red: #ff5f57;
+  --traffic-yellow: #febc2e;
+  --traffic-green: #28c840;
+  --surface-light: #f5f5f7;
+  --device: #1b1d2a;
+
+  /* Theme switch: the uniqtrix day/night track and thumb. */
+  --toggle-track: #062a24;
+  --toggle-thumb: linear-gradient(135deg, #6ee7b7 0%, #34d399 100%);
+  --toggle-thumb-foreground: #062a24;
+
   --page-glow:
     radial-gradient(
       ellipse 80% 60% at 20% 0%,
@@ -131,6 +146,10 @@
   --shadow-lift: 0 18px 44px rgb(4 120 87 / 0.18);
   --shadow-button: 0 6px 22px rgb(4 120 87 / 0.3);
 
+  --toggle-track: linear-gradient(90deg, #ccfbf1 0%, #cffafe 100%);
+  --toggle-thumb: linear-gradient(135deg, #5eead4 0%, #14b8a6 100%);
+  --toggle-thumb-foreground: #064e3b;
+
   --page-glow:
     radial-gradient(
       ellipse 80% 60% at 20% 0%,
@@ -181,6 +200,12 @@
   --color-ring: var(--ring);
   --color-success: var(--success);
   --color-error: var(--error);
+  --color-toggle-thumb-foreground: var(--toggle-thumb-foreground);
+  --color-traffic-red: var(--traffic-red);
+  --color-traffic-yellow: var(--traffic-yellow);
+  --color-traffic-green: var(--traffic-green);
+  --color-surface-light: var(--surface-light);
+  --color-device: var(--device);
 
   --shadow-card: var(--shadow-card);
   --shadow-lift: var(--shadow-lift);
@@ -283,6 +308,14 @@
   background-image: var(--gradient-tile);
 }
 
+@utility bg-toggle-track {
+  background: var(--toggle-track);
+}
+
+@utility bg-toggle-thumb {
+  background-image: var(--toggle-thumb);
+}
+
 @utility hairline {
   height: 1px;
   background: linear-gradient(
@@ -324,11 +357,21 @@
 
   body {
     @apply bg-background text-foreground antialiased;
-    background-image: var(--page-glow);
-    background-attachment: fixed;
     caret-color: var(--primary);
     min-height: 100dvh;
     text-rendering: optimizeLegibility;
+  }
+
+  /* The page glow on its own fixed layer (below the constellation canvas at
+     -z-10): `background-attachment: fixed` on <body> repaints the whole page
+     on every scroll in some browsers. */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -20;
+    pointer-events: none;
+    background-image: var(--page-glow);
   }
 
   h1,
@@ -399,6 +442,15 @@
   }
 }
 
+/* ── Project filter (app/(site)/projects/_components/filtered-projects.tsx)
+   The list is rendered once; the client filter sets data-filter on it. */
+[data-filter="fullstack"] > li:not([data-categories~="fullstack"]),
+[data-filter="shopify"] > li:not([data-categories~="shopify"]),
+[data-filter="automation"] > li:not([data-categories~="automation"]),
+[data-filter="frontend"] > li:not([data-categories~="frontend"]) {
+  display: none;
+}
+
 /* ── Sticky header scrolled state (components/layout/site-header.tsx) ── */
 @keyframes header-scrolled {
   to {
@@ -425,6 +477,16 @@
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
+}
+
+/* "Pause animations" (components/layout/motion-toggle.tsx, WCAG 2.2.2):
+   looping and entry animations end at once, as under reduced motion. Hover
+   and state transitions stay, since they only answer the visitor's input. */
+[data-motion="paused"] *,
+[data-motion="paused"] ::before,
+[data-motion="paused"] ::after {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
 }
 
 /* ── <details> open/close (components/ui/accordion.tsx) ──────────────── */

@@ -1,9 +1,15 @@
 import type { Metadata, Viewport } from "next";
 import { Inter, JetBrains_Mono, Space_Grotesk } from "next/font/google";
+import { motionInitScript } from "@/components/layout/motion-toggle";
 import { ThemeProvider } from "@/components/providers/theme-provider";
 import { personJsonLd, serializeJsonLd, websiteJsonLd } from "@/lib/jsonld";
-import { site } from "@/lib/site";
-import { getExperience, getProfile, getSocials } from "@/server/dal/profile";
+import { site, siteDescription } from "@/lib/site";
+import {
+  getCareerStats,
+  getExperience,
+  getProfile,
+  getSocials,
+} from "@/server/dal/profile";
 import "./globals.css";
 
 const inter = Inter({
@@ -26,42 +32,53 @@ const jetbrainsMono = JetBrains_Mono({
   preload: false,
 });
 
-export const metadata: Metadata = {
-  metadataBase: new URL(site.url),
-  title: { default: site.title, template: `%s · ${site.name}` },
-  description: site.description,
-  applicationName: site.name,
-  authors: [{ name: site.name, url: site.url }],
-  creator: site.name,
-  keywords: [
-    "Md Abdul Mamun",
-    "full-stack software engineer",
-    "React developer",
-    "Next.js developer",
-    "Node.js developer",
-    "Shopify app developer",
-    "PostgreSQL",
-    "Bangladesh",
-  ],
-  alternates: { canonical: "/" },
-  openGraph: {
-    type: "profile",
-    url: "/",
-    siteName: site.name,
-    title: site.title,
-    description: site.description,
-    locale: site.locale,
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: site.title,
-    description: site.description,
-    creator: site.twitter,
-  },
-  verification: { google: site.googleSiteVerification },
-};
+// Durations ("3 mo"), the years-of-experience figures, and the footer's ©
+// year are computed when a page renders. Every page is static, so re-render
+// daily (ISR) rather than freezing them at deploy time.
+export const revalidate = 86400;
 
-// Matches --background for the default (dark) theme.
+export async function generateMetadata(): Promise<Metadata> {
+  const { years } = await getCareerStats();
+  const description = siteDescription(years);
+  return {
+    metadataBase: new URL(site.url),
+    title: { default: site.title, template: `%s · ${site.name}` },
+    description: description,
+    applicationName: site.name,
+    authors: [{ name: site.name, url: site.url }],
+    creator: site.name,
+    keywords: [
+      "Md Abdul Mamun",
+      "full-stack software engineer",
+      "React developer",
+      "Next.js developer",
+      "Node.js developer",
+      "Shopify app developer",
+      "PostgreSQL",
+      "Bangladesh",
+    ],
+    // No canonical or og:url here: they'd be inherited by the 404 page. Each
+    // page sets its own through pageMetadata().
+    openGraph: {
+      type: "profile",
+      siteName: site.name,
+      title: site.title,
+      description: description,
+      locale: site.locale,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: site.title,
+      description: description,
+      site: site.twitter,
+      creator: site.twitter,
+    },
+    verification: { google: site.googleSiteVerification },
+  };
+}
+
+// Matches --background for the default (dark) theme. The theme is a class,
+// not a media query, so ThemeToggle updates the meta when it switches.
 export const viewport: Viewport = {
   themeColor: "#05090b",
   colorScheme: "dark light",
@@ -78,6 +95,7 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="en" className={`dark ${fonts}`} suppressHydrationWarning>
       <body>
+        <script dangerouslySetInnerHTML={{ __html: motionInitScript }} />
         <ThemeProvider>{children}</ThemeProvider>
         <script
           type="application/ld+json"

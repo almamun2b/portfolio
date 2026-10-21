@@ -7,8 +7,9 @@ import { PortraitOrbit } from "@/components/sections/hero-visual/portrait-orbit"
 import { Process } from "@/components/sections/process";
 import { Services } from "@/components/sections/services";
 import { TechMarquee } from "@/components/sections/tech-marquee";
+import { profilePageJsonLd, serializeJsonLd } from "@/lib/jsonld";
 import { pageMetadata } from "@/lib/metadata";
-import { site } from "@/lib/site";
+import { siteDescription } from "@/lib/site";
 import {
   getCareerStats,
   getEducation,
@@ -20,10 +21,10 @@ import {
 } from "@/server/dal/profile";
 import { getProjectCounts, getProjects } from "@/server/dal/projects";
 
-export const metadata = pageMetadata({
-  description: site.description,
-  path: "/",
-});
+export async function generateMetadata() {
+  const { years } = await getCareerStats();
+  return pageMetadata({ description: siteDescription(years), path: "/" });
+}
 
 export default async function HomePage() {
   const [
@@ -51,12 +52,19 @@ export default async function HomePage() {
 
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: serializeJsonLd(profilePageJsonLd("/")),
+        }}
+      />
       <Hero
         profile={profile}
         socials={socials}
         visual={
           <PortraitOrbit
             name={profile.name}
+            stack={profile.stack}
             pills={[
               {
                 label: `${String(stats.years)}+ years shipping`,
@@ -77,7 +85,7 @@ export default async function HomePage() {
           />
         }
       />
-      <TechMarquee />
+      <TechMarquee stack={profile.stack} />
       <AboutSummary
         profile={profile}
         current={current}

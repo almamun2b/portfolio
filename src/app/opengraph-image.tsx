@@ -2,12 +2,15 @@ import { readFile } from "node:fs/promises";
 import path from "node:path";
 import { ImageResponse } from "next/og";
 import { OG_SIZE, OgFrame } from "@/lib/og";
+import { getTech } from "@/lib/tech";
+import { getProfile } from "@/server/dal/profile";
 
 export const alt = "Md Abdul Mamun, Full-Stack Software Engineer";
 export const size = OG_SIZE;
 export const contentType = "image/png";
 
 export default async function OpengraphImage() {
+  const profile = await getProfile();
   const portrait = await readFile(
     path.join(process.cwd(), "src/assets/portrait-square.jpg"),
   );
@@ -44,7 +47,7 @@ export default async function OpengraphImage() {
               maxWidth: 680,
             }}
           >
-            React · Next.js · Vue/Nuxt · Node.js · PostgreSQL · Shopify
+            {profile.primaryStack.map((id) => getTech(id).label).join(" · ")}
           </div>
         </div>
         <img

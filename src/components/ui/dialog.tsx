@@ -67,6 +67,7 @@ export function Dialog({
   children,
 }: DialogProps) {
   const ref = useRef<HTMLDialogElement>(null);
+  const pressedBackdrop = useRef(false);
   const titleId = useId();
   const descriptionId = useId();
 
@@ -87,8 +88,15 @@ export function Dialog({
       onClose={() => {
         onOpenChange(false);
       }}
+      // Close only when the press both starts and ends on the backdrop, so a
+      // text selection dragged out of the panel doesn't dismiss it.
+      onPointerDown={(event) => {
+        pressedBackdrop.current = event.target === event.currentTarget;
+      }}
       onClick={(event) => {
-        if (event.target === event.currentTarget) ref.current?.close();
+        if (pressedBackdrop.current && event.target === event.currentTarget)
+          ref.current?.close();
+        pressedBackdrop.current = false;
       }}
       className={cn(dialogVariants({ side }), className)}
       style={{ "--dialog-width": WIDTHS[size] } as CSSProperties}

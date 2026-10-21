@@ -1,4 +1,9 @@
 import { z } from "zod";
+import {
+  PROJECT_CATEGORIES,
+  PROJECT_CONTEXTS,
+  PROJECT_CONTRIBUTIONS,
+} from "@/lib/content-labels";
 import { TECH_IDS } from "../tech-ids";
 
 // One schema per content domain. The static files in src/content are parsed
@@ -44,6 +49,10 @@ export const profileSchema = z.object({
     detail: z.string(),
   }),
   careerStart: monthSchema,
+  /** Headline technologies (profile card, OG image), in display order. */
+  primaryStack: z.array(techIdSchema).min(1),
+  /** Everything shipped with, in display order (orbit, marquee, JSON-LD). */
+  stack: z.array(techIdSchema).min(1),
   resume: z.object({
     href: z.templateLiteral(["/", z.string(), ".pdf"]),
     fileName: z.string(),
@@ -99,13 +108,6 @@ export const faqSchema = z.object({
   answer: z.string(),
 });
 
-export const PROJECT_CATEGORIES = [
-  "fullstack",
-  "shopify",
-  "automation",
-  "frontend",
-] as const;
-
 export const projectCategorySchema = z.enum(PROJECT_CATEGORIES);
 
 export const coverArtSchema = z.enum([
@@ -123,8 +125,8 @@ export const projectSchema = z.object({
   tagline: z.string(),
   summary: z.string(),
   /** Where it was built. Work for an employer is anonymized (PRODUCT.md). */
-  context: z.enum(["personal", "xubitar", "devxhub", "client"]),
-  contribution: z.enum(["owner", "lead", "co-builder", "contributor"]),
+  context: z.enum(PROJECT_CONTEXTS),
+  contribution: z.enum(PROJECT_CONTRIBUTIONS),
   role: z.string(),
   year: z.string(),
   categories: z.array(projectCategorySchema).min(1),
@@ -162,7 +164,6 @@ export type Service = z.infer<typeof serviceSchema>;
 export type SkillGroup = z.infer<typeof skillGroupSchema>;
 export type ProcessStep = z.infer<typeof processStepSchema>;
 export type Faq = z.infer<typeof faqSchema>;
-export type ProjectCategory = z.infer<typeof projectCategorySchema>;
 export type CoverArt = z.infer<typeof coverArtSchema>;
 export type ProjectInput = z.input<typeof projectSchema>;
 export type ProjectRecord = z.infer<typeof projectSchema>;
@@ -172,26 +173,10 @@ export type ProjectMedia = z.infer<typeof projectMediaSchema>;
 /** A project as pages receive it: content record plus its screenshots. */
 export type Project = ProjectRecord & { media: ProjectMedia };
 
-export const CATEGORY_LABELS: Record<ProjectCategory, string> = {
-  fullstack: "Full-stack",
-  shopify: "Shopify & e-commerce",
-  automation: "Automation & data",
-  frontend: "Frontend",
-};
-
-export const CONTEXT_LABELS: Record<ProjectRecord["context"], string> = {
-  personal: "Personal project",
-  xubitar: "Built at Xubitar",
-  devxhub: "Built at Devxhub",
-  client: "Client project",
-};
-
-export const CONTRIBUTION_LABELS: Record<
-  ProjectRecord["contribution"],
-  string
-> = {
-  owner: "Sole developer",
-  lead: "Lead developer",
-  "co-builder": "Co-builder",
-  contributor: "Contributor",
-};
+export {
+  CATEGORY_LABELS,
+  CONTEXT_LABELS,
+  CONTRIBUTION_LABELS,
+  PROJECT_CATEGORIES,
+  type ProjectCategory,
+} from "@/lib/content-labels";

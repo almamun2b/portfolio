@@ -55,7 +55,10 @@ export function Hero({
             {profile.pitch}
           </p>
 
-          <div className="flex w-full flex-col gap-3 sm:w-auto sm:flex-row">
+          <div
+            data-hero-ctas=""
+            className="flex w-full flex-col gap-3 sm:w-auto sm:flex-row"
+          >
             <ButtonLink href="/projects" size="lg">
               View my work <ArrowRight aria-hidden="true" />
             </ButtonLink>

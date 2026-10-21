@@ -2,11 +2,11 @@
 
 The personal portfolio of **Md Abdul Mamun**, full-stack software engineer: **Next.js 16 · React 19 · Tailwind v4**, fully static today, with Prisma 7 + PostgreSQL wired in for the planned backend.
 
-- **Pages:** one-page home (hero, stack, about, services, selected work, experience, process), `/about`, `/projects` (filter with `?category=`), `/projects/[slug]` case studies with screenshot galleries, `/contact`.
-- **Look:** the uniqtrix.com style: dark night field with violet/cyan gradients, glass surfaces, a Three.js constellation background, and a light theme behind the toggle. See [DESIGN.md](DESIGN.md).
-- **Components:** hand-built primitives in `src/components/ui` (Button, ButtonLink, Badge, Card, Avatar, Dialog, Sheet, Lightbox, Tabs, Accordion, Tooltip, form fields, Marquee, Timeline, StatCounter, Typewriter); no component library.
+- **Pages:** one-page home (hero, stack, about, services, selected work, experience, process), `/about`, `/projects` (filter with `?category=`), `/projects/[slug]` case studies with screenshot galleries, `/contact`, `/privacy-policy`, `/terms-and-conditions`.
+- **Look:** the uniqtrix.com style: dark night field with emerald/cyan gradients, glass surfaces, a Three.js constellation background, and a light theme behind the toggle. See [DESIGN.md](DESIGN.md).
+- **Components:** hand-built primitives in `src/components/ui` (Button, ButtonLink, Badge, Card, Dialog, Sheet, Lightbox, Tabs, Accordion, Tooltip, form fields, Marquee, Timeline, StatCounter, Typewriter); no component library.
 - **Content:** `src/content/*.ts` read through `src/server/dal/*`, so moving to the database changes one file per domain.
-- **Screenshots:** `pnpm screenshots [slug…]` captures live projects with Playwright into `public/projects/`.
+- **Screenshots:** `pnpm screenshots [slug…]` captures live projects with Playwright into `public/projects/`; `pnpm screenshots slug=http://localhost:3006` captures a project from a local server instead.
 
 ## Quick start
 
@@ -33,6 +33,8 @@ pnpm dev                    # http://localhost:3000
 | `pnpm typecheck`               | Generate route types (`next typegen`), then `tsc --noEmit`                                                                  |
 | `pnpm lint` / `lint:fix`       | ESLint (Next.js + typescript-eslint strict, type-aware)                                                                     |
 | `pnpm format` / `format:check` | Format with Prettier / check formatting (CI)                                                                                |
+| `pnpm test`                    | Vitest unit and content tests (`tests/unit`)                                                                                |
+| `pnpm test:e2e`                | Playwright + axe smoke tests (`tests/e2e`) against the standalone build; run `pnpm build` first, or set `BASE_URL`          |
 | `pnpm db:generate`             | Generate the Prisma client (run after every schema change)                                                                  |
 | `pnpm db:migrate`              | Create and apply a migration in development                                                                                 |
 | `pnpm db:push`                 | Push the schema without a migration (prototyping only)                                                                      |
@@ -67,7 +69,9 @@ See [`.env.example`](.env.example). The full list of planned variables is in [AR
 
 `pnpm build` runs `prisma generate` first, because `src/generated/` is gitignored. Hosts that build from a clean checkout (such as Vercel) need no extra step and no `DATABASE_URL` while the site is static.
 
-**Prisma Compute:** put the production values (at least `DATABASE_URL` for the hosted database) in `.env.compute`, which is gitignored. `prisma.compute.ts` deploys with that file. Never put production values in `.env`: every local command (`pnpm dev`, `db:migrate`, `db:seed`) reads it. Then run:
+**Vercel (production):** the live site deploys from `main` to `portfolio-mamun.vercel.app`. On Vercel the standalone output and its copy script are unused but harmless. If the site moves to a custom domain, set `NEXT_PUBLIC_SITE_URL` for the **build** (it's inlined), or canonicals, the sitemap, and JSON-LD keep pointing at the old host. Old URLs from the previous portfolio redirect through `next.config.ts`; after launch, submit `/sitemap.xml` in Search Console.
+
+**Prisma Compute (alternative):** put the production values (at least `DATABASE_URL` for the hosted database) in `.env.compute`, which is gitignored. `prisma.compute.ts` deploys with that file. Never put production values in `.env`: every local command (`pnpm dev`, `db:migrate`, `db:seed`) reads it. Then run:
 
 ```bash
 pnpm dlx @prisma/cli@8.0.0-rc.20 app deploy

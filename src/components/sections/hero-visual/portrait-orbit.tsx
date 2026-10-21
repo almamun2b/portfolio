@@ -6,16 +6,6 @@ import type { TechId } from "@/lib/tech";
 import portrait from "@/assets/portrait-cutout.png";
 import { FloatingPills, type Pill } from "./floating-pills";
 
-const OUTER: TechId[] = [
-  "react",
-  "nextjs",
-  "typescript",
-  "nodejs",
-  "postgresql",
-  "shopify",
-];
-const INNER: TechId[] = ["prisma", "tailwind", "vue", "express"];
-
 /**
  * Hero visual: the portrait stands in a gradient disc (head breaking out of
  * the top), with two counter-rotating orbits of stack logos and floating
@@ -25,19 +15,24 @@ const INNER: TechId[] = ["prisma", "tailwind", "vue", "express"];
 export function PortraitOrbit({
   name,
   pills,
+  stack,
 }: {
   name: string;
   pills: Pill[];
+  /** Logos for the orbits: the first six go outside, the next four inside. */
+  stack: TechId[];
 }) {
+  const outer = stack.slice(0, 6);
+  const inner = stack.slice(6, 10);
   return (
     <div className="relative mx-auto mb-24 aspect-square w-[min(100%,19.5rem)] sm:mb-0 sm:w-[min(100%,28rem)] lg:w-[min(100%,34rem)]">
       <div
         aria-hidden="true"
         className="absolute inset-[12%] rounded-full bg-gradient-brand opacity-30 blur-3xl motion-safe:animate-glow-float"
       />
-      <Orbit items={OUTER} diameter={88} duration="56s" offset={Math.PI / 6} />
+      <Orbit items={outer} diameter={88} duration="56s" offset={Math.PI / 6} />
       <Orbit
-        items={INNER}
+        items={inner}
         diameter={70}
         duration="40s"
         offset={Math.PI / 4}

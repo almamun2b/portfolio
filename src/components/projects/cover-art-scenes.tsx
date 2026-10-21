@@ -34,7 +34,7 @@ export function Editor({ lines, image }: { lines: string[]; image?: string }) {
             className="object-contain p-3"
           />
         ) : (
-          <div className="aspect-[4/3] w-3/4 rounded-[40%_40%_18%_18%] bg-[#1b1d2a] shadow-inner" />
+          <div className="aspect-[4/3] w-3/4 rounded-[40%_40%_18%_18%] bg-device shadow-inner" />
         )}
         <span className="absolute top-[34%] rounded-md border-2 border-dashed border-secondary px-3 py-1.5 font-display text-[0.65rem] font-bold text-white">
           {lines[0] ?? "YOUR LOGO"}

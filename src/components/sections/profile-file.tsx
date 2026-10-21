@@ -1,4 +1,5 @@
 import { formatMonth } from "@/lib/dates";
+import { getTech } from "@/lib/tech";
 import type { Experience, Profile } from "@/lib/schemas/content";
 
 /**
@@ -25,10 +26,7 @@ export function ProfileFile({
       : []),
     ["location", profile.location],
     ["timezone", profile.timezone],
-    [
-      "stack",
-      ["React", "Next.js", "Vue/Nuxt", "Node.js", "PostgreSQL", "Shopify"],
-    ],
+    ["stack", profile.primaryStack.map((id) => getTech(id).label)],
     ["open_to", ["full-time", "remote", "contract"]],
   ];
 
@@ -36,9 +34,9 @@ export function ProfileFile({
     <figure className="overflow-hidden rounded-3xl border border-border-strong bg-[color-mix(in_srgb,var(--card-solid)_88%,transparent)] shadow-card backdrop-blur-xl">
       <div className="flex items-center gap-2 border-b border-border px-4 py-3">
         <span aria-hidden="true" className="flex gap-1.5">
-          <span className="size-3 rounded-full bg-[#ff5f57]/80" />
-          <span className="size-3 rounded-full bg-[#febc2e]/80" />
-          <span className="size-3 rounded-full bg-[#28c840]/80" />
+          <span className="size-3 rounded-full bg-traffic-red/80" />
+          <span className="size-3 rounded-full bg-traffic-yellow/80" />
+          <span className="size-3 rounded-full bg-traffic-green/80" />
         </span>
         <figcaption className="ml-2 rounded-md bg-muted px-2.5 py-1 font-mono text-xs text-foreground">
           profile.json
