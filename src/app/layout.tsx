@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Inter, JetBrains_Mono, Space_Grotesk } from "next/font/google";
 import { motionInitScript } from "@/components/layout/motion-toggle";
 import { ThemeProvider } from "@/components/providers/theme-provider";
+import { brand } from "@/lib/brand-colors";
 import { personJsonLd, serializeJsonLd, websiteJsonLd } from "@/lib/jsonld";
 import { site, siteDescription } from "@/lib/site";
 import {
@@ -80,7 +81,7 @@ export async function generateMetadata(): Promise<Metadata> {
 // Matches --background for the default (dark) theme. The theme is a class,
 // not a media query, so ThemeToggle updates the meta when it switches.
 export const viewport: Viewport = {
-  themeColor: "#05090b",
+  themeColor: brand.themeColor,
   colorScheme: "dark light",
 };
 

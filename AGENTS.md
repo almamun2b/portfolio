@@ -22,6 +22,10 @@ Content lives in `src/content/*.ts` as plain typed data, validated by the zod sc
 - Xubitar and Devxhub client work is **anonymized**: no client, product, or store names anywhere, including alt text, and no links to the client's product. Projects without public screenshots use a designed cover labelled "illustration".
 - Never add testimonials, client logos, or unverifiable numbers; stats are derived from content.
 
+### Colour palettes
+
+Every colour system lives in `src/styles/color-systems/*.json` (full dark + light token sets). The active one is copied into the token blocks of `src/app/globals.css` and imported by `src/lib/brand-colors.ts` (for OG images, the manifest, `themeColor`, and the constellation, which can't read CSS variables). Never hardcode a brand colour anywhere else; tint with `color-mix(in srgb, var(--primary) N%, transparent)`. `tests/unit/palettes.test.ts` contrast-checks every palette and fails if `globals.css` and `brand-colors.ts` disagree. Steps to switch: [src/styles/color-systems/README.md](src/styles/color-systems/README.md).
+
 ## This is not the Next.js or Prisma you remember
 
 Your training data likely predates these versions. Read the bundled docs before writing framework code:

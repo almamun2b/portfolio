@@ -18,7 +18,7 @@ import {
 const dialogVariants = cva(
   [
     "fixed m-auto overflow-visible bg-transparent p-0 text-foreground",
-    "backdrop:bg-[rgb(2_3_10/0.72)] backdrop:backdrop-blur-sm",
+    "backdrop:bg-backdrop backdrop:backdrop-blur-sm",
     "opacity-0 open:opacity-100 starting:open:opacity-0",
     "transition-[opacity,translate,scale,display,overlay] transition-discrete duration-300 ease-out-expo",
     "backdrop:opacity-0 open:backdrop:opacity-100 starting:open:backdrop:opacity-0",

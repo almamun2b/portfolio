@@ -7,92 +7,96 @@
 @custom-variant light (&:where(.light, .light *));
 
 /* ── Tokens: dark (default) ────────────────────────────────────────────────
-   The owner's emerald → cyan identity on a cool near-black. Two colours,
-   two-stop gradients. Text pairs are contrast-checked (DESIGN.md). */
+   Active palette: Violet → Indigo on a plum-black. Two hues, two-stop
+   gradients. Every saved colour system (including the original emerald →
+   cyan) lives in src/styles/color-systems/*.json; to try one, copy its
+   values into these two blocks. tests/unit/palettes.test.ts contrast-checks
+   them all. */
 :root,
 .dark {
   color-scheme: dark;
 
-  --background: #05090b;
-  --foreground: #ecfdf5;
+  --background: #09070f;
+  --foreground: #f5f3ff;
   --card: rgb(255 255 255 / 0.035);
-  --card-solid: #0a1215;
-  --card-foreground: #ecfdf5;
-  --popover: #0b1517;
-  --popover-foreground: #ecfdf5;
+  --card-solid: #110d1c;
+  --card-foreground: #f5f3ff;
+  --popover: #140f21;
+  --popover-foreground: #f5f3ff;
 
-  --primary: #10b981; /* 7.9:1 on background */
-  --primary-strong: #34d399; /* text accents, 10.4:1 */
+  --primary: #8b5cf6; /* fills, glows, borders (4.7:1) */
+  --primary-strong: #c4b5fd; /* text accents, 10.8:1 */
   --primary-foreground: #ffffff;
-  --secondary: #22d3ee;
-  --secondary-strong: #22d3ee;
-  --accent: #22d3ee;
-  --accent-strong: #67e8f9;
+  --secondary: #818cf8;
+  --secondary-strong: #818cf8;
+  --accent: #818cf8;
+  --accent-strong: #a5b4fc;
 
-  --muted: rgb(16 185 129 / 0.08);
-  --muted-foreground: rgb(236 253 245 / 0.64);
+  --muted: rgb(139 92 246 / 0.08);
+  --muted-foreground: rgb(245 243 255 / 0.64);
 
-  --border: rgb(16 185 129 / 0.14);
-  --border-strong: rgb(16 185 129 / 0.3);
-  --border-glow: rgb(16 185 129 / 0.55);
-  --input: rgb(52 211 153 / 0.55);
-  --ring: #34d399;
+  --border: rgb(139 92 246 / 0.14);
+  --border-strong: rgb(139 92 246 / 0.3);
+  --border-glow: rgb(139 92 246 / 0.55);
+  --input: rgb(167 139 250 / 0.55);
+  --ring: #c4b5fd;
 
   --success: #34d399;
   --error: #fb7185;
 
-  --header: rgb(5 9 11 / 0.82);
-  --header-scrolled: rgb(5 9 11 / 0.94);
+  --header: rgb(9 7 15 / 0.82);
+  --header-scrolled: rgb(9 7 15 / 0.94);
 
   /* White text and icons only ever sit on --gradient-button: both stops are
-     ≥ 5.3:1 with white. --gradient-brand is decorative (rules, bars, words). */
-  --gradient-button: linear-gradient(135deg, #047857 0%, #0e7490 100%);
-  --gradient-brand: linear-gradient(135deg, #10b981 0%, #22d3ee 100%);
-  --gradient-display: linear-gradient(135deg, #ecfdf5 0%, #67e8f9 100%);
+     ≥ 5.7:1 with white. --gradient-brand is decorative (rules, bars, words). */
+  --gradient-button: linear-gradient(135deg, #7c3aed 0%, #4f46e5 100%);
+  --gradient-brand: linear-gradient(135deg, #a78bfa 0%, #818cf8 100%);
+  --gradient-display: linear-gradient(135deg, #f5f3ff 0%, #a5b4fc 100%);
   --gradient-tile: linear-gradient(
     135deg,
-    rgb(16 185 129 / 0.16),
-    rgb(34 211 238 / 0.08)
+    rgb(139 92 246 / 0.16),
+    rgb(129 140 248 / 0.08)
   );
 
-  --glow-primary: rgb(16 185 129 / 0.4);
-  --glow-secondary: rgb(34 211 238 / 0.3);
+  --glow-primary: rgb(139 92 246 / 0.4);
+  --glow-secondary: rgb(129 140 248 / 0.3);
   --shadow-card: 0 24px 64px rgb(0 0 0 / 0.5);
-  --shadow-lift: 0 20px 48px rgb(16 185 129 / 0.2);
-  --shadow-button: 0 6px 24px rgb(16 185 129 / 0.35);
+  --shadow-lift: 0 20px 48px rgb(139 92 246 / 0.2);
+  --shadow-button: 0 6px 24px rgb(139 92 246 / 0.35);
 
   /* Theme-independent surfaces: window-chrome dots on mock-ups, the light
      stage behind detail screenshots (they're captured on white), and the
-     dark device body in cover art. Defined once here; :root applies them in
-     both themes. */
+     dark device body in cover art, and the modal backdrop. Defined once here;
+     :root applies them in both themes. */
   --traffic-red: #ff5f57;
   --traffic-yellow: #febc2e;
   --traffic-green: #28c840;
   --surface-light: #f5f5f7;
   --device: #1b1d2a;
+  --backdrop: rgb(2 3 10 / 0.72);
 
   /* Theme switch: the uniqtrix day/night track and thumb. */
-  --toggle-track: #062a24;
-  --toggle-thumb: linear-gradient(135deg, #6ee7b7 0%, #34d399 100%);
-  --toggle-thumb-foreground: #062a24;
+  --toggle-track: #2e1065;
+  --toggle-thumb: linear-gradient(135deg, #ddd6fe 0%, #c4b5fd 100%);
+  --toggle-thumb-foreground: #2e1065;
 
   --page-glow:
     radial-gradient(
       ellipse 80% 60% at 20% 0%,
-      rgb(16 185 129 / 0.11) 0%,
+      rgb(139 92 246 / 0.11) 0%,
       transparent 62%
     ),
     radial-gradient(
       ellipse 70% 55% at 80% 100%,
-      rgb(34 211 238 / 0.07) 0%,
+      rgb(129 140 248 / 0.07) 0%,
       transparent 60%
     );
 
   /* Read by the Three.js constellation (components/effects/constellation). */
-  --scene-point: #10b981;
-  --scene-a: #10b981;
-  --scene-b: #22d3ee;
-  --scene-c: #34d399;
+  --scene-point: #8b5cf6;
+  --scene-a: #8b5cf6;
+  --scene-b: #818cf8;
+  --scene-c: #a78bfa;
   --scene-opacity: 1;
 }
 
@@ -100,72 +104,72 @@
 .light {
   color-scheme: light;
 
-  --background: #f4fbf8;
-  --foreground: #0b1f1a;
+  --background: #f8f6fd;
+  --foreground: #140b24;
   --card: rgb(255 255 255 / 0.8);
   --card-solid: #ffffff;
-  --card-foreground: #0b1f1a;
+  --card-foreground: #140b24;
   --popover: #ffffff;
-  --popover-foreground: #0b1f1a;
+  --popover-foreground: #140b24;
 
-  --primary: #047857; /* 5.2:1 on background */
-  --primary-strong: #065f46;
+  --primary: #6d28d9; /* 6.6:1 on background */
+  --primary-strong: #5b21b6;
   --primary-foreground: #ffffff;
-  --secondary: #14b8a6;
-  --secondary-strong: #0e7490;
-  --accent: #14b8a6;
-  --accent-strong: #0e7490;
+  --secondary: #6366f1;
+  --secondary-strong: #4338ca;
+  --accent: #6366f1;
+  --accent-strong: #4338ca;
 
-  --muted: rgb(4 120 87 / 0.07);
-  --muted-foreground: rgb(11 31 26 / 0.7);
+  --muted: rgb(109 40 217 / 0.07);
+  --muted-foreground: rgb(20 11 36 / 0.7);
 
-  --border: rgb(4 120 87 / 0.16);
-  --border-strong: rgb(4 120 87 / 0.3);
-  --border-glow: rgb(4 120 87 / 0.5);
-  --input: rgb(4 120 87 / 0.6);
-  --ring: #047857;
+  --border: rgb(109 40 217 / 0.16);
+  --border-strong: rgb(109 40 217 / 0.3);
+  --border-glow: rgb(109 40 217 / 0.5);
+  --input: rgb(109 40 217 / 0.6);
+  --ring: #6d28d9;
 
   --success: #047857;
   --error: #be123c;
 
-  --header: rgb(244 251 248 / 0.8);
-  --header-scrolled: rgb(244 251 248 / 0.94);
+  --header: rgb(248 246 253 / 0.8);
+  --header-scrolled: rgb(248 246 253 / 0.94);
 
-  --gradient-button: linear-gradient(135deg, #047857 0%, #0e7490 100%);
-  --gradient-brand: linear-gradient(135deg, #047857 0%, #0e7490 100%);
-  --gradient-display: linear-gradient(135deg, #064e3b 0%, #0e7490 100%);
+  --gradient-button: linear-gradient(135deg, #7c3aed 0%, #4f46e5 100%);
+  --gradient-brand: linear-gradient(135deg, #6d28d9 0%, #4338ca 100%);
+  --gradient-display: linear-gradient(135deg, #2e1065 0%, #4338ca 100%);
   --gradient-tile: linear-gradient(
     135deg,
-    rgb(4 120 87 / 0.12),
-    rgb(14 116 144 / 0.08)
+    rgb(109 40 217 / 0.12),
+    rgb(67 56 202 / 0.08)
   );
 
-  --glow-primary: rgb(16 185 129 / 0.28);
-  --glow-secondary: rgb(20 184 166 / 0.22);
-  --shadow-card: 0 12px 40px rgb(4 120 87 / 0.12);
-  --shadow-lift: 0 18px 44px rgb(4 120 87 / 0.18);
-  --shadow-button: 0 6px 22px rgb(4 120 87 / 0.3);
+  --glow-primary: rgb(139 92 246 / 0.28);
+  --glow-secondary: rgb(99 102 241 / 0.22);
+  --shadow-card: 0 12px 40px rgb(109 40 217 / 0.12);
+  --shadow-lift: 0 18px 44px rgb(109 40 217 / 0.18);
+  --shadow-button: 0 6px 22px rgb(109 40 217 / 0.3);
 
-  --toggle-track: linear-gradient(90deg, #ccfbf1 0%, #cffafe 100%);
-  --toggle-thumb: linear-gradient(135deg, #5eead4 0%, #14b8a6 100%);
-  --toggle-thumb-foreground: #064e3b;
+  --toggle-track: linear-gradient(90deg, #ede9fe 0%, #e0e7ff 100%);
+  --toggle-thumb: linear-gradient(135deg, #c4b5fd 0%, #8b5cf6 100%);
+  --toggle-thumb-foreground: #2e1065;
 
   --page-glow:
     radial-gradient(
       ellipse 80% 60% at 20% 0%,
-      rgb(16 185 129 / 0.1) 0%,
+      rgb(139 92 246 / 0.1) 0%,
       transparent 62%
     ),
     radial-gradient(
       ellipse 70% 55% at 80% 100%,
-      rgb(20 184 166 / 0.08) 0%,
+      rgb(99 102 241 / 0.08) 0%,
       transparent 60%
     );
 
-  --scene-point: #059669;
-  --scene-a: #059669;
-  --scene-b: #0d9488;
-  --scene-c: #10b981;
+  --scene-point: #7c3aed;
+  --scene-a: #7c3aed;
+  --scene-b: #4f46e5;
+  --scene-c: #8b5cf6;
   --scene-opacity: 0.7;
 }
 
@@ -206,6 +210,7 @@
   --color-traffic-green: var(--traffic-green);
   --color-surface-light: var(--surface-light);
   --color-device: var(--device);
+  --color-backdrop: var(--backdrop);
 
   --shadow-card: var(--shadow-card);
   --shadow-lift: var(--shadow-lift);
@@ -456,7 +461,7 @@
   to {
     background-color: var(--header-scrolled);
     border-color: var(--border-strong);
-    box-shadow: 0 6px 40px rgb(16 185 129 / 0.14);
+    box-shadow: 0 6px 40px color-mix(in srgb, var(--primary) 14%, transparent);
   }
 }
 

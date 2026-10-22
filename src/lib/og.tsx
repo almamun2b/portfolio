@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { brand, rgba } from "@/lib/brand-colors";
 
 export const OG_SIZE = { width: 1200, height: 630 } as const;
 
@@ -19,9 +20,8 @@ export function OgFrame({
         flexDirection: "column",
         justifyContent: "space-between",
         padding: "64px 72px",
-        background:
-          "radial-gradient(circle at 15% 0%, rgba(16,185,129,0.32), transparent 55%), radial-gradient(circle at 90% 100%, rgba(34,211,238,0.22), transparent 55%), #05090b",
-        color: "#ecfdf5",
+        background: `radial-gradient(circle at 15% 0%, ${rgba(brand.primaryRgb, 0.32)}, transparent 55%), radial-gradient(circle at 90% 100%, ${rgba(brand.secondaryRgb, 0.22)}, transparent 55%), ${brand.themeColor}`,
+        color: brand.text,
         fontFamily: "sans-serif",
       }}
     >
@@ -31,7 +31,7 @@ export function OgFrame({
             width: 56,
             height: 56,
             borderRadius: 14,
-            background: "linear-gradient(135deg,#047857,#0e7490)",
+            background: `linear-gradient(135deg,${brand.buttonFrom},${brand.buttonTo})`,
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
@@ -41,7 +41,7 @@ export function OgFrame({
         >
           M
         </div>
-        <div style={{ fontSize: 26, color: "rgba(236,253,245,0.7)" }}>
+        <div style={{ fontSize: 26, color: rgba(brand.textRgb, 0.7) }}>
           {eyebrow}
         </div>
       </div>

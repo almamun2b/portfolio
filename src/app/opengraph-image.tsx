@@ -1,6 +1,7 @@
 import { readFile } from "node:fs/promises";
 import path from "node:path";
 import { ImageResponse } from "next/og";
+import { brand, rgba } from "@/lib/brand-colors";
 import { OG_SIZE, OgFrame } from "@/lib/og";
 import { getTech } from "@/lib/tech";
 import { getProfile } from "@/server/dal/profile";
@@ -37,13 +38,13 @@ export default async function OpengraphImage() {
           >
             Md Abdul Mamun
           </div>
-          <div style={{ fontSize: 36, color: "#34d399" }}>
+          <div style={{ fontSize: 36, color: brand.accentText }}>
             Full-Stack Software Engineer
           </div>
           <div
             style={{
               fontSize: 26,
-              color: "rgba(236,253,245,0.72)",
+              color: rgba(brand.textRgb, 0.72),
               maxWidth: 680,
             }}
           >
@@ -57,7 +58,7 @@ export default async function OpengraphImage() {
           height={260}
           style={{
             borderRadius: 999,
-            border: "6px solid #10b981",
+            border: `6px solid ${brand.primary}`,
             objectFit: "cover",
           }}
         />
