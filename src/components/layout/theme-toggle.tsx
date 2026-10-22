@@ -65,22 +65,35 @@ export function ThemeToggle({ className }: { className?: string }) {
           : "Toggle light and dark theme"
       }
       className={cn(
-        "relative inline-flex h-8 w-[3.6rem] shrink-0 cursor-pointer items-center rounded-full border p-1",
+        "group relative inline-flex h-8 w-[3.6rem] shrink-0 cursor-pointer items-center rounded-full border p-1",
         "border-border-glow bg-toggle-track light:border-border-strong",
+        // Hover and keyboard focus preview the switch: the track lights up
+        // and the theme it would switch to fades in on the empty side.
+        "transition-[border-color,box-shadow] duration-300",
+        "hover:border-primary hover:shadow-[0_0_0_4px_color-mix(in_srgb,var(--primary)_18%,transparent)]",
         "focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-ring",
         className,
       )}
     >
       <span
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-y-0 right-2 grid place-items-center text-muted-foreground opacity-0 transition-opacity duration-300 group-hover:opacity-100 group-focus-visible:opacity-100 light:right-auto light:left-2"
+      >
+        <Sun className="size-3 light:hidden" />
+        <Moon className="hidden size-3 light:block" />
+      </span>
+      <span
         ref={thumbRef}
         aria-hidden="true"
         className={cn(
-          "grid size-6 place-items-center rounded-full bg-toggle-thumb text-toggle-thumb-foreground shadow-md",
+          "relative grid size-6 place-items-center rounded-full bg-toggle-thumb text-toggle-thumb-foreground shadow-md",
           "translate-x-0 light:translate-x-[1.55rem]",
+          "transition-[scale,box-shadow] duration-300 ease-spring",
+          "group-hover:scale-110 group-hover:shadow-[0_0_14px_var(--glow-primary)] group-focus-visible:scale-110 group-active:scale-90",
         )}
       >
-        <Moon className="size-3.5 light:hidden" />
-        <Sun className="hidden size-3.5 light:block" />
+        <Moon className="size-3.5 transition-[rotate] duration-500 ease-spring group-hover:-rotate-[20deg] light:hidden" />
+        <Sun className="hidden size-3.5 transition-[rotate] duration-500 ease-spring group-hover:rotate-90 light:block" />
       </span>
     </button>
   );

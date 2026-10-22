@@ -41,7 +41,7 @@ A frontend-strong full-stack engineer who ships production systems end to end: R
 
 - Name: **Md Abdul Mamun** (short form "Mamun"). Title: **Full-Stack Software Engineer**.
 - Voice: first person, plain and confident. Specific stacks, systems, and numbers that can be checked; no hype words.
-- Visual identity: the owner's own **emerald → cyan** palette (two colours, two-stop gradients) on a cool near-black, with glass panels, a constellation background, and a portrait in the hero. The layout vocabulary was inspired by a reference site, but its colours (violet/purple/cyan three-stop gradients) must not be reused.
+- Visual identity: a two-colour palette with two-stop gradients on a near-black, **violet → indigo**, chosen by the owner on 2026-10-23 after trialling colour systems (every palette is saved in `src/styles/color-systems/`, the original **emerald → cyan** included), with glass panels, a constellation background, and a portrait in the hero. The layout vocabulary was inspired by a reference site, but its three-stop violet/purple/cyan gradients must not be copied; the owner's own two-stop violet → indigo is a deliberate, separate choice.
 
 ## Evidence on Hand
 

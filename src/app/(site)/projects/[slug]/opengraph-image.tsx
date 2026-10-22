@@ -1,4 +1,5 @@
 import { ImageResponse } from "next/og";
+import { brand, rgba } from "@/lib/brand-colors";
 import { OG_SIZE, OgFrame } from "@/lib/og";
 import { CONTEXT_LABELS } from "@/lib/content-labels";
 import { getTech } from "@/lib/tech";
@@ -57,7 +58,7 @@ export default async function ProjectOgImage({
           <div
             style={{
               fontSize: 30,
-              color: "rgba(236,253,245,0.75)",
+              color: rgba(brand.textRgb, 0.75),
               maxWidth: 980,
             }}
           >
@@ -73,9 +74,9 @@ export default async function ProjectOgImage({
                 fontSize: 22,
                 padding: "8px 18px",
                 borderRadius: 999,
-                border: "1px solid rgba(16,185,129,0.45)",
-                background: "rgba(16,185,129,0.12)",
-                color: "#6ee7b7",
+                border: `1px solid ${rgba(brand.primaryRgb, 0.45)}`,
+                background: rgba(brand.primaryRgb, 0.12),
+                color: brand.chipText,
               }}
             >
               {getTech(id).label}

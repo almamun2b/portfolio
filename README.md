@@ -3,7 +3,7 @@
 The personal portfolio of **Md Abdul Mamun**, full-stack software engineer: **Next.js 16 · React 19 · Tailwind v4**, fully static today, with Prisma 7 + PostgreSQL wired in for the planned backend.
 
 - **Pages:** one-page home (hero, stack, about, services, selected work, experience, process), `/about`, `/projects` (filter with `?category=`), `/projects/[slug]` case studies with screenshot galleries, `/contact`, `/privacy-policy`, `/terms-and-conditions`.
-- **Look:** the uniqtrix.com style: dark night field with emerald/cyan gradients, glass surfaces, a Three.js constellation background, and a light theme behind the toggle. See [DESIGN.md](DESIGN.md).
+- **Look:** the uniqtrix.com style: dark night field with two-colour gradients (active palette violet → indigo; every saved palette is in [src/styles/color-systems](src/styles/color-systems/README.md)), glass surfaces, a Three.js constellation background, and a light theme behind the toggle. See [DESIGN.md](DESIGN.md).
 - **Components:** hand-built primitives in `src/components/ui` (Button, ButtonLink, Badge, Card, Dialog, Sheet, Lightbox, Tabs, Accordion, Tooltip, form fields, Marquee, Timeline, StatCounter, Typewriter); no component library.
 - **Content:** `src/content/*.ts` read through `src/server/dal/*`, so moving to the database changes one file per domain.
 - **Screenshots:** `pnpm screenshots [slug…]` captures live projects with Playwright into `public/projects/`; `pnpm screenshots slug=http://localhost:3006` captures a project from a local server instead.

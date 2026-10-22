@@ -1,33 +1,35 @@
 ---
 name: Md Abdul Mamun — Portfolio
-description: An emerald/cyan night console for a full-stack engineer; dark by default, glass panels, pill controls, two colours and two-stop gradients only.
+description: A two-hue night console for a full-stack engineer (active palette violet → indigo); dark by default, glass panels, pill controls, two colours and two-stop gradients only.
 colors:
-  night-ground: "#05090b"
-  mint-text: "#ecfdf5"
-  night-card-solid: "#0a1215"
-  night-popover: "#0b1517"
-  signal-emerald: "#10b981"
-  emerald-strong: "#34d399"
-  signal-cyan: "#22d3ee"
-  cyan-strong: "#67e8f9"
-  muted-mint: "rgb(236 253 245 / 0.64)"
-  emerald-wash: "rgb(16 185 129 / 0.08)"
+  night-ground: "#09070f"
+  night-text: "#f5f3ff"
+  night-card-solid: "#110d1c"
+  night-popover: "#140f21"
+  signal-primary: "#8b5cf6"
+  primary-strong: "#c4b5fd"
+  signal-secondary: "#818cf8"
+  secondary-strong: "#a5b4fc"
+  muted-text: "rgb(245 243 255 / 0.64)"
+  primary-wash: "rgb(139 92 246 / 0.08)"
   glass-card: "rgb(255 255 255 / 0.035)"
-  hairline-emerald: "rgb(16 185 129 / 0.14)"
-  hairline-emerald-strong: "rgb(16 185 129 / 0.3)"
-  hairline-emerald-glow: "rgb(16 185 129 / 0.55)"
-  input-stroke: "rgb(52 211 153 / 0.55)"
+  hairline-primary: "rgb(139 92 246 / 0.14)"
+  hairline-primary-strong: "rgb(139 92 246 / 0.3)"
+  hairline-primary-glow: "rgb(139 92 246 / 0.55)"
+  input-stroke: "rgb(167 139 250 / 0.55)"
+  success-green: "#34d399"
   error-rose: "#fb7185"
-  button-stop-emerald: "#047857"
-  button-stop-cyan: "#0e7490"
-  day-ground: "#f4fbf8"
-  day-ink: "#0b1f1a"
-  day-emerald: "#047857"
-  day-emerald-strong: "#065f46"
-  day-teal: "#14b8a6"
-  day-cyan-strong: "#0e7490"
-  day-display-start: "#064e3b"
-  day-muted-ink: "rgb(11 31 26 / 0.7)"
+  button-stop-from: "#7c3aed"
+  button-stop-to: "#4f46e5"
+  day-ground: "#f8f6fd"
+  day-ink: "#140b24"
+  day-primary: "#6d28d9"
+  day-primary-strong: "#5b21b6"
+  day-secondary: "#6366f1"
+  day-secondary-strong: "#4338ca"
+  day-display-start: "#2e1065"
+  day-muted-ink: "rgb(20 11 36 / 0.7)"
+  day-success: "#047857"
   day-error: "#be123c"
   whatsapp-green: "#25d366"
 typography:
@@ -93,63 +95,63 @@ spacing:
   section-y-lg: "112px"
 components:
   button-primary:
-    backgroundColor: "{colors.button-stop-emerald}"
+    backgroundColor: "{colors.button-stop-from}"
     textColor: "#ffffff"
     rounded: "{rounded.full}"
     padding: "0 24px"
     height: "44px"
   button-primary-lg:
-    backgroundColor: "{colors.button-stop-emerald}"
+    backgroundColor: "{colors.button-stop-from}"
     textColor: "#ffffff"
     rounded: "{rounded.full}"
     padding: "0 28px"
     height: "52px"
   button-outline:
     backgroundColor: "{colors.glass-card}"
-    textColor: "{colors.mint-text}"
+    textColor: "{colors.night-text}"
     rounded: "{rounded.full}"
     padding: "0 24px"
     height: "44px"
   button-outline-hover:
-    backgroundColor: "{colors.emerald-wash}"
+    backgroundColor: "{colors.primary-wash}"
   button-ghost:
-    textColor: "{colors.mint-text}"
+    textColor: "{colors.night-text}"
     rounded: "{rounded.full}"
     padding: "0 24px"
     height: "44px"
   button-soft:
-    backgroundColor: "{colors.emerald-wash}"
-    textColor: "{colors.emerald-strong}"
+    backgroundColor: "{colors.primary-wash}"
+    textColor: "{colors.primary-strong}"
     rounded: "{rounded.full}"
     padding: "0 24px"
     height: "44px"
   badge:
-    backgroundColor: "{colors.emerald-wash}"
-    textColor: "{colors.emerald-strong}"
+    backgroundColor: "{colors.primary-wash}"
+    textColor: "{colors.primary-strong}"
     rounded: "{rounded.full}"
     padding: "0 10px"
     height: "24px"
   card-glass:
     backgroundColor: "{colors.glass-card}"
-    textColor: "{colors.mint-text}"
+    textColor: "{colors.night-text}"
     rounded: "{rounded.3xl}"
     padding: "{spacing.card-pad}"
   input:
     backgroundColor: "{colors.glass-card}"
-    textColor: "{colors.mint-text}"
+    textColor: "{colors.night-text}"
     rounded: "{rounded.2xl}"
     padding: "0 16px"
     height: "48px"
   nav-link:
-    textColor: "{colors.muted-mint}"
+    textColor: "{colors.muted-text}"
     rounded: "{rounded.full}"
     padding: "0 16px"
     height: "36px"
   nav-link-active:
-    backgroundColor: "{colors.emerald-wash}"
-    textColor: "{colors.mint-text}"
+    backgroundColor: "{colors.primary-wash}"
+    textColor: "{colors.night-text}"
   floating-action:
-    backgroundColor: "{colors.button-stop-emerald}"
+    backgroundColor: "{colors.button-stop-from}"
     textColor: "#ffffff"
     rounded: "{rounded.full}"
     size: "56px"
@@ -162,67 +164,71 @@ components:
 
 # Design System: Md Abdul Mamun — Portfolio
 
-All tokens live in `src/app/globals.css` as semantic CSS variables. The frontmatter records the **dark (default) theme** values plus the light-theme values that differ in role. Use them via the semantic utilities (`bg-background`, `text-muted-foreground`, `border-border-strong`, `text-primary-strong`, `bg-gradient-button`, `glass`); never write raw hex in components.
+All tokens live in `src/app/globals.css` as semantic CSS variables. The frontmatter records the **active palette's** dark (default) theme values plus the light-theme values that differ in role. Token names are role-based (`signal-primary`, `hairline-primary`), so they survive a palette change. Use them via the semantic utilities (`bg-background`, `text-muted-foreground`, `border-border-strong`, `text-primary-strong`, `bg-gradient-button`, `glass`); never write raw hex in components.
+
+**Palettes.** The colour system is swappable. Every saved palette, with its full dark and light token sets, lives in [`src/styles/color-systems/`](src/styles/color-systems/README.md); **Violet → Indigo** is active and the original is saved as **Emerald → Cyan**. `tests/unit/palettes.test.ts` checks every palette for contrast and checks that `globals.css` matches the active one.
 
 ## Overview
 
-**Creative North Star: "The Emerald Night Console"**
+**Creative North Star: "The Night Console"**
 
-The engineer stands at the centre of his own stack, under a cool near-black sky (#05090b) lit by two soft lights: emerald top-left, cyan bottom-right. Content sits on frosted glass panels edged with emerald hairlines; actions are pills; a Three.js constellation of emerald and cyan points drifts behind the page and leans toward the cursor. The palette is the owner's own emerald → cyan identity: two colours, two-stop gradients, nothing else. The layout and motion vocabulary (glass panels, pill controls, spring lifts, gradient last words) was inspired by a reference site; the colour is the owner's.
+The engineer stands at the centre of his own stack, under a plum-black sky (#09070f) lit by two soft lights: the primary hue (violet) top-left, the secondary hue (indigo) bottom-right. Content sits on frosted glass panels edged with primary hairlines; actions are pills; a Three.js constellation of primary and secondary points drifts behind the page and leans toward the cursor. The palette is two colours, two-stop gradients, nothing else; which two is the owner's choice (see Palettes above). The layout and motion vocabulary (glass panels, pill controls, spring lifts, gradient last words) was inspired by a reference site; the colour is the owner's.
 
-Dark is the default and the server-rendered theme: `:root, .dark` carry the night tokens, `.light` carries the day tokens (a pale mint ground with deep emerald and deep cyan). `next-themes` runs with `defaultTheme="dark"` and `enableSystem={false}`, so the OS preference is deliberately ignored; the day/night switch in the header is the only way in. Tailwind exposes `dark:` and `light:` custom variants; components are written for night first and use `light:` only where day genuinely differs.
+Dark is the default and the server-rendered theme: `:root, .dark` carry the night tokens, `.light` carries the day tokens (a pale lavender ground with deep violet and deep indigo). `next-themes` runs with `defaultTheme="dark"` and `enableSystem={false}`, so the OS preference is deliberately ignored; the day/night switch in the header is the only way in. Tailwind exposes `dark:` and `light:` custom variants; components are written for night first and use `light:` only where day genuinely differs.
 
 Density is generous: wide sections, short copy, one strong action per block. Motion is inertial smooth scrolling, a spring lift on hover, a staggered rise on scroll, and a slow ambient drift, and all of it stops under reduced motion.
 
 **Key Characteristics:**
 
-- Cool near-black ground with two soft radial glows (`--page-glow`), emerald top-left (11%) and cyan bottom-right (7%), fixed to the viewport.
-- Two colours only: emerald and cyan. Every gradient has exactly two stops.
-- Glass panels: 3.5% white fill, 16px blur, emerald hairline borders, 24px corners.
+- Cool near-black ground with two soft radial glows (`--page-glow`), primary top-left (11%) and secondary bottom-right (7%), fixed to the viewport.
+- Two colours only: a primary and a secondary hue. Every gradient has exactly two stops.
+- Glass panels: 3.5% white fill, 16px blur, primary hairline borders, 24px corners.
 - Pill-shaped everything that you press or read as a tag.
 - Space Grotesk headings with the last words of a section title in the brand gradient.
 - Real screenshots in a fixed frame, or designed, labelled cover illustrations; never stock imagery.
 
 ## Colors
 
-An emerald-led two-colour palette: emerald carries action and identity, cyan carries orientation, secondary signal, and the far end of every gradient, on a cool near-black (night) or pale mint (day) ground.
+A primary-led two-colour palette: the primary hue (violet) carries action and identity, the secondary hue (indigo) carries orientation, secondary signal, and the far end of every gradient, on a plum-black (night) or pale lavender (day) ground. Values below are the active palette's.
 
 ### Primary
 
-- **Signal Emerald** (`signal-emerald`, `--primary`): the identity colour. Glows, hairline tints, the scrollbar, caret, selection wash, the active slider thumbnail border, and the start of every decorative gradient. 7.9:1 on the night ground. In day it becomes **Day Emerald** (`day-emerald`, 5.2:1 on the day ground), which is also the day focus ring.
-- **Emerald Strong** (`emerald-strong`, `--primary-strong`): emerald as _text_ — links, soft-button labels, badge text, the focus ring (`--ring`), and the success colour. 10.4:1 on night. Day: `day-emerald-strong`.
+- **Signal Primary** (`signal-primary`, `--primary`): the identity colour. Glows, hairline tints, the scrollbar, caret, selection wash, the active slider thumbnail border, and the start of every decorative gradient. A fill/border colour; text uses Primary Strong (4.7:1 on the night ground). In day it becomes **Day Primary** (`day-primary`, 6.6:1 on the day ground), which is also the day focus ring.
+- **Primary Strong** (`primary-strong`, `--primary-strong`): the primary hue as _text_ — links, soft-button labels, badge text, and the focus ring (`--ring`). 10.8:1 on night. Day: `day-primary-strong`.
 
 ### Secondary
 
-- **Signal Cyan** (`signal-cyan`, `--secondary` / `--secondary-strong` / `--accent`): location pins, path labels, status pills, the far end of the brand gradient, the second constellation colour. **Cyan Strong** (`cyan-strong`, `--accent-strong`) is the cyan text form on night and the end stop of the hero display gradient. In day the fill form is **Day Teal** (`day-teal`) and the text form deepens to **Deep Cyan** (`day-cyan-strong`), because bright cyan fails as text on a pale ground.
+- **Signal Secondary** (`signal-secondary`, `--secondary` / `--secondary-strong` / `--accent`): location pins, path labels, status pills, the far end of the brand gradient, the second constellation colour. **Secondary Strong** (`secondary-strong`, `--accent-strong`) is the secondary text form on night and the end stop of the hero display gradient. In day the fill form is **Day Secondary** (`day-secondary`) and the text form deepens to **Day Secondary Strong** (`day-secondary-strong`), because a bright hue fails as text on a pale ground.
 
 ### Neutral
 
 - **Night Ground** (`night-ground`): page canvas. Day: `day-ground`.
-- **Mint Text** (`mint-text`): body and heading text, and the start stop of the night display gradient. Day: `day-ink`.
-- **Muted Mint** (`muted-mint`, alpha 0.64): secondary copy, captions, inactive nav, the slider counter. Day: `day-muted-ink` (alpha 0.7). These alphas were raised deliberately for contrast; do not lower them.
+- **Night Text** (`night-text`): body and heading text, and the start stop of the night display gradient. Day: `day-ink`.
+- **Muted Text** (`muted-text`, alpha 0.64): secondary copy, captions, inactive nav, the slider counter. Day: `day-muted-ink` (alpha 0.7). These alphas were raised deliberately for contrast; do not lower them.
 - **Glass Card** (`glass-card`) on blur; **Night Card Solid** (`night-card-solid`) where blur is not wanted (also the slider stage behind screenshots); **Night Popover** (`night-popover`) for dialogs, the chat sheet, and widget tooltips.
-- **Hairlines**: `hairline-emerald` (default border, applied globally), `hairline-emerald-strong` (outline buttons, badges, scrolled header, slider frame), `hairline-emerald-glow` (hover/focus-within on interactive cards).
-- **Theme switch** (`--toggle-track`, `--toggle-thumb`, `--toggle-thumb-foreground`; utilities `bg-toggle-track`, `bg-toggle-thumb`): night track `#062a24` with a `#6ee7b7 → #34d399` thumb; day track `#ccfbf1 → #cffafe` with a `#5eead4 → #14b8a6` thumb.
-- **Theme-independent surfaces** (defined once on `:root`): `traffic-red/yellow/green` (`#ff5f57`, `#febc2e`, `#28c840`) for window-chrome dots on mock-ups only; `surface-light` (`#f5f5f7`) behind detail screenshots, which are captured on white; `device` (`#1b1d2a`) for the device body in cover art.
-- **Status**: success reuses `emerald-strong` (day `day-emerald`); error is `error-rose` (day `day-error`).
+- **Hairlines**: `hairline-primary` (default border, applied globally), `hairline-primary-strong` (outline buttons, badges, scrolled header, slider frame), `hairline-primary-glow` (hover/focus-within on interactive cards).
+- **Theme switch** (`--toggle-track`, `--toggle-thumb`, `--toggle-thumb-foreground`; utilities `bg-toggle-track`, `bg-toggle-thumb`): night track `#2e1065` with a `#ddd6fe` → `#c4b5fd` thumb; day track `#ede9fe` → `#e0e7ff` with a `#c4b5fd` → `#8b5cf6` thumb.
+- **Theme-independent surfaces** (defined once on `:root`): `traffic-red/yellow/green` (`#ff5f57`, `#febc2e`, `#28c840`) for window-chrome dots on mock-ups only; `surface-light` (`#f5f5f7`) behind detail screenshots, which are captured on white; `device` (`#1b1d2a`) for the device body in cover art; `backdrop` (`rgb(2 3 10 / .72)`) behind modal dialogs.
+- **Status**: success is `success-green` (day `day-success`) and error is `error-rose` (day `day-error`) in every palette, so status never depends on the brand hue.
 
 ### Gradients (globals.css)
 
 All four are two-stop, 135°.
 
-- `--gradient-button` (`button-stop-emerald` → `button-stop-cyan`, the same in both themes): the fill for every filled control, the logo tile, the favicon, and the chatbot launcher. Both stops hold ≥5.3:1 with white.
-- `--gradient-brand` (`signal-emerald` → `signal-cyan`; day uses the button stops): gradient text on section-title highlights, the hover bar under cards, the scrollbar thumb. Decorative only.
-- `--gradient-display` (`mint-text` → `cyan-strong`; day `day-display-start` → `day-cyan-strong`): the hero name only.
-- `--gradient-tile` (emerald 16% → cyan 8%): icon tiles.
+- `--gradient-button` (`button-stop-from` → `button-stop-to`, the same in both themes): the fill for every filled control, the logo tile, the favicon and app icons, and the chatbot launcher. Both stops hold ≥5.7:1 with white.
+- `--gradient-brand` (`signal-primary` → `signal-secondary`; day uses the button stops): gradient text on section-title highlights, the hover bar under cards, the scrollbar thumb. Decorative only.
+- `--gradient-display` (`night-text` → `secondary-strong`; day `day-display-start` → `day-secondary-strong`): the hero name only.
+- `--gradient-tile` (primary 16% → secondary 8%): icon tiles.
 
 ### Named Rules
 
-**The Two Colours Rule.** The palette is emerald and cyan, and every gradient has exactly two stops, emerald first. No third hue, no violet, purple, or pink, no three-stop gradients. Error rose is a status colour, not a brand colour.
+**The Two Colours Rule.** The active palette has one primary and one secondary hue, and every gradient has exactly two stops, primary first. No third hue, no three-stop gradients. Success green and error rose are status colours, not brand colours.
 
-**The Deep Stops Rule.** White text and white icons only ever sit on `--gradient-button` (#047857 → #0e7490). Never put white on `--gradient-brand`; its bright stops fail contrast.
+**The Deep Stops Rule.** White text and white icons only ever sit on `--gradient-button` (#7c3aed → #4f46e5). Never put white on `--gradient-brand`; its bright stops fail contrast.
 
 **The Strong-For-Text Rule.** A hue used as text uses its `-strong` token (`text-primary-strong`, `text-secondary-strong`, `text-accent-strong`). The base tokens are for fills, glows, and borders.
+
+**The No Raw Colour Rule.** Components, CSS rules, OG images, and the manifest never hardcode a brand colour. CSS reads the tokens (`color-mix(in srgb, var(--primary) 14%, transparent)` for tints); code that can't read CSS variables (`next/og`, the manifest, `themeColor`, the constellation fallbacks) imports `brand` from `src/lib/brand-colors.ts`.
 
 **The Brand Exception Rule.** WhatsApp green (`whatsapp-green`) appears on the floating WhatsApp button and nowhere else. Third-party brand colours stay inside their own marks.
 
@@ -243,7 +249,7 @@ All three load through `next/font/google` as `--font-space-grotesk`, `--font-int
 - **Section headline** (700, `clamp(1.85rem,4vw,3rem)`, 1.1): section `<h2>`; final words may carry `text-gradient`.
 - **Title** (600, 1.125rem, 1.375): card and item titles.
 - **Body lead** (400, 1.05rem, 1.625; hero pitch 1.75): section descriptions, max ~42rem (`max-w-2xl`).
-- **Body** (400, 0.92rem, 1.625): card descriptions in `muted-mint`.
+- **Body** (400, 0.92rem, 1.625): card descriptions in `muted-text`.
 - **Label** (500, 0.875rem): nav links, form labels, buttons (600).
 - **Mono** (400, 0.75–0.85rem): code windows, years, file names, data values, the slider's `n / N` counter.
 
@@ -269,14 +275,14 @@ Every `h1–h4` gets `font-display`, `text-balance`, and −0.02em tracking from
 
 ## Elevation & Depth
 
-Depth comes from light, not from paper: tonal glass over a glowing ground, emerald hairlines, and emerald-tinted shadows that appear on interaction. Surfaces are flat at rest, except the floating actions, which float by definition.
+Depth comes from light, not from paper: tonal glass over a glowing ground, primary hairlines, and primary-tinted shadows that appear on interaction. Surfaces are flat at rest, except the floating actions, which float by definition.
 
 ### Shadow Vocabulary
 
-- **Card** (`--shadow-card`: night `0 24px 64px rgb(0 0 0 / .5)`; day `0 12px 40px rgb(4 120 87 / .12)`): large floating panels such as dialogs and widget tooltips.
-- **Lift** (`--shadow-lift`: night `0 20px 48px rgb(16 185 129 / .2)`; day `0 18px 44px rgb(4 120 87 / .18)`): hover state of cards, primary buttons, and the chatbot launcher.
-- **Button** (`--shadow-button`: night `0 6px 24px rgb(16 185 129 / .35)`; day `0 6px 22px rgb(4 120 87 / .3)`): resting glow under filled buttons and the chatbot launcher.
-- **Header scrolled** (`0 6px 40px rgb(16 185 129 / .14)`): applied by a scroll-driven animation after 80px.
+- **Card** (`--shadow-card`: night `0 24px 64px rgb(0 0 0 / .5)`; day `0 12px 40px rgb(109 40 217 / .12)`): large floating panels such as dialogs and widget tooltips.
+- **Lift** (`--shadow-lift`: night `0 20px 48px rgb(139 92 246 / .2)`; day `0 18px 44px rgb(109 40 217 / .18)`): hover state of cards, primary buttons, and the chatbot launcher.
+- **Button** (`--shadow-button`: night `0 6px 24px rgb(139 92 246 / .35)`; day `0 6px 22px rgb(109 40 217 / .3)`): resting glow under filled buttons and the chatbot launcher.
+- **Header scrolled** (`0 6px 40px` of `--primary` at 14%, via `color-mix`): applied by a scroll-driven animation after 80px.
 - **Focus halo on inputs**: `0 0 0 4px` of `--primary` at 22%.
 
 ### Named Rules
@@ -285,7 +291,7 @@ Depth comes from light, not from paper: tonal glass over a glowing ground, emera
 
 ## Shapes
 
-Soft, rounded geometry throughout. Pills (`rounded-full`) for buttons, badges, status pills, nav, the theme switch, and the 56px floating actions; 24px (`rounded-3xl`) for cards, panels, and the screenshot slider frame; 16px (`rounded-2xl`) for inputs, inner tiles, and the lightbox stage; 12px for small tiles and slider thumbnails; 4px only for inline link focus. Borders are 1px emerald hairlines; the decorative `hairline` utility is a 1px gradient rule fading at both ends. The portrait is a circle inside a gradient ring. The logo is a 40–44px rounded tile (0.85rem) on `--gradient-button` with a white "M".
+Soft, rounded geometry throughout. Pills (`rounded-full`) for buttons, badges, status pills, nav, the theme switch, and the 56px floating actions; 24px (`rounded-3xl`) for cards, panels, and the screenshot slider frame; 16px (`rounded-2xl`) for inputs, inner tiles, and the lightbox stage; 12px for small tiles and slider thumbnails; 4px only for inline link focus. Borders are 1px primary hairlines; the decorative `hairline` utility is a 1px gradient rule fading at both ends. The portrait is a circle inside a gradient ring. The logo is a 40–44px rounded tile (0.85rem) on `--gradient-button` with a white "M".
 
 ## Components
 
@@ -297,35 +303,35 @@ Confident, luminous pills.
 
 - **Shape:** full pill; heights 36 / 44 / 52px (`sm` / `md` / `lg`), icon buttons 36 / 44px square.
 - **Primary:** `--gradient-button` fill, white semibold text, `--shadow-button`. Hover lifts 2px, swaps to `--shadow-lift`, and brightens through a 12% white overlay.
-- **Outline:** glass fill with `hairline-emerald-strong` border; hover lifts and turns the border `--primary`.
-- **Ghost / Soft / Link:** ghost is text on an emerald wash on hover; soft is emerald-strong text on the wash; link is underlined emerald-strong text.
+- **Outline:** glass fill with `hairline-primary-strong` border; hover lifts and turns the border `--primary`.
+- **Ghost / Soft / Link:** ghost is text on a primary wash on hover; soft is primary-strong text on the wash; link is underlined primary-strong text.
 - **Focus:** 2px `--ring` outline, 3px offset. `ButtonLink` shares the same variants so links and buttons cannot drift.
 
 ### Chips
 
-- **Badge:** pill, 1px border, 24–28px tall. Default emerald-strong on emerald wash; `secondary` cyan; `success` emerald; `outline` muted; `solid` uses the button gradient.
+- **Badge:** pill, 1px border, 24–28px tall. Default primary-strong on primary wash; `secondary` secondary hue; `success` success green; `outline` muted; `solid` uses the button gradient.
 - **Status pill:** larger pill with a pulsing dot (`animate-pulse-dot`) for availability.
 
 ### Cards / Containers
 
 - **Corner Style:** 24px.
 - **Background:** `glass` (default), `card-solid`, or transparent outline.
-- **Border:** `hairline-emerald`; interactive cards go to `hairline-emerald-glow` on hover and focus-within.
+- **Border:** `hairline-primary`; interactive cards go to `hairline-primary-glow` on hover and focus-within.
 - **Interactive signature:** a 3px `--gradient-brand` bar grows from the left along the bottom edge on hover/focus-within, with the 6px lift.
 - **Internal Padding:** 24px, 28px from `sm`.
 
 ### Inputs / Fields
 
 - **Style:** 48px tall, 16px corners, glass fill, `input-stroke` border (0.55 alpha so the boundary passes 3:1).
-- **Hover / Focus:** border to `--primary` at 70% / 100%, plus a 4px emerald halo.
+- **Hover / Focus:** border to `--primary` at 70% / 100%, plus a 4px primary halo.
 - **Error:** `error-rose` border and halo; errors linked with `aria-describedby` / `aria-invalid` through `fieldIds()`.
 
 ### Navigation
 
-- **Header:** sticky glass bar (`--header` fill, 28px blur) that deepens to `--header-scrolled` with an emerald glow by CSS scroll-driven animation (no JS).
-- **Desktop nav:** a glass pill holding 36px pill links; inactive links are muted, the active one gets an emerald wash, an inset 1.5px `--primary` ring, and a soft glow. Shown from `lg`.
+- **Header:** sticky glass bar (`--header` fill, 28px blur) that deepens to `--header-scrolled` with a primary glow by CSS scroll-driven animation (no JS).
+- **Desktop nav:** a glass pill holding 36px pill links; inactive links are muted, the active one gets a primary wash, an inset 1.5px `--primary` ring, and a soft glow. Shown from `lg`.
 - **Mobile:** a `<dialog>`-based sheet.
-- **Theme switch:** a pill track with a sliding knob (emerald moon on night, teal sun on day) on the bounce easing.
+- **Theme switch:** a pill track with a sliding knob (moon on night, sun on day, both on `--toggle-thumb`) on the bounce easing. Hover and keyboard focus preview the switch: the track border turns `--primary` with a 4px primary halo, the thumb scales to 110% with a `--glow-primary` glow and its icon tilts, and the target theme's icon fades in on the empty side of the track; pressing squeezes the thumb to 90%.
 
 ### Floating actions
 
@@ -357,7 +363,7 @@ Real screenshots where they exist; otherwise a designed CSS/SVG cover illustrati
 - **Easings:** `--ease-spring` `cubic-bezier(0.34,1.2,0.64,1)` for hover lifts; `--ease-bounce` `cubic-bezier(0.34,1.56,0.64,1)` for the theme knob; `--ease-out-expo` `cubic-bezier(0.16,1,0.3,1)` for bars and `<details>`. The two overshoot curves are sanctioned exceptions in `.impeccable/config.json`.
 - **Smooth scroll:** Lenis (`components/effects/smooth-scroll.tsx`, `lerp` 0.1) drives the real document scroll, so scroll-driven CSS keeps working. It is not started under reduced motion, stops while any `<dialog>` is open, lets dialogs and `[data-lenis-prevent]` boxes scroll natively, and offsets anchors by −96px. There is no CSS `scroll-behavior: smooth`.
 - **Reveal:** `<Reveal>` sets `data-reveal`; a CSS scroll-driven `view()` animation rises content 28px with a 36px-per-item stagger, fully shown after 220px. It never hides content by script, is plain-visible without support or under reduced motion, and never wraps the hero.
-- **Ambient loops:** hero glows float, stack logos orbit the portrait, the marquee scrolls, the constellation drifts (reading `--scene-*` emerald/cyan tokens; 70% opacity in day).
+- **Ambient loops:** hero glows float, stack logos orbit the portrait, the marquee scrolls, the constellation drifts (reading the `--scene-*` primary/secondary tokens; 70% opacity in day).
 - **Sliding selection:** tabs and the `/projects` filter move one gradient pill (`components/ui/sliding-indicator.tsx`) to the active option with `--ease-spring` over 500ms, across wrapped rows too. Without JS, the active option paints its own pill. The theme knob slides with a Web Animation on `--ease-bounce` (next-themes disables CSS transitions during the swap).
 - **Pause animations:** a footer control (`components/layout/motion-toggle.tsx`, Pause/Play icons) sets `data-motion="paused"` on `<html>`, remembered in localStorage and applied before paint. Looping and entry animations end at once, the typewriter holds its word, and the constellation stops; hover and state transitions stay. This is the WCAG 2.2.2 control for visitors who haven't set reduced motion.
 - **Reduced motion:** every animation and transition collapses to 0.01ms, Lenis stays off, the slider switches instantly, and all ambient loops stop.
@@ -367,7 +373,7 @@ Real screenshots where they exist; otherwise a designed CSS/SVG cover illustrati
 ### Do:
 
 - **Do** use semantic token utilities only; the hex values in this file are documentation, `globals.css` is the source.
-- **Do** keep to emerald and cyan, with two-stop gradients that start on emerald.
+- **Do** keep to the active palette's two hues, with two-stop gradients that start on the primary.
 - **Do** design for night first and add `light:` overrides only where day differs.
 - **Do** put white text and icons only on `--gradient-button`.
 - **Do** use the `-strong` token whenever a hue is text.
@@ -388,7 +394,7 @@ Real screenshots where they exist; otherwise a designed CSS/SVG cover illustrati
 - **Don't** gradient-fill text beyond the section-title highlight and the hero name.
 - **Don't** set headings, buttons, or prose in JetBrains Mono.
 - **Don't** use stock photos or unlabelled fake screenshots; use real screenshots or a labelled illustration.
-- **Don't** introduce hard offset shadows or glow colours outside emerald and cyan.
+- **Don't** introduce hard offset shadows or glow colours outside the active palette's two hues.
 
 ## Setup status
 
@@ -397,7 +403,7 @@ Keep this in step with `src/app/globals.css` and ARCHITECTURE.md's Implementatio
 | Item                                                                                                                                                                                  | Status                                                                                                   |
 | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------- |
 | Tailwind v4 via `postcss.config.mjs` (`@tailwindcss/postcss`), `tw-animate-css`                                                                                                       | Done. Without the PostCSS config Turbopack fails on `tw-animate-css`.                                    |
-| Night (`:root, .dark`) and day (`.light`) emerald/cyan tokens, `@theme inline` mapping                                                                                                | Done; text pairs contrast-checked in both themes.                                                        |
+| Night (`:root, .dark`) and day (`.light`) palette tokens (active: violet → indigo), `@theme inline` mapping                                                                           | Done; every saved palette is contrast-checked in both themes by `tests/unit/palettes.test.ts`.           |
 | `@custom-variant dark` / `light`                                                                                                                                                      | Done.                                                                                                    |
 | Fonts (Space Grotesk / Inter / JetBrains Mono via `next/font`)                                                                                                                        | Done.                                                                                                    |
 | `ThemeProvider` (dark default, no system) and header theme switch                                                                                                                     | Done.                                                                                                    |
@@ -407,7 +413,7 @@ Keep this in step with `src/app/globals.css` and ARCHITECTURE.md's Implementatio
 | Floating actions (chatbot launcher + Sheet with placeholder chat panel, WhatsApp button)                                                                                              | Done; the assistant is a placeholder. On phones the stack steps aside while the hero CTAs are on screen. |
 | Lenis smooth scroll (off under reduced motion, paused while a dialog is open)                                                                                                         | Done; CSS `scroll-behavior: smooth` removed.                                                             |
 | CSS scroll-driven Reveal and scrolled header                                                                                                                                          | Done; Firefox and reduced motion get static, visible content.                                            |
-| Three.js constellation reading `--scene-*` tokens                                                                                                                                     | Done (emerald/cyan).                                                                                     |
+| Three.js constellation reading `--scene-*` tokens                                                                                                                                     | Done (active palette).                                                                                   |
 | Logo tile and favicon on `--gradient-button`                                                                                                                                          | Done (Deep Stops Rule).                                                                                  |
 | Prettier with `prettier-plugin-tailwindcss` (`tailwindStylesheet` → `globals.css`)                                                                                                    | Done.                                                                                                    |
 | Theme-switch colours, window-chrome dots, light screenshot stage, device body                                                                                                         | Done: tokenized (`--toggle-*`, `--traffic-*`, `--surface-light`, `--device`).                            |

@@ -15,6 +15,7 @@ import {
   TorusGeometry,
   WebGLRenderer,
 } from "three";
+import { brand } from "@/lib/brand-colors";
 import { createLinkBuffer, createParticles, type Particles } from "./particles";
 
 // Port of uniqtrix.com's init3DBackground: drifting points joined by faint
@@ -35,10 +36,10 @@ function readPalette(): Palette {
   const read = (name: string, fallback: string) =>
     new Color(css.getPropertyValue(name).trim() || fallback);
   return {
-    point: read("--scene-point", "#10b981"),
-    a: read("--scene-a", "#10b981"),
-    b: read("--scene-b", "#22d3ee"),
-    c: read("--scene-c", "#34d399"),
+    point: read("--scene-point", brand.scene.point),
+    a: read("--scene-a", brand.scene.a),
+    b: read("--scene-b", brand.scene.b),
+    c: read("--scene-c", brand.scene.c),
   };
 }
 

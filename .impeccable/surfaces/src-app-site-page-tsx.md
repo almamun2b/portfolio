@@ -15,8 +15,8 @@ Recruiters and hiring managers, plus contract clients. Within the first viewport
 
 ## Direction contract
 
-THESIS: A violet/cyan night-sky console where the engineer stands at the centre of his own stack. It refuses the template-portfolio default of centered name, typed subtitle, and a grid of identical cards.
-OWN-WORLD: The uniqtrix world, pinned by the owner. Ground #04060F with violet #7B6CF6 and cyan #38BDF8 glows, glass panels with violet hairlines, pill buttons, a Three.js constellation, Space Grotesk headings, Inter body text, and mono file-path labels.
+THESIS: A two-hue night-sky console where the engineer stands at the centre of his own stack. It refuses the template-portfolio default of centered name, typed subtitle, and a grid of identical cards.
+OWN-WORLD: The uniqtrix world, pinned by the owner. A near-black ground with primary and secondary glows from the active palette (violet → indigo, the owner's choice; every saved palette is in src/styles/color-systems/), glass panels with primary hairlines, pill buttons, a Three.js constellation, Space Grotesk headings, Inter body text, and mono file-path labels.
 STORY: Visitors see who he is and what he ships, open a case study with real screenshots, then email him or take the CV.
 FIRST VIEWPORT: Left column: availability pill, h1 name, typed role line, one-sentence pitch, primary "View my work" and secondary "Download CV" buttons, socials. Right column: circular portrait in a gradient ring with two counter-rotating orbits of stack logos and floating glass pills. Sticky glass header above, with no privacy bar.
 FORM: Pinned by the owner (uniqtrix clone style). concept-seed was not run, because the brief pins the world. Seed key: none (pinned).

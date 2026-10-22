@@ -1,4 +1,5 @@
 import type { MetadataRoute } from "next";
+import { brand } from "@/lib/brand-colors";
 import { site, siteDescription } from "@/lib/site";
 import { getCareerStats } from "@/server/dal/profile";
 
@@ -12,8 +13,8 @@ export default async function manifest(): Promise<MetadataRoute.Manifest> {
     description: siteDescription(years),
     start_url: "/",
     display: "standalone",
-    background_color: "#05090b",
-    theme_color: "#05090b",
+    background_color: brand.themeColor,
+    theme_color: brand.themeColor,
     icons: [
       { src: "/icon.svg", sizes: "any", type: "image/svg+xml" },
       { src: "/icons/icon-192.png", sizes: "192x192", type: "image/png" },
