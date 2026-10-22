@@ -5,7 +5,7 @@ import { getTech, type TechId } from "@/lib/tech";
 /** The stack I ship with, as uniqtrix's partner-logo ticker. */
 export function TechMarquee({ stack }: { stack: TechId[] }) {
   return (
-    <div className="relative border-y border-border bg-[color-mix(in_srgb,var(--background)_55%,transparent)] py-6 backdrop-blur-sm">
+    <div className="relative border-y border-border bg-[color-mix(in_srgb,var(--background)_80%,transparent)] py-6">
       <Marquee label="Technologies I work with">
         {stack.map((id) => (
           <li

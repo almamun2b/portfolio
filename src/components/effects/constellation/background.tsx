@@ -2,12 +2,34 @@
 
 import { useEffect, useRef } from "react";
 
+// The first sign of a visitor (or a few seconds after load, whichever comes
+// first) starts the scene, so three.js never competes with hydration.
+const INTENT_EVENTS = [
+  "pointermove",
+  "pointerdown",
+  "keydown",
+  "wheel",
+  "touchstart",
+  "scroll",
+] as const;
+const FALLBACK_MS = 4000;
+
+// three.js needs WebGL 2. Software-only WebGL (SwiftShader, llvmpipe) fails
+// this check, so those visitors never download three.js at all.
+function hasHardwareWebGL() {
+  const gl = document
+    .createElement("canvas")
+    .getContext("webgl2", { failIfMajorPerformanceCaveat: true });
+  gl?.getExtension("WEBGL_lose_context")?.loseContext();
+  return gl !== null;
+}
+
 /**
  * Fixed, full-screen constellation behind the page (ported from uniqtrix).
- * Three.js is loaded only after the page is idle, so it never competes with
- * the first paint, and is skipped entirely on Save-Data. The page's CSS
- * glows remain as the fallback when WebGL is unavailable. It renders at
- * 30 fps and stops under reduced motion, "Pause animations", and hidden tabs.
+ * Three.js loads on the first interaction or ~4 s after load, sets up in
+ * small chunks, and is skipped entirely on Save-Data and on software-only
+ * WebGL. The page's CSS glows remain as the fallback. It renders at 30 fps
+ * and stops under reduced motion, "Pause animations", and hidden tabs.
  */
 export function ConstellationBackground() {
   const ref = useRef<HTMLCanvasElement>(null);
@@ -20,27 +42,50 @@ export function ConstellationBackground() {
     ).connection;
     if (connection?.saveData) return;
 
-    // Safari has no requestIdleCallback; fall back to a short timeout.
-    const hasIdle = "requestIdleCallback" in window;
+    const lifetime = new AbortController();
+    const waiting = new AbortController();
     let dispose: (() => void) | undefined;
-    let cancelled = false;
+    let fallback = 0;
 
     const start = () => {
-      void import("./scene").then(({ createConstellation }) => {
-        if (cancelled) return;
-        dispose = createConstellation(canvas);
-        if (dispose) canvas.dataset.ready = "";
-      });
+      waiting.abort();
+      window.clearTimeout(fallback);
+      if (!hasHardwareWebGL()) return;
+      void import("./scene")
+        .then(({ createConstellation }) =>
+          createConstellation(canvas, lifetime.signal),
+        )
+        .then((stop) => {
+          if (!stop) return;
+          if (lifetime.signal.aborted) {
+            stop();
+            return;
+          }
+          dispose = stop;
+          canvas.dataset.ready = "";
+        });
     };
 
-    const idle = hasIdle
-      ? window.requestIdleCallback(start, { timeout: 2500 })
-      : window.setTimeout(start, 1200);
+    for (const type of INTENT_EVENTS)
+      window.addEventListener(type, start, {
+        once: true,
+        passive: true,
+        signal: waiting.signal,
+      });
+    const scheduleFallback = () => {
+      fallback = window.setTimeout(start, FALLBACK_MS);
+    };
+    if (document.readyState === "complete") scheduleFallback();
+    else
+      window.addEventListener("load", scheduleFallback, {
+        once: true,
+        signal: waiting.signal,
+      });
 
     return () => {
-      cancelled = true;
-      if (hasIdle) window.cancelIdleCallback(idle);
-      else window.clearTimeout(idle);
+      waiting.abort();
+      lifetime.abort();
+      window.clearTimeout(fallback);
       dispose?.();
       delete canvas.dataset.ready;
     };

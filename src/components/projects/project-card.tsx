@@ -35,7 +35,7 @@ export function ProjectCard({
     >
       <ProjectCover
         project={project}
-        sizes="(min-width: 1280px) 26rem, (min-width: 768px) 45vw, 92vw"
+        sizes="(min-width: 1600px) 28rem, (min-width: 1280px) 24rem, (min-width: 768px) 45vw, 92vw"
       />
       <div className="flex flex-1 flex-col gap-3 px-3">
         <div className="flex flex-wrap items-center gap-2">

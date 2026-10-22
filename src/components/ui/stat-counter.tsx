@@ -23,13 +23,25 @@ export function StatCounter({
     const el = ref.current;
     if (!el) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    if (el.getBoundingClientRect().top < window.innerHeight) return;
 
-    el.textContent = "0";
+    // The observer's first entry says where the counter is at load, without
+    // a getBoundingClientRect() that would force layout during hydration.
+    let first = true;
     let frame = 0;
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (!entry?.isIntersecting) return;
+        if (!entry) return;
+        if (first) {
+          first = false;
+          // Already on screen or scrolled past: keep the real value.
+          if (entry.boundingClientRect.top < window.innerHeight) {
+            observer.disconnect();
+            return;
+          }
+          el.textContent = "0";
+          return;
+        }
+        if (!entry.isIntersecting) return;
         observer.disconnect();
         const start = performance.now();
         const tick = (now: number) => {

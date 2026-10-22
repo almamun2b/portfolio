@@ -3,7 +3,7 @@
 import { Bot } from "lucide-react";
 import { useState } from "react";
 import { Sheet } from "@/components/ui/dialog";
-import { WidgetTip } from "../whatsapp-button";
+import { WidgetTip } from "../widget-tip";
 import { ChatPanel } from "./chat-panel";
 import type { ChatContact } from "./types";
 

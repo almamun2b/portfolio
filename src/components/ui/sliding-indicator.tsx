@@ -52,9 +52,16 @@ export function useSlidingIndicator(
           : null,
       );
     };
-    measure();
-    revealActive(list, selector);
-    const observer = new ResizeObserver(measure);
+    // No synchronous measure here: during hydration it would force the
+    // page's first layout inside this effect. The observer's initial
+    // callback runs after layout and before paint, so it measures for free.
+    let first = true;
+    const observer = new ResizeObserver(() => {
+      measure();
+      if (!first) return;
+      first = false;
+      revealActive(list, selector);
+    });
     observer.observe(list);
     let cancelled = false;
     void document.fonts.ready.then(() => {

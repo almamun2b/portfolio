@@ -24,7 +24,10 @@ const TONES: Record<Pill["tone"], string> = {
   success: "text-success border-success/40",
 };
 
-/** Glass facts floating around the portrait (uniqtrix's tech-float pills). */
+/**
+ * Facts floating around the portrait (uniqtrix's tech-float pills). Tinted
+ * rather than blurred: a backdrop blur on a bobbing pill repaints every frame.
+ */
 export function FloatingPills({ pills }: { pills: Pill[] }) {
   return (
     <ul
@@ -46,7 +49,7 @@ export function FloatingPills({ pills }: { pills: Pill[] }) {
           >
             <span
               className={cn(
-                "inline-flex items-center gap-2 rounded-full border bg-[color-mix(in_srgb,var(--card-solid)_78%,transparent)] px-3 py-1.5 font-display text-[0.72rem] font-semibold whitespace-nowrap text-foreground shadow-card backdrop-blur-md sm:px-4 sm:py-2 sm:text-[0.8rem]",
+                "inline-flex items-center gap-2 rounded-full border bg-[color-mix(in_srgb,var(--card-solid)_78%,transparent)] px-3 py-1.5 font-display text-[0.72rem] font-semibold whitespace-nowrap text-foreground shadow-card sm:px-4 sm:py-2 sm:text-[0.8rem]",
                 TONES[pill.tone],
               )}
             >

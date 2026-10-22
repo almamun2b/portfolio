@@ -123,6 +123,9 @@ function createRenderer(canvas: HTMLCanvasElement) {
       alpha: true,
       antialias: false,
       powerPreference: "low-power",
+      // Refuse software-only WebGL (SwiftShader, llvmpipe): there every frame
+      // runs on the CPU and stalls the page, so the CSS glows stay instead.
+      failIfMajorPerformanceCaveat: true,
     });
   } catch {
     return undefined;
@@ -147,13 +150,28 @@ function disposeScene(scene: Scene) {
 
 const FRAME_MS = 1000 / 30;
 
-export function createConstellation(
+// scheduler.yield where supported (Chromium); a macrotask elsewhere.
+function yieldToMain(): Promise<void> {
+  if ("scheduler" in window && "yield" in window.scheduler)
+    return window.scheduler.yield();
+  return new Promise((resolve) => setTimeout(resolve, 0));
+}
+
+/**
+ * Builds and starts the scene, yielding between the expensive phases
+ * (context creation, scene setup, shader compilation) so none of them is a
+ * long task. Resolves to a dispose function, or undefined when WebGL is
+ * unavailable or `signal` aborted mid-setup.
+ */
+export async function createConstellation(
   canvas: HTMLCanvasElement,
-): (() => void) | undefined {
+  signal: AbortSignal,
+): Promise<(() => void) | undefined> {
   const renderer = createRenderer(canvas);
   if (!renderer) return undefined; // No WebGL: the CSS glows stay.
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
   renderer.setSize(window.innerWidth, window.innerHeight, false);
+  await yieldToMain();
 
   const scene = new Scene();
   const camera = new PerspectiveCamera(
@@ -186,6 +204,21 @@ export function createConstellation(
   scene.add(new LineSegments(links.geometry, lineMaterial));
 
   const { shapes, rings, materials } = createShapes(scene, palette);
+
+  const teardown = () => {
+    disposeScene(scene);
+    renderer.dispose();
+    renderer.forceContextLoss();
+  };
+  await yieldToMain();
+  // Compiles the shaders off the main thread where the GPU driver allows
+  // it (KHR_parallel_shader_compile), instead of on the first render.
+  if (!signal.aborted) await renderer.compileAsync(scene, camera);
+  if (signal.aborted) {
+    teardown();
+    return undefined;
+  }
+
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
   const pointer = { x: 0, y: 0 };
   let frame = 0;
@@ -269,8 +302,6 @@ export function createConstellation(
     document.removeEventListener("visibilitychange", play);
     reduceMotion.removeEventListener("change", play);
     theme.disconnect();
-    disposeScene(scene);
-    renderer.dispose();
-    renderer.forceContextLoss();
+    teardown();
   };
 }

@@ -115,7 +115,9 @@ function Orbit({
                 }
                 style={style}
               >
-                <span className="grid size-9 place-items-center rounded-xl border border-border-strong glass shadow-card sm:size-12 sm:rounded-2xl">
+                {/* Tinted, not `glass`: a backdrop blur on a moving chip is
+                    re-rasterised every frame. */}
+                <span className="grid size-9 place-items-center rounded-xl border border-border-strong bg-[color-mix(in_srgb,var(--card-solid)_82%,transparent)] shadow-card sm:size-12 sm:rounded-2xl">
                   <TechIcon id={id} className="size-4 sm:size-6" />
                 </span>
               </div>
