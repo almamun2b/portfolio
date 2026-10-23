@@ -106,5 +106,9 @@ export default function config(phase: string): NextConfig {
         { source: "/blog", destination: "/", permanent: false },
       ]);
     },
+    allowedDevOrigins: [
+      new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000")
+        .hostname,
+    ],
   };
 }

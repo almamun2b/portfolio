@@ -10,7 +10,7 @@ const schema = z.object({
   DATABASE_URL: z.string().trim().min(1).optional(),
   NEXT_PUBLIC_SITE_URL: z
     .url()
-    .default("https://portfolio-mamun.vercel.app")
+    .default("http://localhost:3000")
     .transform((url) => url.replace(/\/+$/, "")),
   NODE_ENV: z
     .enum(["development", "test", "production"])

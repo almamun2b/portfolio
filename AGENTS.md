@@ -145,3 +145,13 @@ Before you call a change complete:
 2. For any schema change: the migration is committed and `pnpm db:generate` has run.
 3. For UI changes: run the dev server and exercise the flow in a browser, including keyboard-only use and a narrow (375px) viewport. Passing type checks do not prove a feature works.
 4. Update ARCHITECTURE.md's Implementation status table (and DESIGN.md's Setup status and token tables for UI/theme changes), and update `.env.example` and README.md if setup changed.
+
+<!-- BEGIN:nextjs-agent-rules -->
+
+## This is NOT the Next.js you know
+
+This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` (resolved from this file's directory; in monorepos the `next` package may not be visible from the repo root) before writing any code. Heed deprecation notices.
+
+This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
+
+<!-- END:nextjs-agent-rules -->
