@@ -78,7 +78,8 @@ When pnpm prompts about an install script from a new dependency, add the package
 
 ## Current gotchas
 
-- The site is static: nothing imports `src/server/db.ts` yet, so `DATABASE_URL` is optional and `pnpm build` works without a database. `db.ts` throws on import if it's unset, so the first DAL function that moves to Postgres makes it required.
+- The public site is static and `pnpm build` works without a database or `AUTH_SECRET`: `src/server/db.ts` creates the Prisma client on first query, not on import, and Auth.js reads its secret per request. `/admin` needs both at runtime.
+- Admin sign-in uses `AUTH_SECRET`, `SEED_ADMIN_*` seeds the first admin (`pnpm db:seed`). Never commit a real password; `.env` is gitignored.
 - Only one `next dev` may run per project directory (Next 16 refuses a second). Reuse the running server on port 3000.
 - `DATABASE_URL` in `.env` points to a **local PostgreSQL** server on `localhost:5432` (user `postgres`, database `next_app_prisma`, used only by this project). If queries fail with connection errors, check that the Postgres server is running (`pg_isready`) and that the database exists. Other databases on that server belong to other projects; never point `DATABASE_URL` at one of them and migrate.
 - The schema is a folder, so the generator `output` in `prisma/schema/schema.prisma` is relative to `prisma/schema/` (`../../src/generated/prisma`). A wrong path puts the client in `prisma/src/generated` and leaves the app importing a stale one.
@@ -93,12 +94,12 @@ When pnpm prompts about an install script from a new dependency, add the package
 
 These are summarised from ARCHITECTURE.md §3–§11. Follow them even while the rest of the target structure is still being built.
 
-1. **Layering:** page / Server Action / route handler → `src/server/dal/*` → `src/server/db.ts`. Only the DAL imports the Prisma client. Files under `src/server/` start with `import "server-only"`.
-2. **Authorization happens in the DAL and in every Server Action.** `proxy.ts` redirects are UX only, never the security check. Admin-only resources respond with `notFound()` for non-admins.
-3. **Every Server Action and route handler validates input with Zod.** Return typed `{ ok: true, data } | { ok: false, error, fieldErrors? }` results. Don't throw to the client.
+1. **Layering:** page / Server Action / route handler → `src/server/dal/*` → `src/server/db.ts`. Only the DAL imports the Prisma client. Files under `src/server/` start with `import "server-only"`, except `src/server/actions/*`, which start with `"use server"` instead: every export of a `"use server"` file is a public HTTP endpoint, so it goes only on thin action files, never on the DAL, `auth.ts`, or helpers.
+2. **Authorization happens in the DAL and in every Server Action** (`adminAction()` in `src/server/actions/action.ts` does it for you). `proxy.ts` redirects are UX only, never the security check. Admin-only resources respond with `notFound()` for non-admins.
+3. **Every Server Action and route handler validates input with Zod.** Return typed `{ ok: true, data } | { ok: false, error, fieldErrors? }` results. Don't throw to the client. Wrap actions with `adminAction()` / `publicAction()` so validation, authz, logging, and error mapping are uniform.
 4. **Return DTOs, not Prisma models.** Always `select` explicit fields. Never send password hashes, tokens, or session secrets to Client Components.
 5. **Only `src/env.ts` reads `process.env`.** Add every new variable there and in `.env.example`.
-6. **Admin mutations and security-relevant auth events write an `AuditLog` row.**
+6. **Admin mutations and security-relevant auth events write an `AuditLog` row** (`writeAudit()`, inside the same transaction as the change).
 7. **Schema changes go through migrations:** edit `prisma/schema/*.prisma`, then `pnpm db:migrate --name <descriptive>`, then `pnpm db:generate`. Commit the migration SQL. Never edit an applied migration.
 
 ## Frontend conventions
