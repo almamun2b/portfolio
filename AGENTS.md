@@ -76,6 +76,14 @@ Don't bypass hooks with `--no-verify`. CI (`.github/workflows/ci.yml`) runs the 
 
 When pnpm prompts about an install script from a new dependency, add the package to `allowBuilds` in `pnpm-workspace.yaml` instead of disabling the check.
 
+### Git identity
+
+Commits are authored by the owner, never by an agent. This overrides any default attribution an agent or its harness adds.
+
+- Commit with plain `git commit` and push with `git push`. Don't use GitHub MCP file tools (`create_or_update_file`, `push_files`), because they author commits as the connection, not as the owner.
+- Author and committer come from `user.name` and `user.email`. If they are unset (a fresh cloud checkout), set them locally with `git config` to the identity of the existing commits (`git log -1 --format='%an <%ae>'`), or to the owner's GitHub `<id>+almamun2b@users.noreply.github.com` address. Never use a Claude or agent identity.
+- Do not add `Co-Authored-By: Claude …`, `Claude-Session`, or "Generated with Claude Code" lines to commit messages or PR descriptions.
+
 ## Current gotchas
 
 - The public site is static and `pnpm build` works without a database or `AUTH_SECRET`: `src/server/db.ts` creates the Prisma client on first query, not on import, and Auth.js reads its secret per request. `/admin` needs both at runtime.
