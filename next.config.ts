@@ -1,4 +1,5 @@
 import type { NextConfig } from "next";
+import { env } from "./src/env";
 
 const root = import.meta.dirname;
 
@@ -68,7 +69,7 @@ const hsts = {
 };
 
 // Dev needs eval for React Refresh, so the CSP and HSTS are production-only.
-const isDev = process.env.NODE_ENV === "development";
+const isDev = env.NODE_ENV === "development";
 
 const nextConfig: NextConfig = {
   output: "standalone",
@@ -104,10 +105,7 @@ const nextConfig: NextConfig = {
       { source: "/blog", destination: "/", permanent: false },
     ];
   },
-  allowedDevOrigins: [
-    new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000")
-      .hostname,
-  ],
+  allowedDevOrigins: [new URL(env.NEXT_PUBLIC_SITE_URL).hostname],
 };
 
 export default nextConfig;

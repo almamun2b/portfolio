@@ -1,16 +1,15 @@
 import { hash } from "@node-rs/argon2";
 import { PrismaPg } from "@prisma/adapter-pg";
-import { config } from "dotenv";
 import { randomBytes } from "node:crypto";
-import { ARGON2_PARAMS, PASSWORD_MIN } from "../src/lib/auth/password-params";
+import { env } from "../src/env-node";
+import { ARGON2_PARAMS } from "../src/lib/auth/password-params";
 import { PrismaClient } from "../src/generated/prisma/client";
 
 // The seed runs under tsx, outside Next.js, so it builds its own client. It
 // must not import src/server/*: `server-only` throws outside React Server
-// Components. It may import isomorphic src/lib/* files.
-config({ quiet: true });
-
-const databaseUrl = process.env.DATABASE_URL?.trim();
+// Components. It may import isomorphic src/lib/* files and src/env-node.ts,
+// which loads .env and validates every variable (src/env.ts).
+const databaseUrl = env.DATABASE_URL;
 if (!databaseUrl) {
   throw new Error("DATABASE_URL is required");
 }
@@ -26,18 +25,12 @@ function generatePassword(): string {
 
 /** Creates the default admin once. Re-running never changes an existing account. */
 async function seedAdmin() {
-  const email = (process.env.SEED_ADMIN_EMAIL ?? "admin@example.com")
-    .trim()
-    .toLowerCase();
-  const name = (process.env.SEED_ADMIN_NAME ?? "Site Admin").trim();
-  const supplied = process.env.SEED_ADMIN_PASSWORD;
-  const reset = process.env.SEED_ADMIN_RESET === "true";
-
-  if (supplied !== undefined && supplied.length < PASSWORD_MIN) {
-    throw new Error(
-      `SEED_ADMIN_PASSWORD must be at least ${String(PASSWORD_MIN)} characters`,
-    );
-  }
+  const {
+    SEED_ADMIN_EMAIL: email,
+    SEED_ADMIN_NAME: name,
+    SEED_ADMIN_PASSWORD: supplied,
+    SEED_ADMIN_RESET: reset,
+  } = env;
 
   const existing = await prisma.user.findUnique({ where: { email } });
   if (existing?.passwordHash && !reset) {

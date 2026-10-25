@@ -41,7 +41,7 @@ prisma/
 prisma.config.ts        Prisma 7 config: schema path, migrations, seed, datasource URL
 src/
   proxy.ts              Next 16 "proxy" (formerly middleware): /admin redirect when there is no session cookie (UX only)
-  env.ts                Zod-validated env; the ONLY place that reads process.env
+  env.ts                Zod-validated env; the ONLY place that reads process.env (env-node.ts = same, plus .env loading, for tools outside Next)
   app/
     layout.tsx          <html lang>, root metadata, providers
     (site)/             Public, indexable pages (home, about, projects, contact, legal)

@@ -106,7 +106,7 @@ These are summarised from ARCHITECTURE.md §3–§11. Follow them even while the
 2. **Authorization happens in the DAL and in every Server Action** (`adminAction()` in `src/server/actions/action.ts` does it for you). `proxy.ts` redirects are UX only, never the security check. Admin-only resources respond with `notFound()` for non-admins.
 3. **Every Server Action and route handler validates input with Zod.** Return typed `{ ok: true, data } | { ok: false, error, fieldErrors? }` results. Don't throw to the client. Wrap actions with `adminAction()` / `publicAction()` so validation, authz, logging, and error mapping are uniform.
 4. **Return DTOs, not Prisma models.** Always `select` explicit fields. Never send password hashes, tokens, or session secrets to Client Components.
-5. **Only `src/env.ts` reads `process.env`.** Add every new variable there and in `.env.example`.
+5. **Only `src/env.ts` reads `process.env`.** Add every new variable there (Zod-validated) and in `.env.example`, and read it from `env`, never from `process.env`. App code imports `@/env`; code that runs outside Next.js (`prisma.config.ts`, `prisma/seed.ts`, `playwright.config.ts`, `tests/e2e`, `scripts/*`) imports `src/env-node.ts`, which loads `.env` first.
 6. **Admin mutations and security-relevant auth events write an `AuditLog` row** (`writeAudit()`, inside the same transaction as the change).
 7. **Schema changes go through migrations:** edit `prisma/schema/*.prisma`, then `pnpm db:migrate --name <descriptive>`, then `pnpm db:generate`. Commit the migration SQL. Never edit an applied migration.
 

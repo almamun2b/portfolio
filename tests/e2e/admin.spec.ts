@@ -1,10 +1,11 @@
 import AxeBuilder from "@axe-core/playwright";
 import { expect, test, type Page } from "@playwright/test";
+import { env } from "../../src/env-node";
 
 // Admin console flows. They need a seeded admin and a database, so they run
 // only when E2E_ADMIN_EMAIL / E2E_ADMIN_PASSWORD are set (CI seeds them).
-const EMAIL = process.env.E2E_ADMIN_EMAIL;
-const PASSWORD = process.env.E2E_ADMIN_PASSWORD;
+const EMAIL = env.E2E_ADMIN_EMAIL;
+const PASSWORD = env.E2E_ADMIN_PASSWORD;
 
 test.describe.configure({ mode: "serial" });
 
