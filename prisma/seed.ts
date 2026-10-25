@@ -1,9 +1,8 @@
 import { hash } from "@node-rs/argon2";
 import { PrismaPg } from "@prisma/adapter-pg";
-import { randomBytes } from "node:crypto";
 import { env } from "../src/env-node";
-import { ARGON2_PARAMS } from "../src/lib/auth/password-params";
 import { PrismaClient } from "../src/generated/prisma/client";
+import { ARGON2_PARAMS } from "../src/lib/auth/password-params";
 
 // The seed runs under tsx, outside Next.js, so it builds its own client. It
 // must not import src/server/*: `server-only` throws outside React Server
@@ -17,11 +16,6 @@ if (!databaseUrl) {
 const prisma = new PrismaClient({
   adapter: new PrismaPg({ connectionString: databaseUrl }),
 });
-
-function generatePassword(): string {
-  // 24 random chars with all four classes, so it passes the app's policy.
-  return `Aa1-${randomBytes(18).toString("base64url")}`;
-}
 
 /** Creates the default admin once. Re-running never changes an existing account. */
 async function seedAdmin() {
@@ -40,7 +34,12 @@ async function seedAdmin() {
     return;
   }
 
-  const password = supplied ?? generatePassword();
+  if (!supplied) {
+    throw new Error(
+      "SEED_ADMIN_PASSWORD is required when the seed creates the admin or resets its password (SEED_ADMIN_RESET=true).",
+    );
+  }
+  const password = supplied;
   const passwordHash = await hash(password, ARGON2_PARAMS);
   const data = {
     name,
@@ -54,12 +53,7 @@ async function seedAdmin() {
     update: data,
     create: { email, ...data },
   });
-  console.log(`Seeded admin ${email}.`);
-  if (supplied === undefined) {
-    console.log(
-      `Generated password (shown once, change it after signing in): ${password}`,
-    );
-  }
+  console.log(`Seeded admin ${email}. Change the password after signing in.`);
 }
 
 seedAdmin()

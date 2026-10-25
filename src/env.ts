@@ -43,8 +43,9 @@ const schema = z.object({
     .enum(["development", "test", "production"])
     .default("development"),
 
-  // Default admin, created by `pnpm db:seed` (prisma/seed.ts). An empty
-  // password means "generate one".
+  // Default admin, created by `pnpm db:seed` (prisma/seed.ts). The seed
+  // requires SEED_ADMIN_PASSWORD when it creates the admin or resets it;
+  // optional here so builds without it keep working.
   SEED_ADMIN_EMAIL: z.preprocess(
     blankToUndefined,
     z.string().trim().toLowerCase().min(1).default("admin@example.com"),

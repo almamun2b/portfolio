@@ -28,7 +28,7 @@ pnpm dev                    # http://localhost:3000
 `/admin` is a private, noindex console for managing the site: Auth.js sign-in (email and password, one **Admin** role), user management (add, edit, disable, delete, set or change password), an audit log, and "Coming soon" pages for Projects, Blogs, Professions, Categories, and Settings.
 
 1. Set `DATABASE_URL`, `AUTH_SECRET`, and (optionally) `SEED_ADMIN_EMAIL` / `SEED_ADMIN_NAME` / `SEED_ADMIN_PASSWORD` in `.env`.
-2. `pnpm db:migrate && pnpm db:seed` creates the default admin once. With no `SEED_ADMIN_PASSWORD`, a strong password is generated and printed once. Re-running the seed never changes an existing admin (`SEED_ADMIN_RESET=true` resets the password).
+2. `pnpm db:migrate && pnpm db:seed` creates the default admin once; `SEED_ADMIN_PASSWORD` (minimum 8 characters) is required for that first seed. Re-running the seed never changes an existing admin (`SEED_ADMIN_RESET=true` resets the password, which again requires `SEED_ADMIN_PASSWORD`).
 3. Sign in at `/admin/sign-in` and change the password from **Account**.
 
 Sessions end after 12 hours, or after 60 minutes without activity, and can be revoked from the Account and user pages. Sign-in is rate limited. In production set `AUTH_SECRET` and `DATABASE_URL`, plus `AUTH_TRUST_HOST=true` behind a proxy such as Vercel. The public site still builds and runs without them. How the module is built, and how to add the next one: [ARCHITECTURE.md §4 and §14](ARCHITECTURE.md#14-admin-modules).
