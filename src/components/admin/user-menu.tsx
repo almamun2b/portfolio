@@ -20,8 +20,8 @@ export interface MenuUser {
 /**
  * The signed-in user block at the bottom of the sidebar. `collapsed` leaves
  * just the avatar (the button keeps its "Account menu" name). The menu opens
- * to the right of the block, clear of the sidebar's edge; where there is no
- * room (the phone drawer) it opens above.
+ * above the block (it sits at the bottom of the viewport), right-aligned with
+ * it; in the narrow collapsed rail it grows rightwards instead.
  */
 export function UserMenu({
   user,
@@ -34,8 +34,7 @@ export function UserMenu({
     <div className="border-t border-border p-3">
       <Dropdown
         label="Account menu"
-        placement="right"
-        sideOffset={16}
+        align={collapsed ? "start" : "end"}
         triggerClassName="flex h-14 w-full items-center gap-3 rounded-2xl p-2 text-left hover:bg-muted"
         trigger={
           <>

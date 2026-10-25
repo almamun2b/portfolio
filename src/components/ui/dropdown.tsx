@@ -16,8 +16,7 @@ import {
 // Action menu on the native Popover API: it renders in the top layer (so a
 // table's overflow can't clip it), light-dismisses on outside click, and
 // closes on Esc. We add the menu keyboard pattern (arrows, Home/End) and
-// place it under its button, or beside it (`placement="right"`) for menus in a
-// sidebar.
+// place it under its button.
 
 const CloseContext = createContext<() => void>(() => undefined);
 
@@ -30,8 +29,6 @@ export function Dropdown({
   triggerRef,
   triggerClassName,
   align = "end",
-  placement = "bottom",
-  sideOffset = 8,
   children,
 }: {
   /** Accessible name of the trigger button. */
@@ -40,11 +37,6 @@ export function Dropdown({
   triggerRef?: RefObject<HTMLButtonElement | null>;
   triggerClassName?: string;
   align?: "start" | "end";
-  /** "right" opens beside the trigger, bottom-aligned with it, and falls back
-   * to below/above when there is no room on that side. */
-  placement?: "bottom" | "right";
-  /** Gap between trigger and menu for `placement="right"`, in px. */
-  sideOffset?: number;
   children: ReactNode;
 }) {
   const id = useId();
@@ -60,16 +52,6 @@ export function Dropdown({
     if (!el || !anchor) return;
     const rect = anchor.getBoundingClientRect();
     const width = el.offsetWidth;
-    const beside = rect.right + sideOffset;
-    if (placement === "right" && beside + width <= window.innerWidth - 8) {
-      el.style.left = `${String(beside)}px`;
-      const top = Math.min(
-        rect.bottom - el.offsetHeight,
-        window.innerHeight - el.offsetHeight - 8,
-      );
-      el.style.top = `${String(Math.max(8, top))}px`;
-      return;
-    }
     const left = align === "end" ? rect.right - width : rect.left;
     el.style.left = `${String(Math.max(8, Math.min(left, window.innerWidth - width - 8)))}px`;
     const below = rect.bottom + 6;
