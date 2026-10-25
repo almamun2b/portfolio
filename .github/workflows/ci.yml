@@ -19,9 +19,30 @@ jobs:
   quality:
     name: Typecheck, lint, format, build
     runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_USER: ci
+          POSTGRES_PASSWORD: ci
+          POSTGRES_DB: ci
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U ci"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
     env:
-      # `prisma generate` reads the URL from prisma.config.ts but never connects.
       DATABASE_URL: postgresql://ci:ci@localhost:5432/ci
+      # Throwaway values for the admin e2e tests; the build itself needs none.
+      AUTH_SECRET: ci-only-secret-ci-only-secret-ci-only-secret
+      AUTH_TRUST_HOST: "true"
+      SEED_ADMIN_EMAIL: e2e-admin@example.com
+      SEED_ADMIN_NAME: E2E Admin
+      SEED_ADMIN_PASSWORD: E2e-admin-pass-123
+      E2E_ADMIN_EMAIL: e2e-admin@example.com
+      E2E_ADMIN_PASSWORD: E2e-admin-pass-123
     steps:
       - uses: actions/checkout@v7.0.1
       - uses: pnpm/action-setup@v6.1.0
@@ -38,9 +59,13 @@ jobs:
       - run: pnpm format:check
       - run: pnpm test
       - run: pnpm build
+      - name: Migrate and seed the admin account for the e2e tests
+        run: |
+          pnpm exec prisma migrate deploy
+          pnpm db:seed
       - name: Install Chromium for the smoke tests
         run: pnpm exec playwright install --with-deps chromium
-      - name: Smoke tests (routes, a11y, redirects) against the build
+      - name: Smoke and admin tests (routes, a11y, redirects, sign-in, users) against the build
         run: pnpm test:e2e
       - name: Upload Playwright traces
         if: failure()

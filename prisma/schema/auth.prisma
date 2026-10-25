@@ -1,0 +1,56 @@
+enum Role {
+  ADMIN
+}
+
+enum UserStatus {
+  ACTIVE
+  DISABLED
+}
+
+model User {
+  id                String     @id @default(cuid())
+  email             String     @unique @db.Citext
+  name              String?
+  // Null for rows created before auth existed; sign-in rejects them.
+  passwordHash      String?
+  role              Role       @default(ADMIN)
+  status            UserStatus @default(ACTIVE)
+  lastLoginAt       DateTime?
+  passwordChangedAt DateTime?
+  createdAt         DateTime   @default(now())
+  updatedAt         DateTime   @updatedAt
+
+  sessions  Session[]
+  auditLogs AuditLog[]
+
+  @@index([createdAt])
+  @@index([status])
+}
+
+// Server-side record behind each JWT. The raw token lives only in the
+// encrypted cookie; the database holds its SHA-256, so a leaked table cannot
+// be replayed.
+model Session {
+  id         String    @id @default(cuid())
+  tokenHash  String    @unique
+  userId     String
+  user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt  DateTime
+  lastSeenAt DateTime  @default(now())
+  revokedAt  DateTime?
+  ip         String?
+  userAgent  String?
+  createdAt  DateTime  @default(now())
+
+  @@index([userId])
+  @@index([expiresAt])
+}
+
+// Fixed-window counters for sign-in and password endpoints.
+model RateLimit {
+  key     String   @id
+  count   Int
+  resetAt DateTime
+
+  @@index([resetAt])
+}

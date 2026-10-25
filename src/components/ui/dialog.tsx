@@ -30,8 +30,8 @@ const dialogVariants = cva(
         center:
           "max-h-[calc(100dvh-2rem)] w-[min(100%-2rem,var(--dialog-width))] scale-95 open:scale-100 starting:open:scale-95",
         right:
-          "mr-0 h-dvh max-h-none w-[min(100%,24rem)] translate-x-full open:translate-x-0 starting:open:translate-x-full",
-        left: "ml-0 h-dvh max-h-none w-[min(100%,24rem)] -translate-x-full open:translate-x-0 starting:open:-translate-x-full",
+          "mr-0 h-dvh max-h-none w-[min(100%,var(--dialog-width))] translate-x-full open:translate-x-0 starting:open:translate-x-full",
+        left: "ml-0 h-dvh max-h-none w-[min(100%,var(--dialog-width))] -translate-x-full open:translate-x-0 starting:open:-translate-x-full",
       },
     },
     defaultVariants: { side: "center" },
@@ -61,7 +61,7 @@ export function Dialog({
   description,
   hideHeader = false,
   side = "center",
-  size = "md",
+  size,
   className,
   panelClassName,
   children,
@@ -99,7 +99,16 @@ export function Dialog({
         pressedBackdrop.current = false;
       }}
       className={cn(dialogVariants({ side }), className)}
-      style={{ "--dialog-width": WIDTHS[size] } as CSSProperties}
+      style={
+        {
+          // Side panels keep their 24rem default unless a size is asked for.
+          "--dialog-width": size
+            ? WIDTHS[size]
+            : side === "center"
+              ? WIDTHS.md
+              : "24rem",
+        } as CSSProperties
+      }
     >
       <div
         className={cn(
@@ -172,6 +181,6 @@ export function DialogCloseButton({
 export function Sheet({
   side = "right",
   ...props
-}: Omit<DialogProps, "side" | "size"> & { side?: "right" | "left" }) {
+}: Omit<DialogProps, "side"> & { side?: "right" | "left" }) {
   return <Dialog side={side} {...props} />;
 }

@@ -24,6 +24,7 @@ import {
   type Page,
 } from "playwright";
 import { projects } from "../src/content/projects";
+import { env } from "../src/env-node";
 
 interface Shot {
   src: string;
@@ -137,8 +138,8 @@ async function open(page: Page, url: string, target: Target) {
 }
 
 async function signIn(page: Page, base: string, loginPath: string) {
-  const email = process.env.CAPTURE_EMAIL;
-  const password = process.env.CAPTURE_PASSWORD;
+  const email = env.CAPTURE_EMAIL;
+  const password = env.CAPTURE_PASSWORD;
   if (!email || !password)
     throw new Error("set CAPTURE_EMAIL and CAPTURE_PASSWORD to sign in");
   await page.goto(new URL(loginPath, base).toString(), {
@@ -202,9 +203,7 @@ async function captureDesktop(
     await page.waitForTimeout(1200);
     await add(target.captions?.second ?? "further down the page on desktop");
   }
-  const canSignIn = Boolean(
-    process.env.CAPTURE_EMAIL && process.env.CAPTURE_PASSWORD,
-  );
+  const canSignIn = Boolean(env.CAPTURE_EMAIL && env.CAPTURE_PASSWORD);
   if (target.login && !canSignIn && target.pages?.length)
     process.stdout.write(
       "(no CAPTURE_EMAIL/PASSWORD: skipping signed-in pages) ",
