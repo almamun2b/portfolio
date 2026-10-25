@@ -13,10 +13,9 @@ The personal portfolio of **Md Abdul Mamun**, full-stack software engineer: **Ne
 Requirements: Node.js 22.22.1+ (`.nvmrc` pins 24), pnpm 11, and a PostgreSQL server. Development uses a local PostgreSQL database.
 
 ```bash
-pnpm install
+pnpm install                # also generates the Prisma client (postinstall)
 createdb -U postgres next_app_prisma   # a local development database for this project
 cp .env.example .env        # set DATABASE_URL, AUTH_SECRET (openssl rand -base64 48), SEED_ADMIN_*
-pnpm db:generate            # generate Prisma client into src/generated/prisma
 pnpm db:migrate             # apply migrations (enables the citext extension)
 pnpm db:seed                # create the default admin (see "Admin console")
 pnpm dev                    # http://localhost:3000
@@ -45,7 +44,7 @@ Sessions end after 12 hours, or after 60 minutes without activity, and can be re
 | `pnpm format` / `format:check` | Format with Prettier / check formatting (CI)                                                                                                                                                                            |
 | `pnpm test`                    | Vitest unit and content tests (`tests/unit`)                                                                                                                                                                            |
 | `pnpm test:e2e`                | Playwright + axe tests (`tests/e2e`) against the standalone build; run `pnpm build` first, or set `BASE_URL`. The admin specs also need `E2E_ADMIN_EMAIL` / `E2E_ADMIN_PASSWORD` (a seeded admin) and skip without them |
-| `pnpm db:generate`             | Generate the Prisma client (run after every schema change)                                                                                                                                                              |
+| `pnpm db:generate`             | Generate the Prisma client (`pnpm install` does it; rerun after every schema change, then restart the editor's TS and ESLint servers)                                                                                   |
 | `pnpm db:migrate`              | Create and apply a migration in development                                                                                                                                                                             |
 | `pnpm db:push`                 | Push the schema without a migration (prototyping only)                                                                                                                                                                  |
 | `pnpm db:seed`                 | Run `prisma/seed.ts` (creates the default admin)                                                                                                                                                                        |

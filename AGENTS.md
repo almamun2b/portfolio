@@ -43,7 +43,7 @@ Breaking changes that bite most often:
 The package manager is pnpm (v11). Don't use npm or yarn.
 
 ```bash
-pnpm install                 # then: pnpm db:generate (client is gitignored)
+pnpm install                 # also generates the (gitignored) Prisma client via postinstall
 pnpm dev                     # http://localhost:3000
 pnpm build && pnpm start     # production build; start runs node .next/standalone/server.js
 pnpm typecheck               # next typegen + tsc --noEmit (strict + noUncheckedIndexedAccess)
@@ -52,7 +52,7 @@ pnpm lint:fix                # ESLint with --fix
 pnpm format                  # Prettier (+ Tailwind class sorting)
 pnpm format:check            # what CI runs
 
-pnpm db:generate             # regenerate Prisma client — after every schema change
+pnpm db:generate             # regenerate Prisma client — after every schema change; then restart the editor's TS and ESLint servers
 pnpm db:migrate --name <x>   # create + apply a migration (dev)
 pnpm db:seed                 # run prisma/seed.ts (idempotent upserts)
 pnpm db:push                 # prototyping only; never for changes that ship

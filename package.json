@@ -20,6 +20,7 @@
     "db:push": "prisma db push",
     "db:migrate": "prisma migrate dev",
     "db:seed": "prisma db seed",
+    "postinstall": "prisma generate",
     "prepare": "husky",
     "screenshots": "tsx scripts/capture-screenshots.ts",
     "test": "vitest run",
