@@ -1,6 +1,7 @@
 "use client";
 
-import { ChevronDown, LogOut, UserRound } from "lucide-react";
+import { cn } from "cn";
+import { ChevronsUpDown, LogOut, UserRound } from "lucide-react";
 import { Avatar } from "@/components/ui/avatar";
 import {
   Dropdown,
@@ -16,18 +17,44 @@ export interface MenuUser {
   email: string;
 }
 
-export function UserMenu({ user }: { user: MenuUser }) {
+/**
+ * The signed-in user, shown at the foot of the sidebar. `collapsed` reduces
+ * the trigger to the avatar; the menu opens upward from the trigger.
+ */
+export function UserMenu({
+  user,
+  collapsed = false,
+}: {
+  user: MenuUser;
+  collapsed?: boolean;
+}) {
   return (
     <Dropdown
       label="Account menu"
-      triggerClassName="inline-flex h-auto w-auto items-center gap-2 rounded-full border border-border-strong bg-card py-1 pr-3 pl-1 hover:border-primary"
+      align="start"
+      triggerClassName="flex h-auto w-full items-center justify-start gap-3 rounded-2xl p-2 text-left hover:bg-muted"
       trigger={
         <>
           <Avatar name={user.name} email={user.email} size="sm" />
-          <span className="hidden max-w-32 truncate text-sm font-medium text-foreground md:inline">
-            {user.name ?? user.email}
+          <span
+            className={cn(
+              "flex min-w-0 flex-1 flex-col leading-tight transition-opacity duration-200",
+              collapsed && "w-0 flex-none overflow-hidden opacity-0",
+            )}
+          >
+            <span className="truncate text-sm font-medium text-foreground">
+              {user.name ?? user.email}
+            </span>
+            {user.name ? (
+              <span className="truncate text-xs text-muted-foreground">
+                {user.email}
+              </span>
+            ) : null}
           </span>
-          <ChevronDown aria-hidden="true" className="size-3.5" />
+          <ChevronsUpDown
+            aria-hidden="true"
+            className={cn("size-4 shrink-0", collapsed && "hidden")}
+          />
         </>
       }
     >

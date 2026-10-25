@@ -1,18 +1,19 @@
 "use client";
 
-import { PanelLeftClose, PanelLeftOpen } from "lucide-react";
 import { useState, type ReactNode } from "react";
 import { DialogCloseButton, Sheet } from "@/components/ui/dialog";
 import { ADMIN_COOKIE } from "./nav-config";
 import { AdminBrand } from "./brand";
 import { SidebarNav } from "./sidebar-nav";
+import { SidebarToggle } from "./sidebar-toggle";
 import { Topbar } from "./topbar";
-import type { MenuUser } from "./user-menu";
+import { UserMenu, type MenuUser } from "./user-menu";
 
 /**
- * The dashboard shell: fixed sidebar (collapsible from `lg`), a drawer on
- * phones and tablets, a sticky top bar, and the page. The collapsed choice is
- * remembered in a cookie that the layout reads, so the first paint is right.
+ * The dashboard shell: fixed sidebar (collapsible from `lg`, toggle on top,
+ * account menu at the bottom), a drawer on phones and tablets, a sticky top
+ * bar, and the page. The collapsed choice is remembered in a cookie that the
+ * layout reads, so the first paint is right.
  */
 export function AdminFrame({
   user,
@@ -32,8 +33,6 @@ export function AdminFrame({
     document.cookie = `${ADMIN_COOKIE}=${next ? "collapsed" : "expanded"}; path=/admin; max-age=31536000; samesite=lax`;
   }
 
-  const Toggle = collapsed ? PanelLeftOpen : PanelLeftClose;
-
   return (
     <div className="min-h-dvh">
       <a
@@ -49,28 +48,12 @@ export function AdminFrame({
         className="fixed inset-y-0 left-0 z-30 hidden w-64 flex-col border-r border-border bg-card-solid transition-[width] duration-300 ease-out-expo data-[collapsed=true]:w-[4.5rem] lg:flex"
       >
         <AdminBrand collapsed={collapsed} />
+        <SidebarToggle collapsed={collapsed} onToggle={toggle} />
         <div className="flex-1">
           <SidebarNav collapsed={collapsed} />
         </div>
         <div className="border-t border-border p-3">
-          <button
-            type="button"
-            onClick={toggle}
-            aria-expanded={!collapsed}
-            aria-controls="admin-sidebar"
-            className="flex h-11 w-full cursor-pointer items-center gap-3 rounded-full px-3.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
-          >
-            <Toggle aria-hidden="true" className="size-[1.15rem] shrink-0" />
-            <span
-              className={
-                collapsed
-                  ? "w-0 overflow-hidden opacity-0"
-                  : "whitespace-nowrap"
-              }
-            >
-              {collapsed ? "Expand sidebar" : "Collapse sidebar"}
-            </span>
-          </button>
+          <UserMenu user={user} collapsed={collapsed} />
         </div>
       </aside>
 
@@ -81,7 +64,7 @@ export function AdminFrame({
         side="left"
         hideHeader
       >
-        <div className="relative flex flex-col">
+        <div className="relative flex min-h-full flex-col">
           <DialogCloseButton
             label="Close navigation"
             className="absolute top-3.5 right-3 size-9"
@@ -90,11 +73,16 @@ export function AdminFrame({
             }}
           />
           <AdminBrand />
-          <SidebarNav
-            onNavigate={() => {
-              setDrawerOpen(false);
-            }}
-          />
+          <div className="flex-1">
+            <SidebarNav
+              onNavigate={() => {
+                setDrawerOpen(false);
+              }}
+            />
+          </div>
+          <div className="border-t border-border p-3">
+            <UserMenu user={user} />
+          </div>
         </div>
       </Sheet>
 
@@ -103,7 +91,6 @@ export function AdminFrame({
         className="flex min-h-dvh flex-col transition-[padding] duration-300 ease-out-expo lg:pl-64 data-[collapsed=true]:lg:pl-[4.5rem]"
       >
         <Topbar
-          user={user}
           onOpenMenu={() => {
             setDrawerOpen(true);
           }}
