@@ -4,15 +4,8 @@ import { Menu } from "lucide-react";
 import { ThemeToggle } from "@/components/layout/theme-toggle";
 import { IconButton } from "@/components/ui/button";
 import { Breadcrumbs } from "./breadcrumbs";
-import { UserMenu, type MenuUser } from "./user-menu";
 
-export function Topbar({
-  user,
-  onOpenMenu,
-}: {
-  user: MenuUser;
-  onOpenMenu: () => void;
-}) {
+export function Topbar({ onOpenMenu }: { onOpenMenu: () => void }) {
   return (
     <header className="bg-header sticky top-0 z-20 flex h-16 items-center gap-3 border-b border-border px-4 backdrop-blur-xl sm:px-6">
       <IconButton
@@ -28,7 +21,6 @@ export function Topbar({
         <Breadcrumbs />
       </div>
       <ThemeToggle />
-      <UserMenu user={user} />
     </header>
   );
 }

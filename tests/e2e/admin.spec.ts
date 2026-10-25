@@ -157,7 +157,11 @@ test.describe("signed in", () => {
     ).toHaveAttribute("aria-disabled", "true");
     await page.keyboard.press("Escape");
 
-    // Sign out, and the console is closed again.
+    // Sign out, and the console is closed again. The account menu lives at
+    // the bottom of the sidebar, which is the drawer on phones.
+    if (testInfo.project.name === "mobile") {
+      await page.getByRole("button", { name: "Open navigation" }).click();
+    }
     await page.getByRole("button", { name: "Account menu" }).click();
     await page.getByRole("menuitem", { name: "Sign out" }).click();
     await expect(page).toHaveURL(/\/admin\/sign-in/);
