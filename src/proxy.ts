@@ -1,11 +1,10 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { ADMIN_SIGN_IN } from "@/lib/auth/safe-path";
+import { SESSION_COOKIE_PATTERN } from "@/lib/auth/session-policy";
 
 // UX only, never the security check (ARCHITECTURE.md §3): it sends visitors
 // without a session cookie to the sign-in page before any admin code runs.
 // Every page, DAL function and Server Action still verifies the session.
-
-const SESSION_COOKIE = /^(__Secure-)?authjs\.session-token(\.\d+)?$/;
 
 export function proxy(request: NextRequest) {
   const { pathname, search } = request.nextUrl;
@@ -13,7 +12,7 @@ export function proxy(request: NextRequest) {
 
   const hasCookie = request.cookies
     .getAll()
-    .some(({ name }) => SESSION_COOKIE.test(name));
+    .some(({ name }) => SESSION_COOKIE_PATTERN.test(name));
   if (hasCookie) return NextResponse.next();
 
   const url = request.nextUrl.clone();

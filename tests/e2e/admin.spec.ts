@@ -48,6 +48,28 @@ test("signed-out visitors are sent to the sign-in page", async ({ page }) => {
   );
 });
 
+test("cookies this app can't read just mean signed out", async ({
+  context,
+  page,
+  baseURL,
+}) => {
+  // One under our own name (an old secret) and one under Auth.js's default
+  // name (another app on the same localhost). Neither may break the page.
+  const url = baseURL ?? "http://localhost:3100";
+  await context.addCookies([
+    { name: "portfolio-admin.session-token", value: "not-a-token", url },
+    { name: "authjs.session-token", value: "not-a-token", url },
+  ]);
+  const errors: string[] = [];
+  page.on("console", (message) => {
+    if (message.type() === "error") errors.push(message.text());
+  });
+  await page.goto("/admin");
+  await expect(page).toHaveURL(/\/admin\/sign-in/);
+  await expect(visibleField(page, /^Email/)).toBeVisible();
+  expect(errors).toEqual([]);
+});
+
 test("the sign-in page has no serious accessibility issues", async ({
   page,
 }) => {

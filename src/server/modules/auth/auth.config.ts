@@ -2,9 +2,13 @@ import "server-only";
 import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import { env } from "@/env";
-import { SESSION_ABSOLUTE_MS } from "@/lib/auth/session-policy";
+import {
+  SESSION_ABSOLUTE_MS,
+  sessionCookieName,
+} from "@/lib/auth/session-policy";
 import { ADMIN_SIGN_IN } from "@/lib/auth/safe-path";
 import { writeAudit } from "@/server/core/audit";
+import { logger as appLogger } from "@/server/core/logger";
 import { verifyCredentials } from "@/server/modules/auth/auth.service";
 import {
   createSession,
@@ -15,8 +19,12 @@ import {
 // Auth.js v5 with the Credentials provider and JWT cookies. The JWT is only
 // a pointer: every request re-checks the Session row (revoked, expired, idle,
 // user disabled), so sessions can be ended server-side at any time.
-// Cookies keep the Auth.js defaults: HttpOnly, SameSite=Lax, and Secure with
-// the __Secure- prefix over https.
+// The session cookie has this app's own name (see SESSION_COOKIE_BASE) and
+// keeps the Auth.js defaults otherwise: HttpOnly, SameSite=Lax, and Secure
+// with the __Secure- prefix over https.
+
+// Over https (every deployment) the cookie is Secure and __Secure- prefixed.
+const secureCookies = env.NEXT_PUBLIC_SITE_URL.startsWith("https://");
 
 /** The fields we put in the JWT (Auth.js types its token as an open record). */
 interface AppToken {
@@ -31,7 +39,20 @@ interface AppToken {
 export const { handlers, auth, signIn, signOut } = NextAuth({
   secret: env.AUTH_SECRET,
   trustHost: env.AUTH_TRUST_HOST || env.NODE_ENV === "development",
+  useSecureCookies: secureCookies,
+  cookies: { sessionToken: { name: sessionCookieName(secureCookies) } },
   session: { strategy: "jwt", maxAge: Math.floor(SESSION_ABSOLUTE_MS / 1000) },
+  logger: {
+    // A cookie we can't decrypt (an old secret) just means "signed out", not
+    // a bug, so it is a warning. Everything else keeps Auth.js's own output.
+    error(error) {
+      if (error.name === "JWTSessionError") {
+        appLogger.warn("auth.session.unreadable");
+        return;
+      }
+      console.error(error);
+    },
+  },
   pages: { signIn: ADMIN_SIGN_IN },
   providers: [
     Credentials({

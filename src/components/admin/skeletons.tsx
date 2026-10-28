@@ -103,3 +103,24 @@ export function ActivitySkeleton() {
     </Card>
   );
 }
+
+/**
+ * A page with a header and one content card. Each admin segment re-exports it
+ * as its own `loading.tsx`: a client navigation between sibling pages only
+ * re-renders below their shared layout, so the dashboard-level boundary can't
+ * cover it and every page needs a boundary of its own to navigate instantly.
+ */
+export function PageSkeleton() {
+  return (
+    <div className="flex flex-col gap-8">
+      <HeaderSkeleton />
+      <Card role="status" className="flex flex-col gap-4 p-6">
+        <span className="sr-only">Loading</span>
+        <Skeleton className="h-6 w-48" />
+        <Skeleton className="h-4 w-full max-w-xl" />
+        <Skeleton className="h-4 w-2/3 max-w-lg" />
+        <Skeleton className="mt-2 h-11 w-40 rounded-full" />
+      </Card>
+    </div>
+  );
+}
