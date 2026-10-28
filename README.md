@@ -5,7 +5,7 @@ The personal portfolio of **Md Abdul Mamun**, full-stack software engineer: **Ne
 - **Pages:** one-page home (hero, stack, about, services, selected work, experience, process), `/about`, `/projects` (filter with `?category=`), `/projects/[slug]` case studies with screenshot galleries, `/contact`, `/privacy-policy`, `/terms-and-conditions`.
 - **Look:** the uniqtrix.com style: dark night field with two-colour gradients (active palette violet → indigo; every saved palette is in [src/styles/color-systems](src/styles/color-systems/README.md)), glass surfaces, a Three.js constellation background, and a light theme behind the toggle. See [DESIGN.md](DESIGN.md).
 - **Components:** hand-built primitives in `src/components/ui` (Button, ButtonLink, Badge, Card, Dialog, Sheet, Lightbox, Tabs, Accordion, Tooltip, form fields, Marquee, Timeline, StatCounter, Typewriter); no component library.
-- **Content:** `src/content/*.ts` read through `src/server/dal/*`, so moving to the database changes one file per domain.
+- **Content:** `src/content/*.ts` read through `src/server/modules/content/*`, so moving to the database changes one file per domain.
 - **Screenshots:** `pnpm screenshots [slug…]` captures live projects with Playwright into `public/projects/`; `pnpm screenshots slug=http://localhost:3006` captures a project from a local server instead.
 
 ## Quick start
@@ -58,13 +58,11 @@ prisma/seed.ts        Seed script
 prisma.config.ts      Prisma 7 config (schema path, datasource URL, seed command)
 prisma.compute.ts     Prisma Compute deploy config
 src/app/              Next.js App Router (globals.css holds the Tailwind v4 design tokens)
-src/components/       Shared components: ui/ primitives, forms/ (react-hook-form + Server Action hooks), admin/ (shell, nav registry)
+src/components/       Shared components: ui/ primitives, forms/ (ActionForm, fields, submit button), admin/ (shell, nav registry)
 src/env.ts            Zod-validated environment (the only reader of process.env)
-src/server/db.ts      Prisma client singleton (server-only, connects on first use)
-src/server/auth.ts    Auth.js config (credentials + server-side sessions)
-src/server/cache.ts   Tagged data cache helpers (cached, expireNow, refreshSoon)
-src/server/dal/       Data access layer: every DB read/write, with authorization
-src/server/actions/   Server Actions ("use server"): the only mutation path
+src/server/core/     Shared server infrastructure: db, AppError + error normalizer, QueryBuilder, cache tags, action/route wrappers
+src/server/modules/  One folder per domain (auth, users, sessions, account, audit, dashboard, health, content): model, service, controller, actions
+src/app/api/         JSON API (Route Handlers that re-export module controllers); see ARCHITECTURE.md › HTTP API
 src/app/admin/        The admin console (routes, per-route _components)
 scripts/              Build helpers
 src/generated/prisma  Generated Prisma client (gitignored)

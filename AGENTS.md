@@ -16,7 +16,7 @@ This is the personal portfolio of Md Abdul Mamun (full-stack software engineer):
 
 ### Content layer
 
-Content lives in `src/content/*.ts` as plain typed data, validated by the zod schemas in `src/lib/schemas/content.ts`, and is read **only** through async getters in `src/server/dal/*` (`getProfile`, `getProjects`, `getProjectBySlug`, …). Pages never import `src/content` (ESLint `no-restricted-imports` enforces this; `navigation.ts` is the one exception). Moving a domain to Postgres means rewriting its DAL file and keeping the function signatures and DTO shapes.
+Content lives in `src/content/*.ts` as plain typed data, validated by the zod schemas in `src/lib/schemas/content.ts`, and is read **only** through async getters in `src/server/modules/content/*.service.ts` (`getProfile`, `getProjects`, `getProjectBySlug`, …). Pages never import `src/content` (ESLint `no-restricted-imports` enforces this; `navigation.ts` is the one exception). Moving a domain to Postgres means rewriting its service file and keeping the function signatures and DTO shapes. Getters that depend on today's date (`getProfile`, `getCareerStats`) are `"use cache"` with `cacheLife("days")`, because Cache Components only lets a prerender read the clock inside a cached scope; use `clock.service.ts` for a year or timestamp.
 
 - Project screenshots: `pnpm screenshots [slug…]` (scripts/capture-screenshots.ts, Playwright with the cached Chromium) writes `public/projects/<slug>/*.jpg` and `src/content/project-media.generated.ts`. Review the images before committing. Hand-picked images for private work go in `project-media.manual.ts`, after checking them for client names, logos, store URLs, and personal data.
 - Xubitar and Devxhub client work is **anonymized**: no client, product, or store names anywhere, including alt text, and no links to the client's product. Projects without public screenshots use a designed cover labelled "illustration".
@@ -86,14 +86,15 @@ Commits are authored by the owner, never by an agent. This overrides any default
 
 ## Current gotchas
 
-- The public site is static and `pnpm build` works without a database or `AUTH_SECRET`: `src/server/db.ts` creates the Prisma client on first query, not on import, and Auth.js reads its secret per request. `/admin` needs both at runtime.
+- The public site is static and `pnpm build` works without a database or `AUTH_SECRET`: `src/server/core/db.ts` creates the Prisma client on first query, not on import, and Auth.js reads its secret per request. `/admin` needs both at runtime.
 - Admin sign-in uses `AUTH_SECRET`, `SEED_ADMIN_*` seeds the first admin (`pnpm db:seed`). Never commit a real password; `.env` is gitignored.
+- **Cache Components is on** (`cacheComponents: true`, `partialPrefetching: true`). Route segment configs `revalidate`, `dynamic`, and `dynamicParams` are rejected at build time; use `"use cache"` + `cacheLife`/`cacheTag`. Request data (`cookies()`, `headers()`, `searchParams`, `auth()`) must sit behind a `<Suspense>` boundary (the admin layout and `loading.tsx` provide them), and `new Date()` / file reads in a prerendered page go inside a `"use cache"` helper. Auth.js draws a random CSRF token on every `auth()` call, so `getSession()` calls `connection()` first.
 - Only one `next dev` may run per project directory (Next 16 refuses a second). Reuse the running server on port 3000.
 - `DATABASE_URL` in `.env` points to a **local PostgreSQL** server on `localhost:5432` (user `postgres`, database `next_app_prisma`, used only by this project). If queries fail with connection errors, check that the Postgres server is running (`pg_isready`) and that the database exists. Other databases on that server belong to other projects; never point `DATABASE_URL` at one of them and migrate.
 - The schema is a folder, so the generator `output` in `prisma/schema/schema.prisma` is relative to `prisma/schema/` (`../../src/generated/prisma`). A wrong path puts the client in `prisma/src/generated` and leaves the app importing a stale one.
 - `prisma/seed.ts` builds its own Prisma client. Scripts run under `tsx` must not import `src/server/*`, because `import "server-only"` throws outside React Server Components.
 - `User.email` is `citext` (case-insensitive), so the `user_email_citext` migration enables the `citext` extension. A hosted database must allow it.
-- The `@/*` path alias maps to `./src/*` (`@/server/db`, `@/components/ui/button`).
+- The `@/*` path alias maps to `./src/*` (`@/server/core/db`, `@/components/ui/button`).
 - `src/generated/` is gitignored and must never be edited by hand.
 - Tailwind v4 compiles through `postcss.config.mjs` (`@tailwindcss/postcss`). Without that file, Turbopack resolves the `@import`s in `globals.css` itself and fails on `tw-animate-css`, which only exports a `style` condition. See [DESIGN.md › Setup status](DESIGN.md#setup-status).
 - `next.config.ts` pins `turbopack.root` and `outputFileTracingRoot` to the project directory, because a stray `pnpm-workspace.yaml` in a parent directory otherwise makes Next.js guess the wrong root. Keep both set to the same path.
@@ -102,40 +103,41 @@ Commits are authored by the owner, never by an agent. This overrides any default
 
 These are summarised from ARCHITECTURE.md §3–§11. Follow them even while the rest of the target structure is still being built.
 
-1. **Layering:** page / Server Action / route handler → `src/server/dal/*` → `src/server/db.ts`. Only the DAL imports the Prisma client. Files under `src/server/` start with `import "server-only"`, except `src/server/actions/*`, which start with `"use server"` instead: every export of a `"use server"` file is a public HTTP endpoint, so it goes only on thin action files, never on the DAL, `auth.ts`, or helpers.
-2. **Authorization happens in the DAL and in every Server Action** (`adminAction()` in `src/server/actions/action.ts` does it for you). `proxy.ts` redirects are UX only, never the security check. Admin-only resources respond with `notFound()` for non-admins.
-3. **Every Server Action and route handler validates input with Zod.** Return typed `{ ok: true, data } | { ok: false, error, fieldErrors? }` results. Don't throw to the client. Wrap actions with `adminAction()` / `publicAction()` so validation, authz, logging, and error mapping are uniform.
+1. **Layering (modular MVC):** page / Server Action (`*.actions.ts`) / Route Handler (`*.controller.ts`) → `src/server/modules/<name>/<name>.service.ts` → `<name>.model.ts` → `src/server/core/db.ts`. Only `src/server/core/**` and module services/models import the Prisma client or `@/server/core/db` (ESLint `no-restricted-imports` enforces it). Files under `src/server/` start with `import "server-only"`, except `*.actions.ts`, which start with `"use server"` instead: every export of a `"use server"` file is a public HTTP endpoint, so it goes only on thin action files, never on services or helpers. Pages and actions call services in-process; they never `fetch` this app's own `/api` (an extra HTTP hop, and it fails at build time). The `/api` Route Handlers are for external clients and call the same services.
+2. **Authorization happens in the service and in every Server Action and Route Handler** (`adminAction()` in `src/server/core/action.ts` and `apiRoute()` in `src/server/core/http/route.ts` do it for you). `proxy.ts` redirects are UX only, never the security check. Admin-only resources respond with `notFound()` (pages) or 404/401 JSON (API) for non-admins.
+3. **Every Server Action and route handler validates input with Zod.** Return typed `{ ok: true, data } | { ok: false, error, fieldErrors? }` results (API: the `{ success, statusCode, message, data, meta }` envelope). Don't throw to the client. Wrap actions with `adminAction()` / `publicAction()` and Route Handlers with `apiRoute()` so validation, authz, logging, and error mapping are uniform. Expected failures are `AppError` (one class, `src/server/core/errors`); `normalizeError()` maps `AppError`, Zod, and Prisma errors and hides everything else behind a reference id.
 4. **Return DTOs, not Prisma models.** Always `select` explicit fields. Never send password hashes, tokens, or session secrets to Client Components.
 5. **Only `src/env.ts` reads `process.env`.** Add every new variable there (Zod-validated) and in `.env.example`, and read it from `env`, never from `process.env`. App code imports `@/env`; code that runs outside Next.js (`prisma.config.ts`, `prisma/seed.ts`, `playwright.config.ts`, `tests/e2e`, `scripts/*`) imports `src/env-node.ts`, which loads `.env` first.
 6. **Admin mutations and security-relevant auth events write an `AuditLog` row** (`writeAudit()`, inside the same transaction as the change).
+   **Every cached read is invalidated by the mutation that changes it.** Reads are `"use cache"` + `cacheTag(CACHE_TAGS.x)` + `cacheLife("admin")` in the service, called after `requireAdmin()` (cached scopes can't read cookies). Each mutation's tags are declared once in the module's `*.constants.ts` (`userTags`, `sessionTags`, …) and passed as `{ tags }` to `adminAction()` (→ `updateTag`, read-your-own-writes, Server Actions only) and `apiRoute()` (→ `revalidateTag(tag, { expire: 0 })`). Use `revalidateTag(tag, "max")` only for background effects nobody waits on. `tests/unit/mutation-tags.test.ts` fails when an action or route has no `tags`. List endpoints use `QueryBuilder` (`src/server/core/query-builder.ts`).
 7. **Schema changes go through migrations:** edit `prisma/schema/*.prisma`, then `pnpm db:migrate --name <descriptive>`, then `pnpm db:generate`. Commit the migration SQL. Never edit an applied migration.
 
 ## Frontend conventions
 
 - Style with the semantic token utilities from [DESIGN.md](DESIGN.md) (`bg-background`, `text-muted-foreground`, `border-input`, …), never raw palette colours or hex. Merge classes with `cn()` from the `cn` package and declare variants with `cva`.
 - Use Server Components by default. Put `"use client"` on the smallest leaf possible.
-- Forms: Server Action + `useActionState`. They must work without JS, have visible labels, link errors via `aria-describedby`/`aria-invalid`, move focus to the first error, and use correct `autocomplete` tokens.
+- Forms: `<ActionForm action={serverAction}>` (`src/components/forms/action-form.tsx`, `useActionState`) with `TextField`/`PasswordField`/`SubmitButton`. Validation is server-side Zod only (no validation library in the browser). They must work without JS, have visible labels, link errors via `aria-describedby`/`aria-invalid`, move focus to the first error, and use correct `autocomplete` tokens.
 - Interactive primitives are **hand-built in `src/components/ui/` on native platform features**, by the owner's decision (no shadcn library, no Radix): `Dialog`/`Sheet`/`Lightbox` on the modal `<dialog>` (browser-managed focus trap, Esc, focus return), `Tabs` as a WAI-ARIA tablist with roving tabindex, `Accordion` on `<details>`. Reuse them; don't add a second dialog or tab implementation.
 - Scroll reveal is CSS-only (`<Reveal>` + scroll-driven animation in globals.css); never hide content with script, and never wrap the hero.
-- Every async segment gets `loading.tsx` (layout-stable skeleton) and `error.tsx`. Mutations show pending, success, and error states, and destructive ones need confirmation.
-- List, filter, and pagination state lives in `searchParams`, so URLs are shareable and agent-navigable.
+- Every async segment gets `loading.tsx` (layout-stable skeleton) and `error.tsx`; independent widgets stream behind their own `<Suspense>` and `WidgetBoundary` (`catchError`). The first server render shows no loader: spinners and dimming appear only while navigating (`PendingMark`/`useUrlState` → `ListRegion`) and mutating (`SubmitButton`). Mutations show pending, success, and error states, and destructive ones need confirmation.
+- List, filter, and pagination state lives in `searchParams` (`page`, `limit`, `searchTerm`, `sortBy`, `sortOrder`, plus filters), so URLs are shareable and agent-navigable. Rows per page is a dropdown (`PerPageSelect`, 10/25/50).
 - Images use `next/image` with `sizes`; fonts use `next/font`; third-party scripts use `next/script`. Respect `prefers-reduced-motion`.
 
 ## Code size limits
 
 ESLint enforces these as errors, so `pnpm lint`, the pre-commit hook, and CI all fail on a violation. Blank lines and comments don't count.
 
-| Unit                                                                      | Max lines |
-| ------------------------------------------------------------------------- | --------- |
-| Component file (`*.tsx`)                                                  | 200       |
-| Any function: a component body, hook, Server Action, DAL function, helper | 150       |
+| Unit                                                                          | Max lines |
+| ----------------------------------------------------------------------------- | --------- |
+| Component file (`*.tsx`)                                                      | 200       |
+| Any function: a component body, hook, Server Action, service function, helper | 150       |
 
 `src/components/ui/**` (hand-built primitives, one family per file) and test files are exempt. Don't silence the rules with `eslint-disable`; split the code by responsibility instead:
 
 - **Big page or component:** extract sections into subcomponents. Pieces used by one route go in a private `_components/` folder beside it (the `_` keeps it out of routing); shared ones go in `src/components/`.
 - **Client logic:** move state and effects into a custom hook (`use-<name>.ts`) next to the component, and keep `"use client"` on the leaf that renders.
 - **Non-JSX code in a `.tsx` file:** move `cva` variant maps, Zod schemas, types, and pure helpers into a sibling `.ts` file or `src/lib/`.
-- **Long Server Action:** keep it to parse → DAL call → revalidate/redirect. The business logic belongs in the DAL, split into named functions.
+- **Long Server Action:** keep it to parse → service call. The business logic belongs in the module service, split into named functions; cache invalidation is declared in the module's tag map.
 
 ## SEO checklist for any new public page
 
