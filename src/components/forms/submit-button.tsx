@@ -4,17 +4,24 @@ import type { ComponentProps } from "react";
 import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
 import type { ActionResult } from "@/lib/action-result";
+import { useFormState } from "./form-state";
 
-/** Submit with a pending state: disabled while running, announced via aria-busy. */
+/**
+ * Submit with a pending state: disabled while running, announced via
+ * aria-busy. Inside an <ActionForm> it follows the form's pending state;
+ * pass `pending` to override.
+ */
 export function SubmitButton({
-  pending,
+  pending: pendingOverride,
   children,
   pendingLabel,
   ...props
 }: Omit<ComponentProps<typeof Button>, "type"> & {
-  pending: boolean;
+  pending?: boolean;
   pendingLabel?: string;
 }) {
+  const form = useFormState();
+  const pending = pendingOverride ?? form.pending;
   return (
     <Button type="submit" disabled={pending} aria-busy={pending} {...props}>
       {pending ? <Spinner /> : null}

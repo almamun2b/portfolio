@@ -8,14 +8,13 @@ import {
   getAdjacentProjects,
   getProjectBySlug,
   getProjectSlugs,
-} from "@/server/dal/projects";
+} from "@/server/modules/content/projects.service";
 import { CaseStudyBody } from "./_components/case-study-body";
 import { CaseStudyHeader } from "./_components/case-study-header";
 import { ProjectGallery } from "./_components/project-gallery";
 import { ProjectPager } from "./_components/project-pager";
 
-export const dynamicParams = false;
-
+// Unknown slugs render on request and fall through to notFound() below.
 export async function generateStaticParams() {
   const slugs = await getProjectSlugs();
   return slugs.map((slug) => ({ slug }));

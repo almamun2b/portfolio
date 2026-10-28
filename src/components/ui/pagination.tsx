@@ -2,9 +2,11 @@ import { cn } from "cn";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import Link from "next/link";
 import type { Route } from "next";
-import { PAGE_SIZES } from "@/lib/schemas/common";
+import type { PaginationMeta } from "@/lib/dto";
 import type { SearchParamsInput } from "@/lib/url-state";
-import { withParams } from "@/lib/url-state";
+import { first, withParams } from "@/lib/url-state";
+import { PendingMark } from "./pending-mark";
+import { PerPageSelect } from "./per-page-select";
 
 const chip =
   "inline-flex h-9 min-w-9 items-center justify-center rounded-full border px-3 text-sm font-medium transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring";
@@ -24,28 +26,35 @@ function windowed(page: number, count: number): (number | null)[] {
   return out;
 }
 
-/** URL-driven pagination: every control is a link, so it works without JS. */
+/** The other active query params, kept by the rows-per-page GET form. */
+function otherParams(searchParams: SearchParamsInput) {
+  return Object.fromEntries(
+    Object.entries(searchParams)
+      .filter(([key]) => key !== "page" && key !== "limit")
+      .map(([key, value]) => [key, first(value)]),
+  );
+}
+
+/**
+ * URL-driven pagination: every control is a link or a GET form, so it works
+ * without JS. The rows-per-page dropdown sits beside the page links.
+ */
 export function Pagination({
   pathname,
   searchParams,
-  page,
-  perPage,
-  total,
-  pageCount,
+  meta,
   className,
 }: {
   pathname: string;
   searchParams: SearchParamsInput;
-  page: number;
-  perPage: number;
-  total: number;
-  pageCount: number;
+  meta: PaginationMeta;
   className?: string;
 }) {
+  const { page, limit, total, totalPage } = meta;
   const href = (patch: Record<string, string | number | undefined>) =>
     withParams(pathname, searchParams, patch) as Route;
-  const from = total === 0 ? 0 : (page - 1) * perPage + 1;
-  const to = Math.min(total, page * perPage);
+  const from = total === 0 ? 0 : (page - 1) * limit + 1;
+  const to = Math.min(total, page * limit);
 
   return (
     <div
@@ -59,31 +68,11 @@ export function Pagination({
         <data value={total}>{total}</data>
       </p>
       <div className="flex flex-wrap items-center gap-x-5 gap-y-2">
-        <div
-          className="flex items-center gap-1.5"
-          role="group"
-          aria-label="Rows per page"
-        >
-          <span className="text-muted-foreground">Rows</span>
-          {PAGE_SIZES.map((size) => (
-            <Link
-              key={size}
-              href={href({
-                perPage: size === 10 ? undefined : size,
-                page: undefined,
-              })}
-              aria-current={size === perPage ? "true" : undefined}
-              className={cn(
-                chip,
-                size === perPage
-                  ? "border-primary bg-muted text-foreground"
-                  : "border-transparent text-muted-foreground hover:bg-muted hover:text-foreground",
-              )}
-            >
-              {size}
-            </Link>
-          ))}
-        </div>
+        <PerPageSelect
+          action={pathname}
+          value={limit}
+          preserve={otherParams(searchParams)}
+        />
         <nav aria-label="Pagination" className="flex items-center gap-1.5">
           <PageLink
             disabled={page <= 1}
@@ -92,7 +81,7 @@ export function Pagination({
           >
             <ChevronLeft aria-hidden="true" className="size-4" />
           </PageLink>
-          {windowed(page, pageCount).map((n, i) =>
+          {windowed(page, totalPage).map((n, i) =>
             n === null ? (
               <span
                 key={`gap-${String(i)}`}
@@ -115,11 +104,12 @@ export function Pagination({
                 )}
               >
                 {n}
+                <PendingMark />
               </Link>
             ),
           )}
           <PageLink
-            disabled={page >= pageCount}
+            disabled={page >= totalPage}
             href={href({ page: page + 1 })}
             label="Next page"
           >
@@ -162,6 +152,7 @@ function PageLink({
       className={cn(classes, "hover:border-primary hover:bg-muted")}
     >
       {children}
+      <PendingMark />
     </Link>
   );
 }

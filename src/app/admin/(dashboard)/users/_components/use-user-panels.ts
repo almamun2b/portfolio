@@ -5,7 +5,10 @@ import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
 import { useConfirmAction } from "@/components/forms/use-confirm-action";
 import type { UserDTO } from "@/lib/dto";
-import { deleteUserAction, setUserStatusAction } from "@/server/actions/users";
+import {
+  deleteUserAction,
+  setUserStatusAction,
+} from "@/server/modules/users/users.actions";
 
 export type Panel = "edit" | "password" | "status" | "delete" | null;
 

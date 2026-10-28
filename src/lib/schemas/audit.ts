@@ -1,9 +1,9 @@
 import { z } from "zod";
-import { listBase, sortDir } from "./common";
+import { listBase, sortOrder } from "./common";
 
 export const auditListParamsSchema = z.object({
   ...listBase,
-  dir: sortDir,
+  sortOrder,
   // "auth", "user" ... the prefix before the first dot of `action`.
   area: z.enum(["auth", "user", "session"]).optional().catch(undefined),
 });

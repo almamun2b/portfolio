@@ -31,3 +31,13 @@ export function withParams(
   const query = next.toString();
   return query ? `${pathname}?${query}` : pathname;
 }
+
+/** The first value of each named query parameter, ready for a Zod list-params schema. */
+export function firstOf<const K extends string>(
+  query: SearchParamsInput,
+  keys: readonly K[],
+): Record<K, string | undefined> {
+  return Object.fromEntries(
+    keys.map((key) => [key, first(query[key])]),
+  ) as Record<K, string | undefined>;
+}

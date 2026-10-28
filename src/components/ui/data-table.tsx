@@ -44,8 +44,8 @@ export function DataTable<Row>({
   getRowId,
   pathname,
   searchParams,
-  sort,
-  dir,
+  sortBy,
+  sortOrder,
   className,
 }: {
   caption: string;
@@ -54,8 +54,8 @@ export function DataTable<Row>({
   getRowId: (row: Row) => string;
   pathname: string;
   searchParams: SearchParamsInput;
-  sort?: string;
-  dir?: "asc" | "desc";
+  sortBy?: string;
+  sortOrder?: "asc" | "desc";
   className?: string;
 }) {
   return (
@@ -70,17 +70,18 @@ export function DataTable<Row>({
                 column.align === "right" && "text-right",
               );
               if (column.sortKey) {
-                const active = sort === column.sortKey;
-                const nextDir = active && dir === "asc" ? "desc" : "asc";
+                const active = sortBy === column.sortKey;
+                const nextOrder =
+                  active && sortOrder === "asc" ? "desc" : "asc";
                 return (
                   <SortHeader
                     key={column.id}
                     label={column.header}
                     active={active}
-                    dir={dir ?? "asc"}
+                    dir={sortOrder ?? "asc"}
                     href={withParams(pathname, searchParams, {
-                      sort: column.sortKey,
-                      dir: nextDir,
+                      sortBy: column.sortKey,
+                      sortOrder: nextOrder,
                     })}
                     className={cls}
                   />

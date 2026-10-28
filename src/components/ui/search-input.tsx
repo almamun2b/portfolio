@@ -6,7 +6,7 @@ import { Spinner } from "./spinner";
 import { useUrlState } from "./use-url-state";
 
 /**
- * Search box bound to ?q=. Without JS it is a GET form (press Enter); with JS
+ * Search box bound to ?searchTerm=. Without JS it is a GET form (press Enter); with JS
  * it also updates the URL as you type, after a short pause.
  */
 export function SearchInput({
@@ -47,7 +47,8 @@ export function SearchInput({
     setValue(next);
     clearTimeout(timer.current);
     timer.current = setTimeout(() => {
-      if (next.trim() !== defaultValue) update({ q: next.trim() || undefined });
+      if (next.trim() !== defaultValue)
+        update({ searchTerm: next.trim() || undefined });
     }, 350);
   }
 
@@ -57,6 +58,7 @@ export function SearchInput({
       action={action}
       method="get"
       className="relative w-full sm:max-w-sm"
+      data-pending={pending ? "true" : undefined}
     >
       <label htmlFor={id} className="sr-only">
         {label}
@@ -67,7 +69,7 @@ export function SearchInput({
       />
       <input
         id={id}
-        name="q"
+        name="searchTerm"
         type="search"
         value={value}
         onChange={(event) => {

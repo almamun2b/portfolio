@@ -18,8 +18,11 @@ import {
   getProfile,
   getServices,
   getSocials,
-} from "@/server/dal/profile";
-import { getProjectCounts, getProjects } from "@/server/dal/projects";
+} from "@/server/modules/content/profile.service";
+import {
+  getProjectCounts,
+  getProjects,
+} from "@/server/modules/content/projects.service";
 
 export async function generateMetadata() {
   const { years } = await getCareerStats();

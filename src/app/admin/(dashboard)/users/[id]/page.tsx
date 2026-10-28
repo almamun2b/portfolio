@@ -6,10 +6,10 @@ import { Avatar } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { formatDateTime } from "@/lib/format";
-import { listAuditForTarget } from "@/server/dal/audit";
-import { requireAdmin } from "@/server/dal/auth";
-import { listUserSessions } from "@/server/dal/sessions";
-import { getUserById } from "@/server/dal/users";
+import { listAuditForTarget } from "@/server/modules/audit/audit.service";
+import { requireAdmin } from "@/server/modules/auth/auth.guard";
+import { listUserSessions } from "@/server/modules/sessions/sessions.service";
+import { getUserById } from "@/server/modules/users/users.service";
 import { UserRowActions } from "../_components/user-row-actions";
 import { UserStatusBadge } from "../_components/user-status-badge";
 

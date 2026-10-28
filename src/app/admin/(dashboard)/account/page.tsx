@@ -10,8 +10,8 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { PageHeader } from "@/components/ui/page-header";
-import { requireAdmin } from "@/server/dal/auth";
-import { listUserSessions } from "@/server/dal/sessions";
+import { requireAdmin } from "@/server/modules/auth/auth.guard";
+import { listUserSessions } from "@/server/modules/sessions/sessions.service";
 import { ChangePasswordForm } from "./_components/change-password-form";
 
 export const metadata: Metadata = { title: "Account" };

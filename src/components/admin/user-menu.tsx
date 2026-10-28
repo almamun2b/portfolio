@@ -10,7 +10,7 @@ import {
   DropdownSeparator,
   DropdownSubmit,
 } from "@/components/ui/dropdown";
-import { signOutAction } from "@/server/actions/auth";
+import { signOutAction } from "@/server/modules/auth/auth.actions";
 
 export interface MenuUser {
   name: string | null;

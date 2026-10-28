@@ -1,12 +1,11 @@
 "use client";
 
 import { KeyRound } from "lucide-react";
+import { ActionForm } from "@/components/forms/action-form";
 import { PasswordField } from "@/components/forms/form-fields";
-import { FormAlert, SubmitButton } from "@/components/forms/submit-button";
-import { useActionForm } from "@/components/forms/use-action-form";
+import { SubmitButton } from "@/components/forms/submit-button";
 import { Button } from "@/components/ui/button";
-import { setPasswordSchema } from "@/lib/schemas/users";
-import { setUserPasswordAction } from "@/server/actions/users";
+import { setUserPasswordAction } from "@/server/modules/users/users.actions";
 
 export function SetPasswordForm({
   userId,
@@ -17,24 +16,16 @@ export function SetPasswordForm({
   onDone: () => void;
   onCancel: () => void;
 }) {
-  const { form, pending, formError, formProps } = useActionForm({
-    schema: setPasswordSchema,
-    action: setUserPasswordAction,
-    defaultValues: { id: userId, password: "", confirmPassword: "" },
-    successMessage: "Password set. The user was signed out everywhere.",
-    onSuccess: onDone,
-  });
-
   return (
-    <form
-      {...formProps}
+    <ActionForm
+      action={setUserPasswordAction}
+      successMessage="Password set. The user was signed out everywhere."
+      onSuccess={onDone}
       className="flex flex-col gap-5"
       aria-label="Set password"
     >
-      <input type="hidden" {...form.register("id")} />
-      <FormAlert result={formError} />
+      <input type="hidden" name="id" value={userId} />
       <PasswordField
-        formApi={form}
         name="password"
         label="New password"
         autoComplete="new-password"
@@ -42,7 +33,6 @@ export function SetPasswordForm({
         required
       />
       <PasswordField
-        formApi={form}
         name="confirmPassword"
         label="Confirm new password"
         autoComplete="new-password"
@@ -52,10 +42,10 @@ export function SetPasswordForm({
         <Button variant="outline" onClick={onCancel}>
           Cancel
         </Button>
-        <SubmitButton pending={pending} pendingLabel="Saving">
+        <SubmitButton pendingLabel="Saving">
           <KeyRound aria-hidden="true" /> Set password
         </SubmitButton>
       </div>
-    </form>
+    </ActionForm>
   );
 }

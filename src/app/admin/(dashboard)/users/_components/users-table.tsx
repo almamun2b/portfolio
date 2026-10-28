@@ -104,10 +104,10 @@ export function UsersTable({
   searchParams: SearchParamsInput;
   currentUserId: string;
 }) {
-  const filtered = Boolean(params.q || params.status);
+  const filtered = Boolean(params.searchTerm || params.status);
   return (
     <Card>
-      {data.total === 0 ? (
+      {data.meta.total === 0 ? (
         <EmptyState
           icon={Users}
           title={filtered ? "No users match your filters" : "No users yet"}
@@ -131,20 +131,17 @@ export function UsersTable({
           <DataTable
             caption="Users"
             columns={columns(currentUserId)}
-            rows={data.items}
+            rows={data.data}
             getRowId={(user) => user.id}
             pathname={PATH}
             searchParams={searchParams}
-            sort={params.sort}
-            dir={params.dir}
+            sortBy={params.sortBy}
+            sortOrder={params.sortOrder}
           />
           <Pagination
             pathname={PATH}
             searchParams={searchParams}
-            page={data.page}
-            perPage={data.perPage}
-            total={data.total}
-            pageCount={data.pageCount}
+            meta={data.meta}
           />
         </>
       )}

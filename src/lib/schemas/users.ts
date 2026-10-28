@@ -5,8 +5,8 @@ import {
   listBase,
   nameSchema,
   passwordSchema,
-  sortDir,
-  sortParam,
+  sortByParam,
+  sortOrder,
 } from "./common";
 
 export const USER_STATUSES = ["ACTIVE", "DISABLED"] as const;
@@ -22,35 +22,38 @@ export type UserSortKey = (typeof USER_SORT_KEYS)[number];
 export const userListParamsSchema = z.object({
   ...listBase,
   status: z.enum(USER_STATUSES).optional().catch(undefined),
-  sort: sortParam(USER_SORT_KEYS, "createdAt"),
-  dir: sortDir,
+  sortBy: sortByParam(USER_SORT_KEYS, "createdAt"),
+  sortOrder,
 });
 export type UserListParams = z.output<typeof userListParamsSchema>;
 
-export const createUserSchema = z
-  .object({
-    name: nameSchema,
-    email: emailSchema,
-    password: passwordSchema,
-    confirmPassword: z.string().min(1, "Confirm the password."),
-  })
+/** What the API and the service accept. The form adds a confirmation field. */
+export const createUserBodySchema = z.object({
+  name: nameSchema,
+  email: emailSchema,
+  password: passwordSchema,
+});
+export type CreateUserInput = z.input<typeof createUserBodySchema>;
+
+export const createUserSchema = createUserBodySchema
+  .extend({ confirmPassword: z.string().min(1, "Confirm the password.") })
   .refine((v) => v.password === v.confirmPassword, {
     path: ["confirmPassword"],
     message: "Passwords do not match.",
   });
-export type CreateUserInput = z.input<typeof createUserSchema>;
 
-export const updateUserSchema = z.object({
-  id: idSchema,
+export const updateUserBodySchema = z.object({
   name: nameSchema,
   email: emailSchema,
 });
+export const updateUserSchema = updateUserBodySchema.extend({ id: idSchema });
 export type UpdateUserInput = z.input<typeof updateUserSchema>;
 
-export const setPasswordSchema = z
-  .object({
+export const setPasswordBodySchema = z.object({ password: passwordSchema });
+
+export const setPasswordSchema = setPasswordBodySchema
+  .extend({
     id: idSchema,
-    password: passwordSchema,
     confirmPassword: z.string().min(1, "Confirm the password."),
   })
   .refine((v) => v.password === v.confirmPassword, {
@@ -61,10 +64,8 @@ export type SetPasswordInput = z.input<typeof setPasswordSchema>;
 
 export const userIdSchema = z.object({ id: idSchema });
 
-export const setStatusSchema = z.object({
-  id: idSchema,
-  status: z.enum(USER_STATUSES),
-});
+export const setStatusBodySchema = z.object({ status: z.enum(USER_STATUSES) });
+export const setStatusSchema = setStatusBodySchema.extend({ id: idSchema });
 
 /** Revoking one session: the owner id is re-derived server-side. */
 export const revokeSessionSchema = z.object({ sessionId: idSchema });

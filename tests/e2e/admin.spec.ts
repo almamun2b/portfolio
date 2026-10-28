@@ -29,9 +29,9 @@ async function signIn(page: Page, email: string, password: string) {
 }
 
 test("signed-out visitors are sent to the sign-in page", async ({ page }) => {
-  await page.goto("/admin/users?q=x");
+  await page.goto("/admin/users?searchTerm=x");
   await expect(page).toHaveURL(
-    /\/admin\/sign-in\?next=%2Fadmin%2Fusers%3Fq%3Dx$/,
+    /\/admin\/sign-in\?next=%2Fadmin%2Fusers%3FsearchTerm%3Dx$/,
   );
   await expect(
     page.getByRole("heading", { level: 1, name: "Admin sign-in" }),
@@ -76,6 +76,10 @@ test.describe("signed in", () => {
     const stamp = `${testInfo.project.name}-${String(Date.now())}`;
     const email = `e2e-${stamp}@example.com`;
     const password = "E2e-secret-pass-1";
+    // Both projects run at once against one database, and failed runs can leave
+    // users behind: names must be unique per run.
+    const person = `E2E Person ${stamp}`;
+    const renamed = `E2E Renamed ${stamp}`;
 
     await signIn(page, EMAIL ?? "", PASSWORD ?? "");
     await expect(page).toHaveURL(/\/admin$/);
@@ -99,40 +103,40 @@ test.describe("signed in", () => {
     const add = page.getByRole("dialog", { name: "Add user" });
     await add.getByRole("button", { name: "Create user" }).click();
     await expect(add.getByText(/Enter a name/)).toBeVisible();
-    await add.getByLabel(/^Full name/).fill("E2E Person");
+    await add.getByLabel(/^Full name/).fill(person);
     await add.getByLabel(/^Email/).fill(email);
     await add.getByLabel(/^Password/).fill(password);
     await add.getByLabel(/^Confirm password/).fill(password);
     await add.getByRole("button", { name: "Create user" }).click();
     await expect(page.getByText("User created.")).toBeVisible();
-    await expect(page.getByRole("link", { name: /E2E Person/ })).toBeVisible();
+    await expect(page.getByRole("link", { name: person })).toBeVisible();
 
     // Search narrows the table and lands in the URL.
     await page.getByRole("searchbox", { name: "Search users" }).fill(email);
-    await expect(page).toHaveURL(/q=e2e-/);
+    await expect(page).toHaveURL(/searchTerm=e2e-/);
 
     // Edit.
-    await page.getByRole("button", { name: "Actions for E2E Person" }).click();
+    await page.getByRole("button", { name: `Actions for ${person}` }).click();
     await page.getByRole("menuitem", { name: "Edit" }).click();
     const edit = page.getByRole("dialog", { name: "Edit user" });
-    await edit.getByLabel(/^Full name/).fill("E2E Renamed");
+    await edit.getByLabel(/^Full name/).fill(renamed);
     await edit.getByRole("button", { name: "Save changes" }).click();
-    await expect(page.getByRole("link", { name: /E2E Renamed/ })).toBeVisible();
+    await expect(page.getByRole("link", { name: renamed })).toBeVisible();
 
     // Disable, then enable.
-    await page.getByRole("button", { name: "Actions for E2E Renamed" }).click();
+    await page.getByRole("button", { name: `Actions for ${renamed}` }).click();
     await page.getByRole("menuitem", { name: "Disable" }).click();
     await page.getByRole("button", { name: "Disable user" }).click();
     await expect(page.getByText("User disabled and signed out.")).toBeVisible();
-    await page.getByRole("button", { name: "Actions for E2E Renamed" }).click();
+    await page.getByRole("button", { name: `Actions for ${renamed}` }).click();
     await page.getByRole("menuitem", { name: "Enable" }).click();
     await page.getByRole("button", { name: "Enable user" }).click();
     await expect(page.getByText("User enabled.")).toBeVisible();
 
     // Delete needs the email typed.
-    await page.getByRole("button", { name: "Actions for E2E Renamed" }).click();
+    await page.getByRole("button", { name: `Actions for ${renamed}` }).click();
     await page.getByRole("menuitem", { name: "Delete" }).click();
-    const del = page.getByRole("dialog", { name: /Delete E2E Renamed/ });
+    const del = page.getByRole("dialog", { name: `Delete ${renamed}` });
     await expect(
       del.getByRole("button", { name: "Delete user" }),
     ).toBeDisabled();
@@ -170,11 +174,28 @@ test.describe("signed in", () => {
     await expect(page).toHaveURL(/\/admin\/sign-in/);
   });
 
+  test("rows per page is a dropdown that updates the URL", async ({ page }) => {
+    await signIn(page, EMAIL ?? "", PASSWORD ?? "");
+    await expect(page).toHaveURL(/\/admin$/);
+    await page.goto("/admin/audit-log");
+    const rows = page.getByLabel("Rows per page");
+    await expect(rows.locator("option")).toHaveText(["10", "25", "50"]);
+    await rows.selectOption("25");
+    await expect(page).toHaveURL(/\/admin\/audit-log\?limit=25$/);
+    await expect(rows).toHaveValue("25");
+    await rows.selectOption("10");
+    await expect(page).toHaveURL(/\/admin\/audit-log$/);
+  });
+
   test("coming-soon modules and the audit log render", async ({ page }) => {
     await signIn(page, EMAIL ?? "", PASSWORD ?? "");
     await expect(page).toHaveURL(/\/admin$/);
     await page.goto("/admin/projects");
-    await expect(page.getByText("This module is on the way")).toBeVisible();
+    // By role: React streams the page through a hidden segment that briefly
+    // coexists with the swapped-in copy, which a text locator would also match.
+    await expect(
+      page.getByRole("heading", { name: "This module is on the way" }),
+    ).toBeVisible();
     await expectNoSeriousA11yIssues(page);
     await page.goto("/admin/audit-log");
     await expect(

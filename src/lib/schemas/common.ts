@@ -27,28 +27,32 @@ export const passwordSchema = z
 
 export const idSchema = z.string().trim().min(1).max(64);
 
-/** Page size choices offered by <Pagination>. */
+/** Page size choices offered by <Pagination> and accepted by the API. */
 export const PAGE_SIZES = [10, 25, 50] as const;
+export const DEFAULT_PAGE_SIZE = 10;
 
 /**
- * Shared list params (page, perPage, q). `.catch()` means a hand-edited URL
- * falls back to the default instead of crashing the page.
+ * Shared list params (page, limit, searchTerm), named like the QueryBuilder
+ * and the Express starter's API. `.catch()` means a hand-edited URL falls
+ * back to the default instead of crashing the page.
  */
 export const listBase = {
   page: z.coerce.number().int().min(1).max(100_000).catch(1),
-  perPage: z.coerce
+  limit: z.coerce
     .number()
     .int()
-    .catch(10)
-    .transform((n) => ((PAGE_SIZES as readonly number[]).includes(n) ? n : 10)),
-  q: z.string().trim().max(100).catch("").default(""),
+    .catch(DEFAULT_PAGE_SIZE)
+    .transform((n) =>
+      (PAGE_SIZES as readonly number[]).includes(n) ? n : DEFAULT_PAGE_SIZE,
+    ),
+  searchTerm: z.string().trim().max(100).catch("").default(""),
 };
 
-export function sortParam<const T extends readonly [string, ...string[]]>(
+export function sortByParam<const T extends readonly [string, ...string[]]>(
   keys: T,
   fallback: T[number],
 ) {
   return z.enum(keys).catch(fallback);
 }
 
-export const sortDir = z.enum(["asc", "desc"]).catch("desc");
+export const sortOrder = z.enum(["asc", "desc"]).catch("desc");

@@ -77,6 +77,16 @@ const nextConfig: NextConfig = {
   turbopack: { root },
   poweredByHeader: false,
   typedRoutes: true,
+  // "use cache" + cacheTag/cacheLife replace unstable_cache (Next 16). Reads
+  // cached this way are expired by tag from the mutations that change them.
+  cacheComponents: true,
+  // Links prefetch a route's shared App Shell (static + cached content).
+  partialPrefetching: true,
+  cacheLife: {
+    // Admin lists and stats: tags drive freshness (updateTag/revalidateTag in
+    // the mutation); the timers are only a safety net.
+    admin: { stale: 60, revalidate: 3600, expire: 86400 },
+  },
   images: { formats: ["image/avif", "image/webp"] },
   headers() {
     return [

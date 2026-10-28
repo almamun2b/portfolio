@@ -42,25 +42,15 @@ export interface DashboardStatsDTO {
   activeSessions: number;
 }
 
-export interface Paginated<T> {
-  items: T[];
-  total: number;
+/** Page position of a list. `totalPage` is at least 1 so empty lists still render page 1. */
+export interface PaginationMeta {
   page: number;
-  perPage: number;
-  pageCount: number;
+  limit: number;
+  total: number;
+  totalPage: number;
 }
 
-export function paginated<T>(
-  items: T[],
-  total: number,
-  page: number,
-  perPage: number,
-): Paginated<T> {
-  return {
-    items,
-    total,
-    page,
-    perPage,
-    pageCount: Math.max(1, Math.ceil(total / perPage)),
-  };
+export interface Paginated<T> {
+  data: T[];
+  meta: PaginationMeta;
 }

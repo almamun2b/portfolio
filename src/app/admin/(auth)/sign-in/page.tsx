@@ -1,21 +1,18 @@
 import { ShieldCheck } from "lucide-react";
-import type { Metadata, Route } from "next";
+import type { Metadata } from "next";
 import Link from "next/link";
-import { redirect } from "next/navigation";
+import { Suspense } from "react";
+import { SignInSkeleton } from "@/components/admin/skeletons";
 import { Card } from "@/components/ui/card";
-import { safeAdminPath } from "@/lib/auth/safe-path";
-import { first } from "@/lib/url-state";
-import { getAdmin } from "@/server/dal/auth";
-import { SignInForm } from "./_components/sign-in-form";
+import { SignInPanel } from "./_components/sign-in-panel";
 
 export const metadata: Metadata = { title: "Sign in" };
 
-export default async function SignInPage({
+// Heading and card are static (prerendered); only the form depends on the
+// request (?next= and an existing session), so only it streams in.
+export default function SignInPage({
   searchParams,
 }: PageProps<"/admin/sign-in">) {
-  const next = first((await searchParams).next);
-  if (await getAdmin()) redirect(safeAdminPath(next) as Route);
-
   return (
     <>
       <div className="flex flex-col items-center gap-4 text-center">
@@ -33,7 +30,9 @@ export default async function SignInPage({
         </div>
       </div>
       <Card className="p-6 sm:p-8">
-        <SignInForm next={next} />
+        <Suspense fallback={<SignInSkeleton />}>
+          <SignInPanel searchParams={searchParams} />
+        </Suspense>
       </Card>
       <p className="text-center text-sm text-muted-foreground">
         <Link

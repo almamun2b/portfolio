@@ -3,7 +3,10 @@ import { Container } from "@/components/layout/container";
 import { PageHero } from "@/components/layout/page-hero";
 import { ProjectCard } from "@/components/projects/project-card";
 import { pageMetadata } from "@/lib/metadata";
-import { getProjectCounts, getProjects } from "@/server/dal/projects";
+import {
+  getProjectCounts,
+  getProjects,
+} from "@/server/modules/content/projects.service";
 import {
   PROJECT_LIST_ID,
   ProjectFilter,

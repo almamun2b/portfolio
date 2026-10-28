@@ -1,12 +1,13 @@
 import type { Metadata, Route } from "next";
 import { redirect } from "next/navigation";
+import { ListBody, ListRegion } from "@/components/ui/list-region";
 import { PageHeader } from "@/components/ui/page-header";
 import { FilterSelect } from "@/components/ui/filter-select";
 import { SearchInput } from "@/components/ui/search-input";
 import { userListParamsSchema } from "@/lib/schemas/users";
-import { first, withParams } from "@/lib/url-state";
-import { requireAdmin } from "@/server/dal/auth";
-import { listUsers } from "@/server/dal/users";
+import { firstOf, first, withParams } from "@/lib/url-state";
+import { requireAdmin } from "@/server/modules/auth/auth.guard";
+import { listUsers } from "@/server/modules/users/users.service";
 import { AddUserButton } from "./_components/add-user-button";
 import { UsersTable } from "./_components/users-table";
 
@@ -17,23 +18,25 @@ export default async function UsersPage({
 }: PageProps<"/admin/users">) {
   const admin = await requireAdmin();
   const query = await searchParams;
-  const params = userListParamsSchema.parse({
-    page: first(query.page),
-    perPage: first(query.perPage),
-    q: first(query.q),
-    status: first(query.status),
-    sort: first(query.sort),
-    dir: first(query.dir),
-  });
+  const params = userListParamsSchema.parse(
+    firstOf(query, [
+      "page",
+      "limit",
+      "searchTerm",
+      "status",
+      "sortBy",
+      "sortOrder",
+    ]),
+  );
   const data = await listUsers(params);
-  if (data.total > 0 && params.page > data.pageCount) {
+  if (data.meta.total > 0 && params.page > data.meta.totalPage) {
     redirect(
-      withParams("/admin/users", query, { page: data.pageCount }) as Route,
+      withParams("/admin/users", query, { page: data.meta.totalPage }) as Route,
     );
   }
 
   return (
-    <div className="flex flex-col gap-6">
+    <ListRegion>
       <PageHeader
         title="Users"
         description="Everyone who can sign in to this console. Disable an account to cut off access without deleting it."
@@ -44,12 +47,12 @@ export default async function UsersPage({
           action="/admin/users"
           label="Search users"
           placeholder="Search by name or email"
-          defaultValue={params.q}
+          defaultValue={params.searchTerm}
           preserve={{
             status: params.status,
-            sort: first(query.sort),
-            dir: first(query.dir),
-            perPage: first(query.perPage),
+            sortBy: first(query.sortBy),
+            sortOrder: first(query.sortOrder),
+            limit: first(query.limit),
           }}
         />
         <FilterSelect
@@ -63,12 +66,14 @@ export default async function UsersPage({
           ]}
         />
       </div>
-      <UsersTable
-        data={data}
-        params={params}
-        searchParams={query}
-        currentUserId={admin.id}
-      />
-    </div>
+      <ListBody>
+        <UsersTable
+          data={data}
+          params={params}
+          searchParams={query}
+          currentUserId={admin.id}
+        />
+      </ListBody>
+    </ListRegion>
   );
 }

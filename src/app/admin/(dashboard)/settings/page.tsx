@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { ComingSoon } from "@/components/admin/coming-soon";
-import { requireAdmin } from "@/server/dal/auth";
+import { requireAdmin } from "@/server/modules/auth/auth.guard";
 
 export const metadata: Metadata = { title: "Settings" };
 

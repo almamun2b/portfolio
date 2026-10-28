@@ -16,7 +16,7 @@ import {
 import {
   revokeAllSessionsAction,
   revokeSessionAction,
-} from "@/server/actions/users";
+} from "@/server/modules/sessions/sessions.actions";
 import { useState } from "react";
 
 function Row({ session }: { session: SessionDTO }) {

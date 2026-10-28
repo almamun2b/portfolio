@@ -7,6 +7,7 @@ import { Card } from "@/components/ui/card";
 import { DataTable, type Column } from "@/components/ui/data-table";
 import { EmptyState } from "@/components/ui/empty-state";
 import { FilterSelect } from "@/components/ui/filter-select";
+import { ListBody, ListRegion } from "@/components/ui/list-region";
 import { PageHeader } from "@/components/ui/page-header";
 import { Pagination } from "@/components/ui/pagination";
 import { SearchInput } from "@/components/ui/search-input";
@@ -14,9 +15,9 @@ import { AUDIT_AREAS, auditLabel, auditTone } from "@/lib/audit-labels";
 import type { AuditLogDTO } from "@/lib/dto";
 import { formatDateTime } from "@/lib/format";
 import { auditListParamsSchema } from "@/lib/schemas/audit";
-import { first, withParams } from "@/lib/url-state";
-import { listAuditLogs } from "@/server/dal/audit";
-import { requireAdmin } from "@/server/dal/auth";
+import { first, firstOf, withParams } from "@/lib/url-state";
+import { listAuditLogs } from "@/server/modules/audit/audit.service";
+import { requireAdmin } from "@/server/modules/auth/auth.guard";
 
 export const metadata: Metadata = { title: "Audit log" };
 
@@ -80,21 +81,17 @@ export default async function AuditLogPage({
 }: PageProps<"/admin/audit-log">) {
   await requireAdmin();
   const query = await searchParams;
-  const params = auditListParamsSchema.parse({
-    page: first(query.page),
-    perPage: first(query.perPage),
-    q: first(query.q),
-    area: first(query.area),
-    dir: first(query.dir),
-  });
+  const params = auditListParamsSchema.parse(
+    firstOf(query, ["page", "limit", "searchTerm", "area", "sortOrder"]),
+  );
   const data = await listAuditLogs(params);
-  if (data.total > 0 && params.page > data.pageCount) {
-    redirect(withParams(PATH, query, { page: data.pageCount }) as Route);
+  if (data.meta.total > 0 && params.page > data.meta.totalPage) {
+    redirect(withParams(PATH, query, { page: data.meta.totalPage }) as Route);
   }
-  const filtered = Boolean(params.q || params.area);
+  const filtered = Boolean(params.searchTerm || params.area);
 
   return (
-    <div className="flex flex-col gap-6">
+    <ListRegion>
       <PageHeader
         title="Audit log"
         description="Sign-ins and every change made in this console, newest first."
@@ -104,8 +101,8 @@ export default async function AuditLogPage({
           action={PATH}
           label="Search the audit log"
           placeholder="Search by event or email"
-          defaultValue={params.q}
-          preserve={{ area: params.area, perPage: first(query.perPage) }}
+          defaultValue={params.searchTerm}
+          preserve={{ area: params.area, limit: first(query.limit) }}
         />
         <FilterSelect
           param="area"
@@ -115,45 +112,44 @@ export default async function AuditLogPage({
           options={AUDIT_AREAS.map((a) => ({ value: a.value, label: a.label }))}
         />
       </div>
-      <Card>
-        {data.total === 0 ? (
-          <EmptyState
-            icon={ScrollText}
-            title={filtered ? "No events match" : "No events yet"}
-            description={
-              filtered
-                ? "Try a different search or area."
-                : "Activity appears here as it happens."
-            }
-            action={
-              filtered ? (
-                <ButtonLink href={PATH} variant="outline">
-                  Clear filters
-                </ButtonLink>
-              ) : undefined
-            }
-          />
-        ) : (
-          <>
-            <DataTable
-              caption="Audit log"
-              columns={columns}
-              rows={data.items}
-              getRowId={(log) => log.id}
-              pathname={PATH}
-              searchParams={query}
+      <ListBody>
+        <Card>
+          {data.meta.total === 0 ? (
+            <EmptyState
+              icon={ScrollText}
+              title={filtered ? "No events match" : "No events yet"}
+              description={
+                filtered
+                  ? "Try a different search or area."
+                  : "Activity appears here as it happens."
+              }
+              action={
+                filtered ? (
+                  <ButtonLink href={PATH} variant="outline">
+                    Clear filters
+                  </ButtonLink>
+                ) : undefined
+              }
             />
-            <Pagination
-              pathname={PATH}
-              searchParams={query}
-              page={data.page}
-              perPage={data.perPage}
-              total={data.total}
-              pageCount={data.pageCount}
-            />
-          </>
-        )}
-      </Card>
-    </div>
+          ) : (
+            <>
+              <DataTable
+                caption="Audit log"
+                columns={columns}
+                rows={data.data}
+                getRowId={(log) => log.id}
+                pathname={PATH}
+                searchParams={query}
+              />
+              <Pagination
+                pathname={PATH}
+                searchParams={query}
+                meta={data.meta}
+              />
+            </>
+          )}
+        </Card>
+      </ListBody>
+    </ListRegion>
   );
 }

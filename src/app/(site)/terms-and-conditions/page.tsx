@@ -1,6 +1,6 @@
 import { LegalPage, LegalSection } from "@/components/layout/legal-page";
 import { pageMetadata } from "@/lib/metadata";
-import { getProfile } from "@/server/dal/profile";
+import { getProfile } from "@/server/modules/content/profile.service";
 
 export const metadata = pageMetadata({
   title: "Terms and conditions",

@@ -3,6 +3,7 @@ import { ArrowDown, ArrowUp, ChevronsUpDown } from "lucide-react";
 import Link from "next/link";
 import type { Route } from "next";
 import type { ComponentProps } from "react";
+import { PendingMark } from "./pending-mark";
 
 // Semantic table parts in the design system's style. Wrap in <TableScroll>
 // so wide tables scroll inside their card instead of the page.
@@ -104,6 +105,7 @@ export function SortHeader({
       >
         {label}
         <Icon aria-hidden="true" className="size-3.5" />
+        <PendingMark />
       </Link>
     </th>
   );

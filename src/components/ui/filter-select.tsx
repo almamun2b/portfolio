@@ -19,9 +19,9 @@ export function FilterSelect({
   allLabel: string;
 }) {
   const id = useId();
-  const { update } = useUrlState();
+  const { update, pending } = useUrlState();
   return (
-    <div className="w-full sm:w-44">
+    <div className="w-full sm:w-44" data-pending={pending ? "true" : undefined}>
       <label htmlFor={id} className="sr-only">
         {label}
       </label>

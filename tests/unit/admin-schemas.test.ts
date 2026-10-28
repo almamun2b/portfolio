@@ -121,38 +121,38 @@ describe("list params", () => {
   it("falls back to defaults instead of throwing on a hand-edited URL", () => {
     const params = userListParamsSchema.parse({
       page: "-4",
-      perPage: "9999",
-      sort: "passwordHash",
-      dir: "sideways",
+      limit: "9999",
+      sortBy: "passwordHash",
+      sortOrder: "sideways",
       status: "DELETED",
-      q: undefined,
+      searchTerm: undefined,
     });
     expect(params).toEqual({
       page: 1,
-      perPage: 10,
-      q: "",
+      limit: 10,
+      searchTerm: "",
       status: undefined,
-      sort: "createdAt",
-      dir: "desc",
+      sortBy: "createdAt",
+      sortOrder: "desc",
     });
   });
 
   it("keeps valid values", () => {
     const params = userListParamsSchema.parse({
       page: "3",
-      perPage: "25",
-      sort: "email",
-      dir: "asc",
+      limit: "25",
+      sortBy: "email",
+      sortOrder: "asc",
       status: "ACTIVE",
-      q: " jo ",
+      searchTerm: " jo ",
     });
     expect(params).toMatchObject({
       page: 3,
-      perPage: 25,
-      sort: "email",
-      dir: "asc",
+      limit: 25,
+      sortBy: "email",
+      sortOrder: "asc",
       status: "ACTIVE",
-      q: "jo",
+      searchTerm: "jo",
     });
   });
 

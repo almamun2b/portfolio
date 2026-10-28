@@ -8,7 +8,7 @@ import { Input } from "./field";
 /**
  * Password field with a show/hide toggle. The toggle is a real button with
  * `aria-pressed`, so screen readers announce the state. Pass `ref` and the
- * rest through (works with react-hook-form's register()).
+ * rest through.
  */
 export function PasswordInput({
   className,

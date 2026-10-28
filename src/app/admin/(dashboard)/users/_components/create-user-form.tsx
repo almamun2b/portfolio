@@ -1,12 +1,11 @@
 "use client";
 
 import { UserPlus } from "lucide-react";
+import { ActionForm } from "@/components/forms/action-form";
 import { PasswordField, TextField } from "@/components/forms/form-fields";
-import { FormAlert, SubmitButton } from "@/components/forms/submit-button";
-import { useActionForm } from "@/components/forms/use-action-form";
+import { SubmitButton } from "@/components/forms/submit-button";
 import { Button } from "@/components/ui/button";
-import { createUserSchema } from "@/lib/schemas/users";
-import { createUserAction } from "@/server/actions/users";
+import { createUserAction } from "@/server/modules/users/users.actions";
 
 export function CreateUserForm({
   onDone,
@@ -15,26 +14,16 @@ export function CreateUserForm({
   onDone: () => void;
   onCancel: () => void;
 }) {
-  const { form, pending, formError, formProps } = useActionForm({
-    schema: createUserSchema,
-    action: createUserAction,
-    defaultValues: { name: "", email: "", password: "", confirmPassword: "" },
-    successMessage: "User created.",
-    onSuccess: onDone,
-  });
-
   return (
-    <form {...formProps} className="flex flex-col gap-5" aria-label="Add user">
-      <FormAlert result={formError} />
+    <ActionForm
+      action={createUserAction}
+      successMessage="User created."
+      onSuccess={onDone}
+      className="flex flex-col gap-5"
+      aria-label="Add user"
+    >
+      <TextField name="name" label="Full name" autoComplete="off" required />
       <TextField
-        formApi={form}
-        name="name"
-        label="Full name"
-        autoComplete="off"
-        required
-      />
-      <TextField
-        formApi={form}
         name="email"
         label="Email"
         type="email"
@@ -43,7 +32,6 @@ export function CreateUserForm({
         required
       />
       <PasswordField
-        formApi={form}
         name="password"
         label="Password"
         autoComplete="new-password"
@@ -51,7 +39,6 @@ export function CreateUserForm({
         required
       />
       <PasswordField
-        formApi={form}
         name="confirmPassword"
         label="Confirm password"
         autoComplete="new-password"
@@ -61,10 +48,10 @@ export function CreateUserForm({
         <Button variant="outline" onClick={onCancel}>
           Cancel
         </Button>
-        <SubmitButton pending={pending} pendingLabel="Creating">
+        <SubmitButton pendingLabel="Creating">
           <UserPlus aria-hidden="true" /> Create user
         </SubmitButton>
       </div>
-    </form>
+    </ActionForm>
   );
 }
