@@ -21,10 +21,16 @@ async function expectNoSeriousA11yIssues(page: Page) {
   ).toEqual([]);
 }
 
+// Label locators also match hidden nodes, and React briefly keeps a hidden copy
+// of any content it streams in. Ask for the visible field so a page that
+// streams can't make these tests flaky.
+const visibleField = (page: Page, label: RegExp) =>
+  page.getByLabel(label).filter({ visible: true });
+
 async function signIn(page: Page, email: string, password: string) {
   await page.goto("/admin/sign-in");
-  await page.getByLabel(/^Email/).fill(email);
-  await page.getByLabel(/^Password/).fill(password);
+  await visibleField(page, /^Email/).fill(email);
+  await visibleField(page, /^Password/).fill(password);
   await page.getByRole("button", { name: "Sign in" }).click();
 }
 
@@ -60,9 +66,23 @@ test("a wrong password gives one generic message", async ({ page }) => {
   await expect(page).toHaveURL(/\/admin\/sign-in/);
 });
 
+test.describe("without JavaScript", () => {
+  test.use({ javaScriptEnabled: false });
+
+  test("the sign-in form is in the prerendered HTML", async ({ page }) => {
+    // A form that streams in behind <Suspense> only becomes visible once a
+    // script moves it into place; this one must be there on the first paint.
+    await page.goto("/admin/sign-in");
+    await expect(page.getByLabel(/^Email/)).toHaveCount(1);
+    await expect(page.getByLabel(/^Email/)).toBeVisible();
+    await expect(page.getByLabel(/^Password/)).toHaveCount(1);
+    await expect(page.getByRole("button", { name: "Sign in" })).toBeVisible();
+  });
+});
+
 test("the password field can be shown and hidden", async ({ page }) => {
   await page.goto("/admin/sign-in");
-  const input = page.getByLabel(/^Password/);
+  const input = visibleField(page, /^Password/);
   await input.fill("hunter2-hunter2");
   await expect(input).toHaveAttribute("type", "password");
   await page.getByRole("button", { name: "Show password" }).click();

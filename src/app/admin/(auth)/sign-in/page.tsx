@@ -2,14 +2,15 @@ import { ShieldCheck } from "lucide-react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Suspense } from "react";
-import { SignInSkeleton } from "@/components/admin/skeletons";
 import { Card } from "@/components/ui/card";
-import { SignInPanel } from "./_components/sign-in-panel";
+import { SignInForm } from "./_components/sign-in-form";
+import { SignedInRedirect } from "./_components/signed-in-redirect";
 
 export const metadata: Metadata = { title: "Sign in" };
 
-// Heading and card are static (prerendered); only the form depends on the
-// request (?next= and an existing session), so only it streams in.
+// Everything visible is prerendered, so the form is in the first HTML (and
+// works without JS). Only two invisible things depend on the request: the
+// `?next=` field (inside the form) and the redirect for a signed-in admin.
 export default function SignInPage({
   searchParams,
 }: PageProps<"/admin/sign-in">) {
@@ -30,8 +31,9 @@ export default function SignInPage({
         </div>
       </div>
       <Card className="p-6 sm:p-8">
-        <Suspense fallback={<SignInSkeleton />}>
-          <SignInPanel searchParams={searchParams} />
+        <SignInForm />
+        <Suspense fallback={null}>
+          <SignedInRedirect searchParams={searchParams} />
         </Suspense>
       </Card>
       <p className="text-center text-sm text-muted-foreground">
