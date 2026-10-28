@@ -85,18 +85,6 @@ export function AdminFrameSkeleton() {
   );
 }
 
-/** The sign-in form while the redirect check runs. */
-export function SignInSkeleton() {
-  return (
-    <div role="status" className="flex flex-col gap-5">
-      <span className="sr-only">Loading</span>
-      <Skeleton className="h-11 w-full rounded-2xl" />
-      <Skeleton className="h-11 w-full rounded-2xl" />
-      <Skeleton className="h-12 w-full rounded-full" />
-    </div>
-  );
-}
-
 /** Same footprint as the dashboard's recent-activity card. */
 export function ActivitySkeleton() {
   return (
