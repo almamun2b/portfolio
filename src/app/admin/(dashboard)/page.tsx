@@ -1,9 +1,4 @@
 import type { Metadata } from "next";
-import { Suspense } from "react";
-import {
-  ActivitySkeleton,
-  CardGridSkeleton,
-} from "@/components/admin/skeletons";
 import { WidgetBoundary } from "@/components/admin/widget-boundary";
 import { PageHeader } from "@/components/ui/page-header";
 import { requireAdmin } from "@/server/modules/auth/auth.guard";
@@ -13,8 +8,13 @@ import { StatsSection } from "./_components/stats-section";
 
 export const metadata: Metadata = { title: "Dashboard" };
 
-// Each widget streams in behind its own Suspense and fails on its own, so a
-// slow or broken query never holds up or takes down the rest of the page.
+// Each widget fails on its own (WidgetBoundary), so a broken query never takes
+// down the rest of the page. They are cached reads, so there is no Suspense:
+// the page appears once, instead of a skeleton that React holds for 300 ms.
+// Blocking on purpose: a click keeps the current page until this one is
+// ready (see AGENTS.md › Navigation), so there is no skeleton to validate.
+export const instant = false;
+
 export default async function DashboardPage() {
   const admin = await requireAdmin();
   return (
@@ -25,16 +25,12 @@ export default async function DashboardPage() {
       />
 
       <WidgetBoundary title="Key numbers">
-        <Suspense fallback={<CardGridSkeleton />}>
-          <StatsSection />
-        </Suspense>
+        <StatsSection />
       </WidgetBoundary>
 
       <div className="grid grid-cols-1 gap-6 xl:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)]">
         <WidgetBoundary title="Recent activity">
-          <Suspense fallback={<ActivitySkeleton />}>
-            <ActivityCard />
-          </Suspense>
+          <ActivityCard />
         </WidgetBoundary>
         <ModulesCard />
       </div>

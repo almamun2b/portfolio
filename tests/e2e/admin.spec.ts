@@ -216,6 +216,62 @@ test.describe("signed in", () => {
     await expect(page).toHaveURL(/\/admin\/sign-in/);
   });
 
+  test("clicking through the sidebar never shows a loading skeleton", async ({
+    page,
+  }, testInfo) => {
+    // React keeps any Suspense fallback on screen for at least 300 ms, even
+    // when the (cached) data arrives in about 40 ms. Admin pages therefore have
+    // no loading boundary: a click keeps the current page until the next one
+    // is ready. This fails if a loading.tsx or Suspense comes back.
+    await signIn(page, EMAIL ?? "", PASSWORD ?? "");
+    await expect(page).toHaveURL(/\/admin$/);
+    await expect(
+      page.getByRole("heading", { level: 1, name: /welcome back/i }),
+    ).toBeVisible();
+
+    await page.evaluate(() => {
+      const watched = window as unknown as { placeholders: number };
+      watched.placeholders = 0;
+      const main = document.querySelector("main");
+      if (!main) return;
+      new MutationObserver((records) => {
+        for (const record of records) {
+          for (const node of record.addedNodes) {
+            if (
+              node instanceof Element &&
+              (node.matches('[role="status"]') ||
+                node.querySelector('[role="status"]'))
+            ) {
+              watched.placeholders += 1;
+            }
+          }
+        }
+      }).observe(main, { childList: true, subtree: true });
+    });
+
+    const nav = page.getByRole("navigation", { name: "Admin" });
+    const visit = async (link: string, heading: string | RegExp) => {
+      if (testInfo.project.name === "mobile") {
+        await page.getByRole("button", { name: "Open navigation" }).click();
+      }
+      await nav.getByRole("link", { name: new RegExp(`^${link}`) }).click();
+      await expect(
+        page.getByRole("heading", { level: 1, name: heading }),
+      ).toBeVisible();
+    };
+    await visit("Users", "Users");
+    await visit("Audit log", "Audit log");
+    await visit("Projects", "Projects");
+    await visit("Dashboard", /welcome back/i);
+    await visit("Users", "Users");
+
+    expect(
+      await page.evaluate(
+        () => (window as unknown as { placeholders: number }).placeholders,
+      ),
+    ).toBe(0);
+  });
+
   test("rows per page is a dropdown that updates the URL", async ({ page }) => {
     await signIn(page, EMAIL ?? "", PASSWORD ?? "");
     await expect(page).toHaveURL(/\/admin$/);

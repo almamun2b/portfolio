@@ -4,6 +4,10 @@ import { requireAdmin } from "@/server/modules/auth/auth.guard";
 
 export const metadata: Metadata = { title: "Settings" };
 
+// Blocking on purpose: a click keeps the current page until this one is
+// ready (see AGENTS.md › Navigation), so there is no skeleton to validate.
+export const instant = false;
+
 export default async function SettingsPage() {
   await requireAdmin();
   return (

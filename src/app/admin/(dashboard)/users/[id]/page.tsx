@@ -35,6 +35,10 @@ function Fact({
 const when = (iso: string | null) =>
   iso ? <time dateTime={iso}>{formatDateTime(iso)}</time> : "Never";
 
+// Blocking on purpose: a click keeps the current page until this one is
+// ready (see AGENTS.md › Navigation), so there is no skeleton to validate.
+export const instant = false;
+
 export default async function UserDetailPage({
   params,
 }: PageProps<"/admin/users/[id]">) {

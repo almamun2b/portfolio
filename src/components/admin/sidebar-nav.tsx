@@ -1,10 +1,11 @@
 "use client";
 
 import { cn } from "cn";
-import Link from "next/link";
+import Link, { useLinkStatus } from "next/link";
 import type { Route } from "next";
 import { usePathname } from "next/navigation";
 import { Badge } from "@/components/ui/badge";
+import { Spinner } from "@/components/ui/spinner";
 import { Tooltip } from "@/components/ui/tooltip";
 import { NAV_GROUPS, isActive, type NavItem } from "./nav-config";
 
@@ -95,6 +96,7 @@ function NavLink({
           </Badge>
         ) : null}
       </span>
+      <NavPending />
     </Link>
   );
   if (!collapsed) return link;
@@ -106,5 +108,26 @@ function NavLink({
     >
       {link}
     </Tooltip>
+  );
+}
+
+/**
+ * Inside a nav link: while that navigation is in flight, show a spinner and
+ * set `data-nav-pending`, which <AdminFrame> turns into a dimmed page. Pages
+ * have no loading skeleton (React would hold one for 300 ms), so this is the
+ * feedback for a slow click.
+ */
+function NavPending() {
+  const { pending } = useLinkStatus();
+  if (!pending) return null;
+  return (
+    <span
+      data-nav-pending="true"
+      role="status"
+      className="absolute top-1/2 right-3 -translate-y-1/2"
+    >
+      <Spinner className="size-4 text-primary-strong" />
+      <span className="sr-only">Loading</span>
+    </span>
   );
 }

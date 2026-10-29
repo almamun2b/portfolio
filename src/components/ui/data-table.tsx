@@ -120,30 +120,3 @@ export function DataTable<Row>({
     </TableScroll>
   );
 }
-
-/** Same footprint as DataTable while data loads, so nothing jumps. */
-export function TableSkeleton({
-  rows = 6,
-  columns = 4,
-}: {
-  rows?: number;
-  columns?: number;
-}) {
-  return (
-    <div aria-hidden="true" className="flex flex-col divide-y divide-border">
-      {Array.from({ length: rows }, (_, r) => (
-        <div key={r} className="flex items-center gap-4 px-4 py-4">
-          {Array.from({ length: columns }, (_, c) => (
-            <div
-              key={c}
-              className={cn(
-                "h-4 flex-1 rounded-full bg-[linear-gradient(90deg,var(--muted)_0%,var(--border-strong)_50%,var(--muted)_100%)] bg-size-[200%_100%] motion-safe:animate-shimmer",
-                c === 0 && "max-w-56 flex-[2]",
-              )}
-            />
-          ))}
-        </div>
-      ))}
-    </div>
-  );
-}

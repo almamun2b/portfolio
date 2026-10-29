@@ -13,6 +13,10 @@ import { UsersTable } from "./_components/users-table";
 
 export const metadata: Metadata = { title: "Users" };
 
+// Blocking on purpose: a click keeps the current page until this one is
+// ready (see AGENTS.md › Navigation), so there is no skeleton to validate.
+export const instant = false;
+
 export default async function UsersPage({
   searchParams,
 }: PageProps<"/admin/users">) {

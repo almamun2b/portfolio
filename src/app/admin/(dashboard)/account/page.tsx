@@ -16,6 +16,10 @@ import { ChangePasswordForm } from "./_components/change-password-form";
 
 export const metadata: Metadata = { title: "Account" };
 
+// Blocking on purpose: a click keeps the current page until this one is
+// ready (see AGENTS.md › Navigation), so there is no skeleton to validate.
+export const instant = false;
+
 export default async function AccountPage() {
   const admin = await requireAdmin();
   const sessions = await listUserSessions(admin.id);
