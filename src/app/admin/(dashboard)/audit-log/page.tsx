@@ -76,10 +76,6 @@ const columns: Column<AuditLogDTO>[] = [
   },
 ];
 
-// Blocking on purpose: a click keeps the current page until this one is
-// ready (see AGENTS.md › Navigation), so there is no skeleton to validate.
-export const instant = false;
-
 export default async function AuditLogPage({
   searchParams,
 }: PageProps<"/admin/audit-log">) {

@@ -34,7 +34,7 @@ export function AdminFrame({
   }
 
   return (
-    <div className="group/admin min-h-dvh">
+    <div className="min-h-dvh">
       <a
         href="#main"
         className="fixed top-3 left-3 z-[100] -translate-y-24 rounded-full bg-gradient-button px-5 py-3 text-sm font-semibold text-primary-foreground shadow-button transition-transform focus-visible:translate-y-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
@@ -94,7 +94,7 @@ export function AdminFrame({
         <main
           id="main"
           tabIndex={-1}
-          className="mx-auto w-full max-w-7xl flex-1 px-4 py-6 transition-opacity duration-150 outline-none group-has-[[data-nav-pending]]/admin:opacity-60 sm:px-6 sm:py-8 lg:px-8"
+          className="mx-auto w-full max-w-7xl flex-1 px-4 py-6 outline-none sm:px-6 sm:py-8 lg:px-8"
         >
           {children}
         </main>
