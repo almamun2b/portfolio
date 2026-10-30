@@ -1,5 +1,3 @@
-import "server-only";
-import { cacheLife, cacheTag } from "next/cache";
 import type { Paginated, UserDTO } from "@/lib/dto";
 import type {
   CreateUserInput,
@@ -11,8 +9,10 @@ import { CACHE_TAGS } from "@/server/core/cache";
 import { db } from "@/server/core/db";
 import { AppError } from "@/server/core/errors/app-error";
 import { hashPassword } from "@/server/core/password";
-import { QueryBuilder } from "@/server/core/query-builder";
 import { assertAdmin, requireAdmin } from "@/server/modules/auth/auth.guard";
+import { cacheLife, cacheTag } from "next/cache";
+import { QueryBuilder } from "query-builder-prisma";
+import "server-only";
 import { USER_SEARCHABLE_FIELDS } from "./users.constants";
 import { isUniqueViolation, toUserDTO, userSelect } from "./users.model";
 
@@ -47,9 +47,7 @@ async function listUsersCached(
       fields: [...USER_SEARCHABLE_FIELDS],
     })
     .filter({ status: params.status })
-    .custom({
-      orderBy: [{ [params.sortBy]: params.sortOrder }, { id: "asc" }],
-    })
+    .orderBy([{ [params.sortBy]: params.sortOrder }, { id: "asc" }])
     .paginate({ page: params.page, limit: params.limit })
     .select(userSelect)
     .executeWithMeta();

@@ -1,7 +1,8 @@
-import "server-only";
-import { PrismaPg } from "@prisma/adapter-pg";
 import { env } from "@/env";
 import { PrismaClient } from "@/generated/prisma/client";
+import { PrismaPg } from "@prisma/adapter-pg";
+import { configQueryBuilder } from "query-builder-prisma";
+import "server-only";
 
 // One client (and one connection pool) per process. In development, HMR
 // re-evaluates this module, so keep the instance on globalThis instead of
@@ -16,6 +17,8 @@ function createClient(): PrismaClient {
     adapter: new PrismaPg({ connectionString: env.DATABASE_URL }),
   });
 }
+
+configQueryBuilder({ dialect: "postgresql" });
 
 function getClient(): PrismaClient {
   globalForPrisma.prisma ??= createClient();

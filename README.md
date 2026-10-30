@@ -60,7 +60,7 @@ prisma.compute.ts     Prisma Compute deploy config
 src/app/              Next.js App Router (globals.css holds the Tailwind v4 design tokens)
 src/components/       Shared components: ui/ primitives, forms/ (ActionForm, fields, submit button), admin/ (shell, nav registry)
 src/env.ts            Zod-validated environment (the only reader of process.env)
-src/server/core/     Shared server infrastructure: db, AppError + error normalizer, QueryBuilder, cache tags, action/route wrappers
+src/server/core/     Shared server infrastructure: db, AppError + error normalizer, QueryBuilder (query-builder-prisma), cache tags, action/route wrappers
 src/server/modules/  One folder per domain (auth, users, sessions, account, audit, dashboard, health, content): model, service, controller, actions
 src/app/api/         JSON API (Route Handlers that re-export module controllers); see ARCHITECTURE.md › HTTP API
 src/app/admin/        The admin console (routes, per-route _components)

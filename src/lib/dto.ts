@@ -42,7 +42,6 @@ export interface DashboardStatsDTO {
   activeSessions: number;
 }
 
-/** Page position of a list. `totalPage` is at least 1 so empty lists still render page 1. */
 export interface PaginationMeta {
   page: number;
   limit: number;

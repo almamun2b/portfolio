@@ -1,12 +1,12 @@
-import "server-only";
-import { cacheLife, cacheTag } from "next/cache";
 import type { AuditLogDTO, Paginated } from "@/lib/dto";
 import type { AuditListParams } from "@/lib/schemas/audit";
 import { CACHE_TAGS } from "@/server/core/cache";
 import { db } from "@/server/core/db";
-import { QueryBuilder } from "@/server/core/query-builder";
 import { requireAdmin } from "@/server/modules/auth/auth.guard";
-import { auditSelect, toAuditDTO } from "./audit.model";
+import { cacheLife, cacheTag } from "next/cache";
+import { QueryBuilder } from "query-builder-prisma";
+import "server-only";
+import { auditSelect, toAuditDTO, type AuditRow } from "./audit.model";
 
 export async function listAuditLogs(
   params: AuditListParams,
@@ -37,11 +37,14 @@ async function listAuditLogsCached(
           }
         : {},
     )
-    .custom({ orderBy: [{ createdAt: params.sortOrder }, { id: "asc" }] })
+    .orderBy([{ createdAt: params.sortOrder }, { id: "asc" }])
     .paginate({ page: params.page, limit: params.limit })
     .select(auditSelect)
     .executeWithMeta();
-  return { data: data.map(toAuditDTO), meta };
+  return {
+    data: data.map((row) => toAuditDTO(row as AuditRow)),
+    meta,
+  };
 }
 
 /** Newest entries about one record (a user's detail page). */

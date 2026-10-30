@@ -13,7 +13,9 @@ export const auditSelect = {
   actor: { select: { id: true, name: true, email: true } },
 } satisfies Prisma.AuditLogSelect;
 
-type AuditRow = Prisma.AuditLogGetPayload<{ select: typeof auditSelect }>;
+export type AuditRow = Prisma.AuditLogGetPayload<{
+  select: typeof auditSelect;
+}>;
 
 export function toAuditDTO(row: AuditRow): AuditLogDTO {
   const metadata =
