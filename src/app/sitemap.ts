@@ -1,14 +1,14 @@
 import type { MetadataRoute } from "next";
 import { absoluteUrl, projectHref } from "@/lib/site";
-import { getProjectSlugs } from "@/server/dal/projects";
+import { getSiteLastModified } from "@/server/modules/content/clock.service";
+import { getProjectSlugs } from "@/server/modules/content/projects.service";
 
-// The sitemap is built with the site, so the build date is when its pages
-// last changed. The legal pages carry their own "last updated" date.
+// Pages count as changed when the sitemap was last rendered (daily). The legal pages carry their own "last updated" date.
 const LEGAL_UPDATED = new Date("2026-10-21");
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const slugs = await getProjectSlugs();
-  const built = new Date();
+  const built = await getSiteLastModified();
   const pages = [
     { path: "/", priority: 1, lastModified: built },
     { path: "/projects", priority: 0.9, lastModified: built },

@@ -3,8 +3,8 @@ import { TECH_IDS } from "@/lib/tech-ids";
 
 // Every technology logo as a <symbol>, served once and cached, so pages
 // reference icons with <use href="/tech-sprite.svg#id"> instead of inlining
-// the same path data into the HTML and the RSC payload (audit #5).
-export const dynamic = "force-static";
+// the same path data into the HTML and the RSC payload (audit #5). It reads
+// no request data, so Cache Components prerenders it at build time.
 
 export function GET() {
   const symbols = TECH_IDS.map((id) => {

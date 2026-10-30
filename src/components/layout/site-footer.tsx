@@ -4,7 +4,11 @@ import type { ReactNode } from "react";
 import { SocialIcon } from "@/components/icons/social-icon";
 import { mainNav } from "@/content/navigation";
 import { CATEGORY_LABELS, PROJECT_CATEGORIES } from "@/lib/content-labels";
-import { getProfile, getSocials } from "@/server/dal/profile";
+import { getCopyrightYear } from "@/server/modules/content/clock.service";
+import {
+  getProfile,
+  getSocials,
+} from "@/server/modules/content/profile.service";
 import { Container } from "./container";
 import { FooterCta } from "./footer-cta";
 import { Logo } from "./logo";
@@ -14,8 +18,11 @@ const linkClass =
   "group inline-flex min-h-6 items-center gap-1.5 rounded-md py-0.5 text-sm text-muted-foreground transition-[color,translate] duration-200 hover:translate-x-1 hover:text-primary-strong focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring";
 
 export async function SiteFooter() {
-  const [profile, socials] = await Promise.all([getProfile(), getSocials()]);
-  const year = new Date().getFullYear();
+  const [profile, socials, year] = await Promise.all([
+    getProfile(),
+    getSocials(),
+    getCopyrightYear(),
+  ]);
 
   return (
     <footer className="relative isolate mt-12 overflow-hidden border-t border-border">

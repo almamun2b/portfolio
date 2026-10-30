@@ -1,4 +1,4 @@
-import { getProfile } from "@/server/dal/profile";
+import { getProfile } from "@/server/modules/content/profile.service";
 import { ChatbotLauncher } from "./chatbot/chatbot-launcher";
 import { FloatingDock } from "./floating-dock";
 import { WhatsAppButton } from "./whatsapp-button";

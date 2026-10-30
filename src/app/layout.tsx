@@ -10,7 +10,7 @@ import {
   getExperience,
   getProfile,
   getSocials,
-} from "@/server/dal/profile";
+} from "@/server/modules/content/profile.service";
 import "./globals.css";
 
 const inter = Inter({
@@ -32,11 +32,6 @@ const jetbrainsMono = JetBrains_Mono({
   variable: "--font-jetbrains-mono",
   preload: false,
 });
-
-// Durations ("3 mo"), the years-of-experience figures, and the footer's ©
-// year are computed when a page renders. Every page is static, so re-render
-// daily (ISR) rather than freezing them at deploy time.
-export const revalidate = 86400;
 
 export async function generateMetadata(): Promise<Metadata> {
   const { years } = await getCareerStats();

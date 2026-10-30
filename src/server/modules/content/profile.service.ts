@@ -1,4 +1,5 @@
 import "server-only";
+import { cacheLife } from "next/cache";
 import { z } from "zod";
 import { experience as rawExperience } from "@/content/experience";
 import { faq as rawFaq } from "@/content/faq";
@@ -45,13 +46,19 @@ const skillGroups = z.array(skillGroupSchema).parse(rawSkills);
 const processSteps = z.array(processStepSchema).parse(rawProcess);
 const faq = z.array(faqSchema).parse(rawFaq);
 
-/** `{years}` in the bio is filled from careerStart, so it never goes stale. */
-export function getProfile(): Promise<Profile> {
+/**
+ * `{years}` in the bio is filled from careerStart, so it never goes stale.
+ * Cached for a day: the figure depends on today's date, which a prerender may
+ * only read inside a cached scope.
+ */
+export async function getProfile(): Promise<Profile> {
+  "use cache";
+  cacheLife("days");
   const years = String(yearsSince(profile.careerStart));
-  return Promise.resolve({
+  return {
     ...profile,
     about: profile.about.map((p) => p.replaceAll("{years}", years)),
-  });
+  };
 }
 
 export function getSocials(): Promise<Social[]> {
@@ -83,15 +90,17 @@ export function getFaq(): Promise<Faq[]> {
 }
 
 /** Numbers shown on the site, derived from content so none can be invented. */
-export function getCareerStats(): Promise<{
+export async function getCareerStats(): Promise<{
   years: number;
   companies: number;
   technologies: number;
 }> {
+  "use cache";
+  cacheLife("days");
   const tech = new Set(skillGroups.flatMap((g) => g.items.map((i) => i.name)));
-  return Promise.resolve({
+  return {
     years: yearsSince(profile.careerStart),
     companies: experience.length,
     technologies: tech.size,
-  });
+  };
 }

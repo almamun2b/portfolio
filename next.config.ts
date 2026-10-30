@@ -1,5 +1,5 @@
 import type { NextConfig } from "next";
-import { PHASE_DEVELOPMENT_SERVER } from "next/constants";
+import { env } from "./src/env";
 
 const root = import.meta.dirname;
 
@@ -68,47 +68,54 @@ const hsts = {
   value: "max-age=63072000; includeSubDomains; preload",
 };
 
-export default function config(phase: string): NextConfig {
-  const isDevServer = phase === PHASE_DEVELOPMENT_SERVER;
+// Dev needs eval for React Refresh, so the CSP and HSTS are production-only.
+const isDev = env.NODE_ENV === "development";
 
-  return {
-    output: "standalone",
-    outputFileTracingRoot: root,
-    turbopack: { root },
-    poweredByHeader: false,
-    typedRoutes: true,
-    images: { formats: ["image/avif", "image/webp"] },
-    headers() {
-      return Promise.resolve([
-        {
-          source: "/:path*",
-          // Dev needs eval for React Refresh, so the CSP is production-only.
-          headers: isDevServer
-            ? securityHeaders
-            : [
-                ...securityHeaders,
-                hsts,
-                { key: "Content-Security-Policy-Report-Only", value: csp },
-              ],
-        },
-      ]);
-    },
-    redirects() {
-      return Promise.resolve([
-        ...legacyRedirects.map(([source, destination]) => ({
-          source,
-          destination,
-          permanent: true,
-        })),
-        // The old blog isn't ported yet; temporary so a future post can
-        // take the URL back.
-        { source: "/blog/:path*", destination: "/", permanent: false },
-        { source: "/blog", destination: "/", permanent: false },
-      ]);
-    },
-    allowedDevOrigins: [
-      new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000")
-        .hostname,
-    ],
-  };
-}
+const nextConfig: NextConfig = {
+  output: "standalone",
+  outputFileTracingRoot: root,
+  turbopack: { root },
+  poweredByHeader: false,
+  typedRoutes: true,
+  // "use cache" + cacheTag/cacheLife replace unstable_cache (Next 16). Reads
+  // cached this way are expired by tag from the mutations that change them.
+  cacheComponents: true,
+  // Links prefetch a route's shared App Shell (static + cached content).
+  partialPrefetching: true,
+  cacheLife: {
+    // Admin lists and stats: tags drive freshness (updateTag/revalidateTag in
+    // the mutation); the timers are only a safety net.
+    admin: { stale: 60, revalidate: 3600, expire: 86400 },
+  },
+  images: { formats: ["image/avif", "image/webp"] },
+  headers() {
+    return [
+      {
+        source: "/:path*",
+        headers: isDev
+          ? securityHeaders
+          : [
+              ...securityHeaders,
+              hsts,
+              { key: "Content-Security-Policy-Report-Only", value: csp },
+            ],
+      },
+    ];
+  },
+  redirects() {
+    return [
+      ...legacyRedirects.map(([source, destination]) => ({
+        source,
+        destination,
+        permanent: true,
+      })),
+      // The old blog isn't ported yet; temporary so a future post can take the
+      // URL back.
+      { source: "/blog/:path*", destination: "/", permanent: false },
+      { source: "/blog", destination: "/", permanent: false },
+    ];
+  },
+  allowedDevOrigins: [new URL(env.NEXT_PUBLIC_SITE_URL).hostname],
+};
+
+export default nextConfig;

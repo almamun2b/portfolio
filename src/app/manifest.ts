@@ -1,9 +1,7 @@
 import type { MetadataRoute } from "next";
 import { brand } from "@/lib/brand-colors";
 import { site, siteDescription } from "@/lib/site";
-import { getCareerStats } from "@/server/dal/profile";
-
-export const revalidate = 86400;
+import { getCareerStats } from "@/server/modules/content/profile.service";
 
 export default async function manifest(): Promise<MetadataRoute.Manifest> {
   const { years } = await getCareerStats();

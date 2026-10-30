@@ -1,7 +1,10 @@
 import { Download } from "lucide-react";
 import { ButtonLink } from "@/components/ui/button-link";
 import { mainNav } from "@/content/navigation";
-import { getProfile, getSocials } from "@/server/dal/profile";
+import {
+  getProfile,
+  getSocials,
+} from "@/server/modules/content/profile.service";
 import { Container } from "./container";
 import { Logo } from "./logo";
 import { MainNav } from "./main-nav";

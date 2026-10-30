@@ -3,7 +3,10 @@ import { brand, rgba } from "@/lib/brand-colors";
 import { OG_SIZE, OgFrame } from "@/lib/og";
 import { CONTEXT_LABELS } from "@/lib/content-labels";
 import { getTech } from "@/lib/tech";
-import { getProjectBySlug, getProjectSlugs } from "@/server/dal/projects";
+import {
+  getProjectBySlug,
+  getProjectSlugs,
+} from "@/server/modules/content/projects.service";
 
 // One card per case study, with alt text naming the project (a fixed `alt`
 // export would give all of them the same description).

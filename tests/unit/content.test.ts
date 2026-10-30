@@ -3,7 +3,10 @@ import path from "node:path";
 import sharp from "sharp";
 import { describe, expect, it } from "vitest";
 import { PROJECT_CATEGORIES } from "@/lib/content-labels";
-import { getProjects, getProjectBySlug } from "@/server/dal/projects";
+import {
+  getProjects,
+  getProjectBySlug,
+} from "@/server/modules/content/projects.service";
 
 const publicDir = path.resolve(import.meta.dirname, "../../public");
 

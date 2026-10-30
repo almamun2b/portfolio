@@ -6,7 +6,11 @@ import { PageHero } from "@/components/layout/page-hero";
 import { FaqList } from "@/components/sections/faq-list";
 import { StatusPill } from "@/components/ui/badge";
 import { pageMetadata } from "@/lib/metadata";
-import { getFaq, getProfile, getSocials } from "@/server/dal/profile";
+import {
+  getFaq,
+  getProfile,
+  getSocials,
+} from "@/server/modules/content/profile.service";
 import { ContactForm } from "./_components/contact-form";
 
 export const metadata = pageMetadata({
