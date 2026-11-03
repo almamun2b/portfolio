@@ -232,7 +232,7 @@ test.describe("signed in", () => {
   test("coming-soon modules and the audit log render", async ({ page }) => {
     await signIn(page, EMAIL ?? "", PASSWORD ?? "");
     await expect(page).toHaveURL(/\/admin$/);
-    await page.goto("/admin/projects");
+    await page.goto("/admin/professions");
     // By role: React streams the page through a hidden segment that briefly
     // coexists with the swapped-in copy, which a text locator would also match.
     await expect(

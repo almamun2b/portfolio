@@ -105,3 +105,25 @@ export function projectJsonLd(project: Project): JsonLd {
     ...(project.links.live ? { sameAs: project.links.live } : {}),
   };
 }
+
+export function blogPostingJsonLd(post: {
+  slug: string;
+  title: string;
+  excerpt: string;
+  coverUrl: string | null;
+  publishedAt: string | null;
+  updatedAt: string;
+}): JsonLd {
+  return {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    headline: post.title,
+    description: post.excerpt,
+    url: absoluteUrl(`/blog/${post.slug}`),
+    datePublished: post.publishedAt ?? post.updatedAt,
+    dateModified: post.updatedAt,
+    author: { "@id": absoluteUrl("/#person") },
+    mainEntityOfPage: absoluteUrl(`/blog/${post.slug}`),
+    ...(post.coverUrl ? { image: absoluteUrl(post.coverUrl) } : {}),
+  };
+}

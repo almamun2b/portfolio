@@ -55,3 +55,12 @@ export function describeUserAgent(ua: string | null): string {
             : "unknown OS";
   return `${browser} on ${os}`;
 }
+
+const longDate = new Intl.DateTimeFormat("en-GB", {
+  dateStyle: "long",
+  timeZone: "UTC",
+});
+
+/** "3 November 2026": fixed locale and UTC, so server and browser agree. */
+export const formatLongDate = (iso: string): string =>
+  longDate.format(new Date(iso));

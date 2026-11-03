@@ -109,10 +109,6 @@ const nextConfig: NextConfig = {
         destination,
         permanent: true,
       })),
-      // The old blog isn't ported yet; temporary so a future post can take the
-      // URL back.
-      { source: "/blog/:path*", destination: "/", permanent: false },
-      { source: "/blog", destination: "/", permanent: false },
     ];
   },
   allowedDevOrigins: [new URL(env.NEXT_PUBLIC_SITE_URL).hostname],

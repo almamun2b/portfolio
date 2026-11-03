@@ -1,3 +1,4 @@
+import { slugParams } from "@/lib/static-params";
 import { ImageResponse } from "next/og";
 import { brand, rgba } from "@/lib/brand-colors";
 import { OG_SIZE, OgFrame } from "@/lib/og";
@@ -29,7 +30,7 @@ export async function generateImageMetadata({
 
 export async function generateStaticParams() {
   const slugs = await getProjectSlugs();
-  return slugs.map((slug) => ({ slug }));
+  return slugParams(slugs);
 }
 
 export default async function ProjectOgImage({

@@ -8,4 +8,7 @@ export const mainNav = [
   { label: "Contact", href: "/contact" },
 ] as const;
 
-export type NavItem = (typeof mainNav)[number];
+// Shown only once there is a published post (see getMainNav).
+export const blogNav = { label: "Blog", href: "/blog" } as const;
+
+export type NavItem = (typeof mainNav)[number] | typeof blogNav;

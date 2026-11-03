@@ -3,7 +3,6 @@
 import { cn } from "cn";
 import { ArrowUpRight, Download, Menu } from "lucide-react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { SocialIcon } from "@/components/icons/social-icon";
 import { IconButton } from "@/components/ui/button";
@@ -18,13 +17,14 @@ export function MobileNav({
   items,
   socials,
   resume,
+  pathname,
 }: {
   items: readonly NavItem[];
   socials: Social[];
   resume: { href: AssetPath; fileName: string };
+  pathname: string | null;
 }) {
   const [open, setOpen] = useState(false);
-  const pathname = usePathname();
   const close = () => {
     setOpen(false);
   };

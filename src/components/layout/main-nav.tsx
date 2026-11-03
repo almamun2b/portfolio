@@ -1,18 +1,25 @@
-"use client";
-
 import { cn } from "cn";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 import type { NavItem } from "@/content/navigation";
 
-export function isActive(pathname: string, href: string) {
-  if (href.includes("#")) return false;
+export function isActive(pathname: string | null, href: string) {
+  if (pathname === null || href.includes("#")) return false;
   return href === "/" ? pathname === "/" : pathname.startsWith(href);
 }
 
-/** Desktop navigation: a glass pill with the current page outlined. */
-export function MainNav({ items }: { items: readonly NavItem[] }) {
-  const pathname = usePathname();
+/**
+ * Desktop navigation: a glass pill with the current page outlined. It takes
+ * the pathname as a prop (null renders no active item), so the server can
+ * render it as the Suspense fallback of <CurrentMainNav> for routes whose
+ * URL isn't known until request time.
+ */
+export function MainNav({
+  items,
+  pathname,
+}: {
+  items: readonly NavItem[];
+  pathname: string | null;
+}) {
   return (
     <nav aria-label="Main" className="hidden lg:block">
       <ul className="flex items-center gap-1 rounded-full border border-border glass p-1.5">

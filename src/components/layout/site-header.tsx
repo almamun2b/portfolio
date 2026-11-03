@@ -1,12 +1,14 @@
 import { Download } from "lucide-react";
 import { ButtonLink } from "@/components/ui/button-link";
-import { mainNav } from "@/content/navigation";
+import { getMainNav } from "@/server/modules/content/navigation.service";
 import {
   getProfile,
   getSocials,
 } from "@/server/modules/content/profile.service";
 import { Container } from "./container";
 import { Logo } from "./logo";
+import { Suspense } from "react";
+import { CurrentMainNav, CurrentMobileNav } from "./current-nav";
 import { MainNav } from "./main-nav";
 import { MobileNav } from "./mobile-nav";
 import { ThemeToggle } from "./theme-toggle";
@@ -17,7 +19,11 @@ import { ThemeToggle } from "./theme-toggle";
  * globals.css), so it costs no JavaScript.
  */
 export async function SiteHeader() {
-  const [profile, socials] = await Promise.all([getProfile(), getSocials()]);
+  const [profile, socials, nav] = await Promise.all([
+    getProfile(),
+    getSocials(),
+    getMainNav(),
+  ]);
   return (
     <header
       data-site-header
@@ -25,7 +31,9 @@ export async function SiteHeader() {
     >
       <Container className="flex h-[70px] items-center justify-between gap-4">
         <Logo />
-        <MainNav items={mainNav} />
+        <Suspense fallback={<MainNav items={nav} pathname={null} />}>
+          <CurrentMainNav items={nav} />
+        </Suspense>
         <div className="flex items-center gap-2.5">
           <ThemeToggle />
           <ButtonLink
@@ -36,11 +44,22 @@ export async function SiteHeader() {
           >
             <Download aria-hidden="true" /> Download CV
           </ButtonLink>
-          <MobileNav
-            items={mainNav}
-            socials={socials}
-            resume={profile.resume}
-          />
+          <Suspense
+            fallback={
+              <MobileNav
+                items={nav}
+                socials={socials}
+                resume={profile.resume}
+                pathname={null}
+              />
+            }
+          >
+            <CurrentMobileNav
+              items={nav}
+              socials={socials}
+              resume={profile.resume}
+            />
+          </Suspense>
         </div>
       </Container>
     </header>
