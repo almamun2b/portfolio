@@ -4,6 +4,11 @@ import { describe, expect, it } from "vitest";
 import { CACHE_TAGS } from "@/server/core/cache";
 import { accountTags } from "@/server/modules/account/account.constants";
 import { sessionTags } from "@/server/modules/sessions/sessions.constants";
+import { categoryTags } from "@/server/modules/categories/categories.constants";
+import { messageTags } from "@/server/modules/messages/messages.constants";
+import { postTags } from "@/server/modules/posts/posts.constants";
+import { projectTags } from "@/server/modules/projects/projects.constants";
+import { settingsTags } from "@/server/modules/settings/settings.constants";
 import { userTags } from "@/server/modules/users/users.constants";
 
 const modules = path.resolve(import.meta.dirname, "../../src/server/modules");
@@ -71,5 +76,57 @@ describe("mutation tag maps", () => {
       const declared = source.match(/tags:/g) ?? [];
       expect(declared.length, file).toBeGreaterThanOrEqual(mutations.length);
     }
+  });
+});
+
+describe("content mutation tags reach the public site", () => {
+  it("publishing or editing a project refreshes the public project lists and the stats", () => {
+    for (const tags of [
+      projectTags.update({ id: "p1" }),
+      projectTags.remove({ id: "p1" }),
+    ])
+      expect(tags).toEqual(
+        expect.arrayContaining([
+          CACHE_TAGS.PROJECTS,
+          CACHE_TAGS.project("p1"),
+          CACHE_TAGS.DASHBOARD,
+          CACHE_TAGS.AUDIT,
+        ]),
+      );
+    expect(projectTags.create()).toContain(CACHE_TAGS.PROJECTS);
+  });
+
+  it("posts refresh the blog (and with it the Blog nav link)", () => {
+    expect(postTags.create()).toContain(CACHE_TAGS.POSTS);
+    expect(postTags.update({ id: "b1" })).toEqual(
+      expect.arrayContaining([CACHE_TAGS.POSTS, CACHE_TAGS.post("b1")]),
+    );
+  });
+
+  it("renaming or deleting a category refreshes the pages that label content with it", () => {
+    for (const tags of [
+      categoryTags.update({ id: "c1" }),
+      categoryTags.remove({ id: "c1" }),
+    ])
+      expect(tags).toEqual(
+        expect.arrayContaining([
+          CACHE_TAGS.CATEGORIES,
+          CACHE_TAGS.PROJECTS,
+          CACHE_TAGS.POSTS,
+        ]),
+      );
+  });
+
+  it("settings changes refresh the public profile", () => {
+    expect(settingsTags.updateProfile()).toContain(CACHE_TAGS.SETTINGS);
+    expect(settingsTags.updateSocials()).toContain(CACHE_TAGS.SETTINGS);
+  });
+
+  it("a visitor's message updates the inbox count but writes no audit row", () => {
+    const tags = messageTags.submit();
+    expect(tags).toEqual(
+      expect.arrayContaining([CACHE_TAGS.MESSAGES, CACHE_TAGS.DASHBOARD]),
+    );
+    expect(tags).not.toContain(CACHE_TAGS.AUDIT);
   });
 });

@@ -5,9 +5,10 @@ import { PASSWORD_MIN } from "./lib/auth/password-params";
 // variable here and to .env.example. Config files, the seed, and scripts import
 // it through src/env-node.ts, which loads .env first.
 //
-// The public site is static, so nothing here may be required at build time:
-// DATABASE_URL and AUTH_SECRET are checked when the admin area first needs
-// them (src/server/db.ts, src/server/auth.ts), not on import.
+// Nothing here is checked on import: DATABASE_URL is checked when the first
+// query runs (src/server/core/db.ts; the build needs it because pages are
+// prerendered from Postgres), and AUTH_SECRET when the admin area first needs
+// it. Tooling such as `prisma generate` runs without either.
 // .env.example ships empty values; treat "" as unset.
 const blankToUndefined = (value: unknown) => (value === "" ? undefined : value);
 

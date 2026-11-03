@@ -1,6 +1,6 @@
 # my-portfolio
 
-The personal portfolio of **Md Abdul Mamun**, full-stack software engineer: **Next.js 16 · React 19 · Tailwind v4**, fully static today, with Prisma 7 + PostgreSQL wired in for the planned backend.
+The personal portfolio of **Md Abdul Mamun**, full-stack software engineer: **Next.js 16 · React 19 · Tailwind v4**, prerendered from **PostgreSQL (Prisma 7)** through cached server reads, with an admin CMS for projects, blog posts, categories, contact messages, and site settings.
 
 - **Pages:** one-page home (hero, stack, about, services, selected work, experience, process), `/about`, `/projects` (filter with `?category=`), `/projects/[slug]` case studies with screenshot galleries, `/contact`, `/privacy-policy`, `/terms-and-conditions`.
 - **Look:** the uniqtrix.com style: dark night field with two-colour gradients (active palette violet → indigo; every saved palette is in [src/styles/color-systems](src/styles/color-systems/README.md)), glass surfaces, a Three.js constellation background, and a light theme behind the toggle. See [DESIGN.md](DESIGN.md).
@@ -25,13 +25,13 @@ pnpm dev                    # http://localhost:3000
 
 ## Admin console
 
-`/admin` is a private, noindex console for managing the site: Auth.js sign-in (email and password, one **Admin** role), user management (add, edit, disable, delete, set or change password), an audit log, and "Coming soon" pages for Projects, Blogs, Professions, Categories, and Settings.
+`/admin` is a private, noindex console for managing the site: Auth.js sign-in (email and password, one **Admin** role), user management (add, edit, disable, delete, set or change password), an audit log, and the CMS: Projects, Blogs (with a rich-text editor), Categories, Messages (the contact-form inbox), and Settings (profile and social links). Professions is still a "Coming soon" page.
 
 1. Set `DATABASE_URL`, `AUTH_SECRET`, and (optionally) `SEED_ADMIN_EMAIL` / `SEED_ADMIN_NAME` / `SEED_ADMIN_PASSWORD` in `.env`.
-2. `pnpm db:migrate && pnpm db:seed` creates the default admin once; `SEED_ADMIN_PASSWORD` (minimum 8 characters) is required for that first seed. Re-running the seed never changes an existing admin (`SEED_ADMIN_RESET=true` resets the password, which again requires `SEED_ADMIN_PASSWORD`).
+2. `pnpm db:migrate && pnpm db:seed` creates the default admin once and fills the database with the site content from `src/content` (categories, projects with their screenshots, profile and social links). The content seed only creates what is missing, so it never overwrites edits made in the admin; `SEED_ADMIN_PASSWORD` (minimum 8 characters) is required for that first seed. Re-running the seed never changes an existing admin (`SEED_ADMIN_RESET=true` resets the password, which again requires `SEED_ADMIN_PASSWORD`).
 3. Sign in at `/admin/sign-in` and change the password from **Account**.
 
-Sessions end after 12 hours, or after 60 minutes without activity, and can be revoked from the Account and user pages. Sign-in is rate limited. In production set `AUTH_SECRET` and `DATABASE_URL`, plus `AUTH_TRUST_HOST=true` behind a proxy such as Vercel. The public site still builds and runs without them. How the module is built, and how to add the next one: [ARCHITECTURE.md §4 and §14](ARCHITECTURE.md#14-admin-modules).
+Sessions end after 12 hours, or after 60 minutes without activity, and can be revoked from the Account and user pages. Sign-in is rate limited. In production set `AUTH_SECRET` and `DATABASE_URL`, plus `AUTH_TRUST_HOST=true` behind a proxy such as Vercel. The public site needs `DATABASE_URL` at build time (see Deployment), because its pages are prerendered from the database. How the module is built, and how to add the next one: [ARCHITECTURE.md §4 and §14](ARCHITECTURE.md#14-admin-modules).
 
 ## Scripts
 
@@ -72,13 +72,13 @@ See [ARCHITECTURE.md](ARCHITECTURE.md) for the full target structure, layering r
 
 ## Environment variables
 
-See [`.env.example`](.env.example). `DATABASE_URL` and `AUTH_SECRET` are required for `/admin` only. The full list of variables is in [ARCHITECTURE.md §13](ARCHITECTURE.md#13-environments-and-deployment).
+See [`.env.example`](.env.example). `DATABASE_URL` is required to build and run the site (the pages are prerendered from the database); `AUTH_SECRET` is required for `/admin`. The full list of variables is in [ARCHITECTURE.md §13](ARCHITECTURE.md#13-environments-and-deployment).
 
 ## Deployment
 
 `pnpm build` produces a standalone Node server in `.next/standalone` and copies `.next/static` (and `public/`, if present) into it. `pnpm start` runs that server.
 
-`pnpm build` runs `prisma generate` first, because `src/generated/` is gitignored. Hosts that build from a clean checkout (such as Vercel) need no extra step and no `DATABASE_URL` or `AUTH_SECRET` to build: the public pages are static, and `/admin` is rendered on demand.
+`pnpm build` runs `prisma generate` first, because `src/generated/` is gitignored. The public pages are prerendered at build time from Postgres, so the build needs `DATABASE_URL` pointing at a database that has been migrated and seeded (`pnpm exec prisma migrate deploy && pnpm db:seed`); `AUTH_SECRET` is only needed at runtime for `/admin`. After deploy, an admin save refreshes the affected pages through cache tags, with no rebuild.
 
 **Vercel (production):** the live site deploys from `main` to `portfolio-mamun.vercel.app`. On Vercel the standalone output and its copy script are unused but harmless. If the site moves to a custom domain, set `NEXT_PUBLIC_SITE_URL` for the **build** (it's inlined), or canonicals, the sitemap, and JSON-LD keep pointing at the old host. Old URLs from the previous portfolio redirect through `next.config.ts`; after launch, submit `/sitemap.xml` in Search Console.
 
@@ -90,7 +90,7 @@ pnpm dlx @prisma/cli@8.0.0-rc.20 app deploy
 
 Or run the standalone build on any Node 22.22.1+ host.
 
-**Migrations** are not part of the deploy. Run `pnpm exec prisma migrate deploy` against the production database, from CI or a machine with dev dependencies installed (the `prisma` CLI is not in the standalone output), before starting the new version. The database must allow the `citext` extension.
+**Migrations** are not part of the deploy. Run `pnpm exec prisma migrate deploy` (and `pnpm db:seed` the first time) against the production database, from CI or a machine with dev dependencies installed (the `prisma` CLI is not in the standalone output), **before the build**, because the build reads it. The database must allow the `citext` extension.
 
 ## Documentation
 

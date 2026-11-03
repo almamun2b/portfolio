@@ -58,7 +58,12 @@ export function sanitizePostHtml(html: string): string {
 
 /** Plain text of sanitized HTML, for search and reading time. */
 export function htmlToText(html: string): string {
-  return sanitizeHtml(html, { allowedTags: [], allowedAttributes: {} })
+  // Block boundaries become spaces first, so "<p>a</p><p>b</p>" is "a b".
+  const spaced = html.replace(
+    /<\/(?:p|h[1-6]|li|blockquote|pre|ul|ol)>|<br\s*\/?>|<hr\s*\/?>/gi,
+    " $&",
+  );
+  return sanitizeHtml(spaced, { allowedTags: [], allowedAttributes: {} })
     .replaceAll("&amp;", "&")
     .replaceAll("&lt;", "<")
     .replaceAll("&gt;", ">")

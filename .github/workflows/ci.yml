@@ -35,7 +35,8 @@ jobs:
           --health-retries 10
     env:
       DATABASE_URL: postgresql://ci:ci@localhost:5432/ci
-      # Throwaway values for the admin e2e tests; the build itself needs none.
+      # Throwaway values. DATABASE_URL must be migrated and seeded before the
+      # build: the public pages are prerendered from Postgres.
       AUTH_SECRET: ci-only-secret-ci-only-secret-ci-only-secret
       AUTH_TRUST_HOST: "true"
       SEED_ADMIN_EMAIL: e2e-admin@example.com
@@ -58,11 +59,11 @@ jobs:
       - run: pnpm lint
       - run: pnpm format:check
       - run: pnpm test
-      - run: pnpm build
-      - name: Migrate and seed the admin account for the e2e tests
+      - name: Migrate and seed (the public pages are prerendered from the database, so it is a build input)
         run: |
           pnpm exec prisma migrate deploy
           pnpm db:seed
+      - run: pnpm build
       - name: Install Chromium for the smoke tests
         run: pnpm exec playwright install --with-deps chromium
       - name: Smoke and admin tests (routes, a11y, redirects, sign-in, users) against the build

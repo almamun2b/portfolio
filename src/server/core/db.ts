@@ -26,9 +26,11 @@ function getClient(): PrismaClient {
 }
 
 /**
- * The client is created on first use, not on import, so `next build` (and the
- * static public site) works without a database. A missing DATABASE_URL fails
- * with a clear error on the first query instead.
+ * The client is created on first use, not on import, so tooling that only
+ * imports modules (`prisma generate`, type checks, unit tests) needs no
+ * database. A missing DATABASE_URL fails with a clear error on the first
+ * query. `next build` does query it: the public pages are prerendered from
+ * Postgres.
  */
 export const db: PrismaClient = new Proxy({} as PrismaClient, {
   get(_target, prop) {

@@ -9,7 +9,10 @@ import { NAV_ITEMS } from "./nav-config";
 function labelFor(href: string, previous: string | undefined): string {
   const known = NAV_ITEMS.find((item) => item.href === href);
   if (known) return known.label;
+  if (href.endsWith("/new")) return "New";
   if (previous === "users") return "Details";
+  if (previous === "messages") return "Message";
+  if (previous === "projects" || previous === "blogs") return "Edit";
   if (href.endsWith("/account")) return "Account";
   return "Page";
 }
