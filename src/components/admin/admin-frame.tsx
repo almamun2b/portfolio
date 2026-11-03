@@ -2,36 +2,26 @@
 
 import { useState, type ReactNode } from "react";
 import { DialogCloseButton, Sheet } from "@/components/ui/dialog";
-import { ADMIN_COOKIE } from "./nav-config";
 import { AdminBrand } from "./brand";
 import { SidebarNav } from "./sidebar-nav";
 import { SidebarToggle } from "./sidebar-toggle";
 import { Topbar } from "./topbar";
-import { UserMenu, type MenuUser } from "./user-menu";
 
 /**
  * The dashboard shell: fixed sidebar (collapsible from `lg`, the handle at its
  * top and the signed-in user at its bottom), a drawer on phones and tablets, a
- * sticky top bar, and the page. The collapsed choice is remembered in a cookie
- * that the layout reads, so the first paint is right.
+ * sticky top bar, and the page. It holds no request data, so it is prerendered:
+ * the collapsed choice is an attribute on <html> (see sidebar-state.ts) and
+ * `userMenu` is the streamed user block the layout passes in.
  */
 export function AdminFrame({
-  user,
-  defaultCollapsed,
+  userMenu,
   children,
 }: {
-  user: MenuUser;
-  defaultCollapsed: boolean;
+  userMenu: ReactNode;
   children: ReactNode;
 }) {
-  const [collapsed, setCollapsed] = useState(defaultCollapsed);
   const [drawerOpen, setDrawerOpen] = useState(false);
-
-  function toggle() {
-    const next = !collapsed;
-    setCollapsed(next);
-    document.cookie = `${ADMIN_COOKIE}=${next ? "collapsed" : "expanded"}; path=/admin; max-age=31536000; samesite=lax`;
-  }
 
   return (
     <div className="min-h-dvh">
@@ -44,15 +34,14 @@ export function AdminFrame({
 
       <aside
         id="admin-sidebar"
-        data-collapsed={collapsed}
-        className="fixed inset-y-0 left-0 z-30 hidden w-64 flex-col border-r border-border bg-card-solid transition-[width] duration-300 ease-out-expo data-[collapsed=true]:w-[4.5rem] lg:flex"
+        className="fixed inset-y-0 left-0 z-30 hidden w-64 flex-col border-r border-border bg-card-solid transition-[width] duration-300 ease-out-expo lg:flex rail:w-[4.5rem]"
       >
-        <AdminBrand collapsed={collapsed} />
-        <SidebarToggle collapsed={collapsed} onToggle={toggle} />
+        <AdminBrand />
+        <SidebarToggle />
         <div className="flex-1">
-          <SidebarNav collapsed={collapsed} />
+          <SidebarNav />
         </div>
-        <UserMenu user={user} collapsed={collapsed} />
+        {userMenu}
       </aside>
 
       <Sheet
@@ -78,14 +67,11 @@ export function AdminFrame({
               }}
             />
           </div>
-          <UserMenu user={user} />
+          {userMenu}
         </div>
       </Sheet>
 
-      <div
-        data-collapsed={collapsed}
-        className="flex min-h-dvh flex-col transition-[padding] duration-300 ease-out-expo lg:pl-64 data-[collapsed=true]:lg:pl-[4.5rem]"
-      >
+      <div className="flex min-h-dvh flex-col transition-[padding] duration-300 ease-out-expo lg:pl-64 lg:rail:pl-[4.5rem]">
         <Topbar
           onOpenMenu={() => {
             setDrawerOpen(true);

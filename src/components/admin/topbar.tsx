@@ -1,9 +1,10 @@
 "use client";
 
 import { Menu } from "lucide-react";
+import { Suspense } from "react";
 import { ThemeToggle } from "@/components/layout/theme-toggle";
 import { IconButton } from "@/components/ui/button";
-import { Breadcrumbs } from "./breadcrumbs";
+import { Breadcrumbs, BreadcrumbsFallback } from "./breadcrumbs";
 
 export function Topbar({ onOpenMenu }: { onOpenMenu: () => void }) {
   return (
@@ -18,7 +19,11 @@ export function Topbar({ onOpenMenu }: { onOpenMenu: () => void }) {
         <Menu aria-hidden="true" />
       </IconButton>
       <div className="min-w-0 flex-1">
-        <Breadcrumbs />
+        {/* usePathname suspends under /admin/users/[id] (a param unknown at
+            build time), so the fallback is the bare "Admin" crumb. */}
+        <Suspense fallback={<BreadcrumbsFallback />}>
+          <Breadcrumbs />
+        </Suspense>
       </div>
       <ThemeToggle />
     </header>

@@ -17,6 +17,19 @@ function labelFor(href: string, previous: string | undefined): string {
   return "Page";
 }
 
+/** Shown while the pathname isn't known yet; keeps the row's height. */
+export function BreadcrumbsFallback() {
+  return (
+    <nav aria-label="Breadcrumb" className="min-w-0">
+      <ol className="flex items-center gap-1.5 text-sm text-muted-foreground">
+        <li className="flex min-w-0 items-center">
+          <span className="truncate font-medium text-foreground">Admin</span>
+        </li>
+      </ol>
+    </nav>
+  );
+}
+
 /** Trail derived from the URL and the nav registry. Phones show only the current page. */
 export function Breadcrumbs() {
   const pathname = usePathname();

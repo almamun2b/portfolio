@@ -4,23 +4,37 @@ import { cn } from "cn";
 import Link from "next/link";
 import type { Route } from "next";
 import { usePathname } from "next/navigation";
+import { Suspense } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Tooltip } from "@/components/ui/tooltip";
 import { NAV_GROUPS, isActive, type NavItem } from "./nav-config";
 
 /**
- * The module list. `collapsed` shrinks it to icons (labels stay in the
- * accessibility tree and a tooltip names each icon). `onNavigate` closes the
- * mobile drawer.
+ * The module list. In the collapsed rail it shrinks to icons (the `collapsed:`
+ * variant; labels stay in the accessibility tree and a tooltip names each
+ * icon). `onNavigate` closes the mobile drawer. The active link needs the
+ * pathname, which isn't known at build time under /admin/users/[id], so it
+ * sits behind a Suspense whose fallback is the same list with nothing active.
  */
-export function SidebarNav({
-  collapsed = false,
+export function SidebarNav({ onNavigate }: { onNavigate?: () => void }) {
+  return (
+    <Suspense fallback={<NavList pathname={null} onNavigate={onNavigate} />}>
+      <ActiveNav onNavigate={onNavigate} />
+    </Suspense>
+  );
+}
+
+function ActiveNav({ onNavigate }: { onNavigate?: () => void }) {
+  return <NavList pathname={usePathname()} onNavigate={onNavigate} />;
+}
+
+function NavList({
+  pathname,
   onNavigate,
 }: {
-  collapsed?: boolean;
+  pathname: string | null;
   onNavigate?: () => void;
 }) {
-  const pathname = usePathname();
   return (
     <nav aria-label="Admin" className="flex flex-col gap-5 p-3">
       {NAV_GROUPS.map((group) => (
@@ -28,7 +42,7 @@ export function SidebarNav({
           <p
             className={cn(
               "px-3 pb-1 text-[0.7rem] font-semibold tracking-wider text-muted-foreground uppercase transition-opacity duration-200",
-              collapsed && "h-0 overflow-hidden pb-0 opacity-0",
+              "collapsed:h-0 collapsed:overflow-hidden collapsed:pb-0 collapsed:opacity-0",
             )}
           >
             {group.label}
@@ -38,8 +52,7 @@ export function SidebarNav({
               <li key={item.href}>
                 <NavLink
                   item={item}
-                  active={isActive(item.href, pathname)}
-                  collapsed={collapsed}
+                  active={pathname !== null && isActive(item.href, pathname)}
                   onNavigate={onNavigate}
                 />
               </li>
@@ -54,12 +67,10 @@ export function SidebarNav({
 function NavLink({
   item,
   active,
-  collapsed,
   onNavigate,
 }: {
   item: NavItem;
   active: boolean;
-  collapsed: boolean;
   onNavigate?: () => void;
 }) {
   const Icon = item.icon;
@@ -85,7 +96,7 @@ function NavLink({
       <span
         className={cn(
           "flex min-w-0 flex-1 items-center justify-between gap-2 overflow-hidden whitespace-nowrap transition-[opacity] duration-200",
-          collapsed && "w-0 flex-none opacity-0",
+          "collapsed:w-0 collapsed:flex-none collapsed:opacity-0",
         )}
       >
         <span className="truncate">{item.label}</span>
@@ -97,12 +108,15 @@ function NavLink({
       </span>
     </Link>
   );
-  if (!collapsed) return link;
+  // The bubble only shows in the collapsed rail (never in the drawer).
   return (
     <Tooltip
       id={`nav-tip-${item.label.toLowerCase().replaceAll(" ", "-")}`}
       content={item.label}
       side="right"
+      className="hidden collapsed:block"
+      describe={false}
+      wrapperClassName="flex w-full"
     >
       {link}
     </Tooltip>

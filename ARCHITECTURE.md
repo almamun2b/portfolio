@@ -49,7 +49,7 @@ src/
     (site)/             Public, indexable pages (home, about, projects, contact, legal)
     admin/              Private console, noindex (layout.tsx mounts the toaster)
       (auth)/sign-in/     Sign-in page (no shell)
-      (dashboard)/        Signed-in shell: layout.tsx (static frame skeleton; DashboardShell streams in) and one folder per module
+      (dashboard)/        Signed-in shell: layout.tsx (the whole frame is prerendered; only the user block streams in) and one folder per module
         users/ audit-log/ account/ projects/ blogs/ categories/ messages/ settings/   Built modules
         professions/                       "Coming soon" placeholder
     api/                JSON API: route.ts files only re-export module controllers (auth/[...nextauth] is Auth.js)
@@ -200,7 +200,7 @@ All SEO primitives use Next's file-based metadata APIs. Do not hand-write `<head
 
 Targets (p75, mobile): **LCP < 2.5 s, INP < 200 ms, CLS < 0.1**, and Lighthouse ≥ 95 for Performance, SEO, Accessibility, and Best Practices on marketing pages. Enforced by Lighthouse CI budgets.
 
-- **Rendering:** public pages are prerendered (Cache Components; the date-dependent bits come from `"use cache"` helpers with `cacheLife("days")`). Admin pages have a prerendered shell (frame skeleton) and stream the session-dependent frame and page; their **data** is cached with tags, see "Admin caching" below. Never use a blanket `revalidatePath("/")`.
+- **Rendering:** public pages are prerendered (Cache Components; the date-dependent bits come from `"use cache"` helpers with `cacheLife("days")`). Admin pages have a prerendered shell (sidebar, top bar; only the signed-in user block and the page stream, each behind its own boundary); their **data** is cached with tags, see "Admin caching" below. Never use a blanket `revalidatePath("/")`.
 - **Data:** avoid N+1 (use `include`/`select`, or batch). Always `select` only the needed columns. Paginate admin lists and back them with DB indexes (`@@index` on `email`, `createdAt`, `role`). Run independent queries in parallel with `Promise.all`.
 - **Assets:** `next/image` with explicit `sizes` and `priority` only on the LCP image. `next/font` (self-hosted, `display: swap`). `next/script` with `strategy="lazyOnload"` for third parties.
 - **JS budget:** keep client components small; `dynamic()` import heavy client-only widgets; check `@next/bundle-analyzer` output for regressions.

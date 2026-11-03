@@ -245,4 +245,47 @@ test.describe("signed in", () => {
     ).toBeVisible();
     await expectNoSeriousA11yIssues(page);
   });
+
+  test("the sidebar and top bar are in the prerendered shell", async ({
+    page,
+  }) => {
+    await signIn(page, EMAIL ?? "", PASSWORD ?? "");
+    await expect(page).toHaveURL(/\/admin$/);
+    for (const path of ["/admin", "/admin/users"]) {
+      // The first response, before any script runs.
+      const html = await (await page.request.get(path)).text();
+      const nav = html.indexOf('aria-label="Admin"');
+      expect(nav, `${path}: sidebar nav`).toBeGreaterThan(-1);
+      expect(html, `${path}: top bar`).toContain('aria-label="Breadcrumb"');
+      // Nothing that stands in for the frame comes before the nav; only the
+      // user block and the page content have placeholders further down.
+      expect(html.slice(0, nav), `${path}: skeleton before nav`).not.toContain(
+        'role="status"',
+      );
+      expect(html, `${path}: user block placeholder`).toContain(
+        "Loading account",
+      );
+    }
+  });
+
+  test("a collapsed sidebar stays collapsed after a reload", async ({
+    page,
+  }) => {
+    await signIn(page, EMAIL ?? "", PASSWORD ?? "");
+    await expect(page).toHaveURL(/\/admin$/);
+    const sidebar = page.locator("#admin-sidebar");
+    await page.getByRole("button", { name: "Collapse sidebar" }).click();
+    await expect(sidebar).toHaveCSS("width", "72px");
+    await page.reload();
+    await expect(page.locator("html")).toHaveAttribute(
+      "data-admin-sidebar",
+      "collapsed",
+    );
+    await expect(sidebar).toHaveCSS("width", "72px");
+    await expect(
+      page.getByRole("button", { name: "Expand sidebar" }),
+    ).toHaveAttribute("aria-expanded", "false");
+    await page.getByRole("button", { name: "Expand sidebar" }).click();
+    await expect(sidebar).toHaveCSS("width", "256px");
+  });
 });

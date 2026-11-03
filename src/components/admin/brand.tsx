@@ -2,13 +2,7 @@ import { cn } from "cn";
 import Link from "next/link";
 
 /** The logo tile with the console name; links to the dashboard. */
-export function AdminBrand({
-  collapsed = false,
-  className,
-}: {
-  collapsed?: boolean;
-  className?: string;
-}) {
+export function AdminBrand({ className }: { className?: string }) {
   return (
     <Link
       href={"/admin"}
@@ -26,7 +20,7 @@ export function AdminBrand({
       <span
         className={cn(
           "flex min-w-0 flex-col leading-none whitespace-nowrap transition-opacity duration-200",
-          collapsed && "w-0 overflow-hidden opacity-0",
+          "collapsed:w-0 collapsed:overflow-hidden collapsed:opacity-0",
         )}
       >
         <span className="font-display text-lg font-bold tracking-tight">

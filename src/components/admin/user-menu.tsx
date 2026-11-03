@@ -18,23 +18,18 @@ export interface MenuUser {
 }
 
 /**
- * The signed-in user block at the bottom of the sidebar. `collapsed` leaves
- * just the avatar (the button keeps its "Account menu" name). The menu opens
- * above the block (it sits at the bottom of the viewport), right-aligned with
- * it; in the narrow collapsed rail it grows rightwards instead.
+ * The signed-in user block at the bottom of the sidebar. In the collapsed rail
+ * (the `collapsed:` variant) it leaves just the avatar; the button keeps its
+ * "Account menu" name. The menu opens above the block (it sits at the bottom
+ * of the viewport), right-aligned with it; in the narrow rail the dropdown's
+ * edge clamp makes it grow rightwards instead.
  */
-export function UserMenu({
-  user,
-  collapsed = false,
-}: {
-  user: MenuUser;
-  collapsed?: boolean;
-}) {
+export function UserMenu({ user }: { user: MenuUser }) {
   return (
     <div className="border-t border-border p-3">
       <Dropdown
         label="Account menu"
-        align={collapsed ? "start" : "end"}
+        align="end"
         triggerClassName="flex h-14 w-full items-center gap-3 rounded-2xl p-2 text-left hover:bg-muted"
         trigger={
           <>
@@ -42,7 +37,7 @@ export function UserMenu({
             <span
               className={cn(
                 "flex min-w-0 flex-1 flex-col leading-tight transition-opacity duration-200",
-                collapsed && "w-0 flex-none overflow-hidden opacity-0",
+                "collapsed:w-0 collapsed:flex-none collapsed:overflow-hidden collapsed:opacity-0",
               )}
             >
               <span className="truncate text-sm font-medium text-foreground">
@@ -54,7 +49,7 @@ export function UserMenu({
             </span>
             <ChevronsUpDown
               aria-hidden="true"
-              className={cn("size-4 shrink-0", collapsed && "hidden")}
+              className="size-4 shrink-0 collapsed:hidden"
             />
           </>
         }

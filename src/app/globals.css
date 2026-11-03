@@ -6,6 +6,14 @@
 @custom-variant dark (&:where(.dark, .dark *));
 @custom-variant light (&:where(.light, .light *));
 
+/* Admin sidebar rail. A script in the dashboard layout sets
+   data-admin-sidebar="collapsed" on <html> before first paint (from the
+   remembered cookie), so the static shell needs no request data. `rail:` styles
+   the shell itself; `collapsed:` styles what sits inside the desktop sidebar
+   (the mobile drawer is outside it and always shows labels). */
+@custom-variant rail (&:where([data-admin-sidebar="collapsed"] *));
+@custom-variant collapsed (&:where([data-admin-sidebar="collapsed"] #admin-sidebar *));
+
 /* ── Tokens: dark (default) ────────────────────────────────────────────────
    Active palette: Violet → Indigo on a plum-black. Two hues, two-stop
    gradients. Every saved colour system (including the original emerald →

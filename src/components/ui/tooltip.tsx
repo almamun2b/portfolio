@@ -8,19 +8,31 @@ export function Tooltip({
   id,
   content,
   side = "top",
+  className,
+  wrapperClassName,
+  describe = true,
   children,
 }: {
   id: string;
   content: string;
   side?: "top" | "bottom" | "right";
+  /** Extra classes for the bubble, e.g. to show it only in some states. */
+  className?: string;
+  /** Extra classes for the wrapper, e.g. `flex w-full` to fill a list row. */
+  wrapperClassName?: string;
+  /** Set false when the text repeats the trigger's own name (an icon rail). */
+  describe?: boolean;
   children: ReactElement<{ "aria-describedby"?: string }>;
 }) {
   return (
-    <span className="group/tooltip relative inline-flex">
-      {cloneElement(children, { "aria-describedby": id })}
+    <span
+      className={cn("group/tooltip relative inline-flex", wrapperClassName)}
+    >
+      {describe ? cloneElement(children, { "aria-describedby": id }) : children}
       <span
         role="tooltip"
         id={id}
+        aria-hidden={describe ? undefined : true}
         className={cn(
           "pointer-events-none absolute z-50 rounded-lg border border-border-strong bg-popover px-2.5 py-1 text-xs font-medium whitespace-nowrap text-popover-foreground opacity-0 shadow-card transition-[opacity,translate] duration-200",
           "group-focus-within/tooltip:opacity-100 group-hover/tooltip:opacity-100",
@@ -31,6 +43,7 @@ export function Tooltip({
             "top-full mt-2 -translate-y-1 group-focus-within/tooltip:translate-y-0 group-hover/tooltip:translate-y-0",
           side === "right" &&
             "top-1/2 left-full ml-3 -translate-x-1 -translate-y-1/2 group-focus-within/tooltip:translate-x-0 group-hover/tooltip:translate-x-0",
+          className,
         )}
       >
         {content}
