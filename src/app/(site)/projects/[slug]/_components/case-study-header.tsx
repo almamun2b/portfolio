@@ -3,15 +3,18 @@ import Link from "next/link";
 import { Container } from "@/components/layout/container";
 import { Badge } from "@/components/ui/badge";
 import { ButtonLink } from "@/components/ui/button-link";
-import {
-  CATEGORY_LABELS,
-  CONTEXT_LABELS,
-  CONTRIBUTION_LABELS,
-} from "@/lib/content-labels";
-import type { Project } from "@/lib/schemas/content";
+import { CONTEXT_LABELS, CONTRIBUTION_LABELS } from "@/lib/content-labels";
+import type { Project, PublicCategory } from "@/lib/schemas/content";
 
-export function CaseStudyHeader({ project }: { project: Project }) {
+export function CaseStudyHeader({
+  project,
+  categories,
+}: {
+  project: Project;
+  categories: PublicCategory[];
+}) {
   const { links } = project;
+  const names = new Map(categories.map((c) => [c.slug, c.name]));
   return (
     <header className="relative overflow-x-clip pt-10 pb-12 sm:pt-14 sm:pb-16">
       <div
@@ -50,7 +53,7 @@ export function CaseStudyHeader({ project }: { project: Project }) {
           </Badge>
           {project.categories.map((category) => (
             <Badge key={category} variant="outline" size="md">
-              {CATEGORY_LABELS[category]}
+              {names.get(category) ?? category}
             </Badge>
           ))}
         </div>

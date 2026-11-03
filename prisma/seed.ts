@@ -3,6 +3,7 @@ import { PrismaPg } from "@prisma/adapter-pg";
 import { env } from "../src/env-node";
 import { PrismaClient } from "../src/generated/prisma/client";
 import { ARGON2_PARAMS } from "../src/lib/auth/password-params";
+import { seedContent } from "./seed-content";
 
 // The seed runs under tsx, outside Next.js, so it builds its own client. It
 // must not import src/server/*: `server-only` throws outside React Server
@@ -57,6 +58,7 @@ async function seedAdmin() {
 }
 
 seedAdmin()
+  .then(() => seedContent(prisma))
   .then(async () => {
     await prisma.$disconnect();
   })

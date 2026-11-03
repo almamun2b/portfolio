@@ -3,9 +3,7 @@
 import { useState, type ReactNode } from "react";
 import { Reveal } from "@/components/effects/reveal";
 import { Tabs, TabsList, TabsPanel, TabsTrigger } from "@/components/ui/tabs";
-import type { ProjectCategory } from "@/lib/content-labels";
-
-type Filter = "all" | ProjectCategory;
+type Filter = string;
 
 /**
  * Category tabs over server-rendered project cards. Only the active panel
@@ -17,7 +15,7 @@ export function FeaturedTabs({
   items,
 }: {
   filters: { value: Filter; label: string }[];
-  items: { slug: string; categories: ProjectCategory[]; node: ReactNode }[];
+  items: { slug: string; categories: string[]; node: ReactNode }[];
 }) {
   const [active, setActive] = useState<Filter>("all");
   const visible =
@@ -29,7 +27,7 @@ export function FeaturedTabs({
       defaultValue="all"
       value={active}
       onValueChange={(value) => {
-        setActive(value as Filter);
+        setActive(value);
       }}
       className="mt-12 flex flex-col gap-8"
     >

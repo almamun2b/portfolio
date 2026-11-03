@@ -1,0 +1,83 @@
+// CMS content: categories shared by projects and blog posts, the projects
+// themselves, and blog posts. Public pages read only PUBLISHED rows.
+enum PublishStatus {
+  DRAFT
+  PUBLISHED
+}
+
+model Category {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  name        String
+  description String?
+  sortOrder   Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  projects Project[]
+  posts    Post[]
+
+  @@index([sortOrder])
+}
+
+// Shapes mirror projectSchema in src/lib/schemas/content.ts. `context`,
+// `contribution` and `coverArt` are validated by zod, not by database enums,
+// so adding a value never needs a migration.
+model Project {
+  id           String        @id @default(cuid())
+  slug         String        @unique
+  title        String
+  tagline      String
+  summary      String
+  context      String
+  contribution String
+  role         String
+  year         String
+  featured     Boolean       @default(false)
+  status       PublishStatus @default(DRAFT)
+  sortOrder    Int           @default(0)
+  stack        String[]
+  problem      String
+  approach     String[]
+  outcomes     String[]
+  myPart       String[]
+  // { live?, source?, api?, apiSource? }
+  links        Json          @default("{}")
+  coverArt     String        @default("terminal")
+  // Screenshots: [{ src, width, height, alt, device }]
+  media        Json          @default("[]")
+  publishedAt  DateTime?
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+
+  categories Category[]
+
+  @@index([status, sortOrder])
+  @@index([featured])
+}
+
+model Post {
+  id             String        @id @default(cuid())
+  slug           String        @unique
+  title          String
+  excerpt        String
+  // Sanitized HTML from the editor (sanitized again on every write).
+  body           String
+  // Plain text of the body, for search and reading time.
+  bodyText       String
+  coverUrl       String?
+  coverAlt       String?
+  status         PublishStatus @default(DRAFT)
+  publishedAt    DateTime?
+  seoTitle       String?
+  seoDescription String?
+  authorId       String?
+  author         User?         @relation(fields: [authorId], references: [id], onDelete: SetNull)
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+
+  categories Category[]
+
+  @@index([status, publishedAt])
+  @@index([authorId])
+}

@@ -16,18 +16,42 @@ async function getDashboardStatsCached(): Promise<DashboardStatsDTO> {
   cacheTag(CACHE_TAGS.DASHBOARD);
   cacheLife("admin");
   const now = Date.now();
-  const [totalUsers, activeUsers, disabledUsers, activeSessions] =
-    await Promise.all([
-      db.user.count(),
-      db.user.count({ where: { status: "ACTIVE" } }),
-      db.user.count({ where: { status: "DISABLED" } }),
-      db.session.count({
-        where: {
-          revokedAt: null,
-          expiresAt: { gt: new Date(now) },
-          lastSeenAt: { gt: new Date(now - SESSION_IDLE_MS) },
-        },
-      }),
-    ]);
-  return { totalUsers, activeUsers, disabledUsers, activeSessions };
+  const [
+    totalUsers,
+    activeUsers,
+    disabledUsers,
+    activeSessions,
+    projects,
+    publishedProjects,
+    posts,
+    publishedPosts,
+    newMessages,
+  ] = await Promise.all([
+    db.user.count(),
+    db.user.count({ where: { status: "ACTIVE" } }),
+    db.user.count({ where: { status: "DISABLED" } }),
+    db.session.count({
+      where: {
+        revokedAt: null,
+        expiresAt: { gt: new Date(now) },
+        lastSeenAt: { gt: new Date(now - SESSION_IDLE_MS) },
+      },
+    }),
+    db.project.count(),
+    db.project.count({ where: { status: "PUBLISHED" } }),
+    db.post.count(),
+    db.post.count({ where: { status: "PUBLISHED" } }),
+    db.message.count({ where: { status: "NEW" } }),
+  ]);
+  return {
+    totalUsers,
+    activeUsers,
+    disabledUsers,
+    activeSessions,
+    projects,
+    publishedProjects,
+    posts,
+    publishedPosts,
+    newMessages,
+  };
 }

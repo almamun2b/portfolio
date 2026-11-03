@@ -9,20 +9,16 @@ import {
   SlidingIndicator,
   useSlidingIndicator,
 } from "@/components/ui/sliding-indicator";
-import {
-  CATEGORY_LABELS,
-  PROJECT_CATEGORIES,
-  type ProjectCategory,
-} from "@/lib/content-labels";
 
-export type Filter = "all" | ProjectCategory;
+export type Filter = string;
 type Counts = Record<Filter, number>;
+export interface FilterCategory {
+  slug: string;
+  name: string;
+}
 
 /** id of the server-rendered list the filter shows and hides cards in. */
 export const PROJECT_LIST_ID = "project-list";
-
-const isCategory = (value: string | null): value is ProjectCategory =>
-  PROJECT_CATEGORIES.includes(value as ProjectCategory);
 
 /**
  * Category filter driven by the URL (?category=), so every filtered view is
@@ -30,20 +26,39 @@ const isCategory = (value: string | null): value is ProjectCategory =>
  * server (see projects/page.tsx); this only sets `data-filter` on their list
  * and CSS hides the rest (globals.css › project filter).
  */
-export function ProjectFilter({ counts }: { counts: Counts }) {
+export function ProjectFilter({
+  counts,
+  categories,
+}: {
+  counts: Counts;
+  categories: FilterCategory[];
+}) {
   const param = useSearchParams().get("category");
-  const active: Filter = isCategory(param) ? param : "all";
+  const active: Filter =
+    param && categories.some((c) => c.slug === param) ? param : "all";
 
   useEffect(() => {
     const list = document.getElementById(PROJECT_LIST_ID);
-    if (list) list.dataset.filter = active;
+    if (!list) return;
+    list.dataset.filter = active;
+    // Categories are database rows, so the match runs here, not in CSS.
+    for (const item of list.children) {
+      const slugs = (item as HTMLElement).dataset.categories?.split(" ") ?? [];
+      (item as HTMLElement).hidden =
+        active !== "all" && !slugs.includes(active);
+    }
   }, [active]);
 
   return (
     <>
-      <ProjectFilterNav active={active} counts={counts} />
+      <ProjectFilterNav
+        active={active}
+        counts={counts}
+        categories={categories}
+      />
       <p className="sr-only" aria-live="polite">
-        Showing {counts[active]} {counts[active] === 1 ? "project" : "projects"}
+        Showing {counts[active] ?? 0}{" "}
+        {counts[active] === 1 ? "project" : "projects"}
       </p>
     </>
   );
@@ -56,11 +71,14 @@ export function ProjectFilter({ counts }: { counts: Counts }) {
 export function ProjectFilterNav({
   active,
   counts,
+  categories,
 }: {
   active: Filter;
   counts: Counts;
+  categories: FilterCategory[];
 }) {
-  const filters: Filter[] = ["all", ...PROJECT_CATEGORIES];
+  const labels = new Map(categories.map((c) => [c.slug, c.name]));
+  const filters: Filter[] = ["all", ...categories.map((c) => c.slug)];
   const listRef = useRef<HTMLElement>(null);
   const indicator = useSlidingIndicator(
     listRef,
@@ -96,14 +114,14 @@ export function ProjectFilterNav({
                     : "text-muted-foreground hover:bg-primary/10 hover:text-foreground",
                 )}
               >
-                {filter === "all" ? "All" : CATEGORY_LABELS[filter]}
+                {filter === "all" ? "All" : (labels.get(filter) ?? filter)}
                 <span
                   className={cn(
                     "rounded-full px-1.5 font-mono text-[0.7rem]",
                     selected ? "bg-white/20" : "bg-muted",
                   )}
                 >
-                  {counts[filter]}
+                  {counts[filter] ?? 0}
                 </span>
               </Link>
             </li>

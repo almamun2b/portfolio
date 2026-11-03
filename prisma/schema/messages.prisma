@@ -1,0 +1,22 @@
+enum MessageStatus {
+  NEW
+  READ
+  ARCHIVED
+}
+
+// Contact-form submissions. Stored by the public form, triaged in /admin/messages.
+model Message {
+  id        String        @id @default(cuid())
+  name      String
+  email     String
+  subject   String?
+  body      String
+  status    MessageStatus @default(NEW)
+  ip        String?
+  userAgent String?
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+
+  @@index([status, createdAt])
+  @@index([createdAt])
+}

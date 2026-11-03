@@ -1,4 +1,12 @@
-import { ShieldCheck, UserCheck, UserX, Users } from "lucide-react";
+import {
+  FolderKanban,
+  Inbox,
+  Newspaper,
+  ShieldCheck,
+  UserCheck,
+  UserX,
+  Users,
+} from "lucide-react";
 import { StatCard } from "@/components/ui/stat-card";
 import { getDashboardStats } from "@/server/modules/dashboard/dashboard.service";
 
@@ -26,6 +34,24 @@ export async function StatsSection() {
         value={stats.activeSessions}
         icon={ShieldCheck}
         hint="Signed in right now"
+      />
+      <StatCard
+        label="Projects"
+        value={stats.projects}
+        icon={FolderKanban}
+        hint={`${String(stats.publishedProjects)} published`}
+      />
+      <StatCard
+        label="Blog posts"
+        value={stats.posts}
+        icon={Newspaper}
+        hint={`${String(stats.publishedPosts)} published`}
+      />
+      <StatCard
+        label="New messages"
+        value={stats.newMessages}
+        icon={Inbox}
+        hint="Waiting in the inbox"
       />
     </section>
   );

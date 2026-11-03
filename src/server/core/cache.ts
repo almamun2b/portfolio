@@ -9,7 +9,16 @@ export const CACHE_TAGS = {
   USERS: "users",
   AUDIT: "audit",
   DASHBOARD: "dashboard",
+  CATEGORIES: "categories",
+  PROJECTS: "projects",
+  POSTS: "posts",
+  MESSAGES: "messages",
+  SETTINGS: "settings",
   user: (id: string) => `user:${id}`,
+  project: (id: string) => `project:${id}`,
+  post: (id: string) => `post:${id}`,
+  category: (id: string) => `category:${id}`,
+  message: (id: string) => `message:${id}`,
   sessions: (userId: string) => `sessions:${userId}`,
 } as const;
 

@@ -4,15 +4,7 @@ import { SectionHeading } from "@/components/layout/section-heading";
 import { ProjectCard } from "@/components/projects/project-card";
 import { ButtonLink } from "@/components/ui/button-link";
 import { FeaturedTabs } from "./featured-tabs";
-import { CATEGORY_LABELS, type ProjectCategory } from "@/lib/content-labels";
-import type { Project } from "@/lib/schemas/content";
-
-const FILTERS: ("all" | ProjectCategory)[] = [
-  "all",
-  "fullstack",
-  "shopify",
-  "automation",
-];
+import type { Project, PublicCategory } from "@/lib/schemas/content";
 
 /**
  * Selected work with category tabs. Cards are server-rendered once and
@@ -20,11 +12,16 @@ const FILTERS: ("all" | ProjectCategory)[] = [
  */
 export function FeaturedProjects({
   projects,
+  categories,
   total,
 }: {
   projects: Project[];
+  categories: PublicCategory[];
   total: number;
 }) {
+  // Tabs for the categories that actually have a featured project.
+  const used = new Set(projects.flatMap((p) => p.categories));
+  const tabs = categories.filter((c) => used.has(c.slug));
   return (
     <Section id="projects" aria-labelledby="projects-title">
       <SectionHeading
@@ -40,10 +37,10 @@ export function FeaturedProjects({
         }
       />
       <FeaturedTabs
-        filters={FILTERS.map((value) => ({
-          value,
-          label: value === "all" ? "All" : CATEGORY_LABELS[value],
-        }))}
+        filters={[
+          { value: "all", label: "All" },
+          ...tabs.map((c) => ({ value: c.slug, label: c.name })),
+        ]}
         items={projects.map((project) => ({
           slug: project.slug,
           categories: project.categories,

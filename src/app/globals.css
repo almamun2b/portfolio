@@ -449,12 +449,8 @@
 
 /* ── Project filter (app/(site)/projects/_components/filtered-projects.tsx)
    The list is rendered once; the client filter sets data-filter on it. */
-[data-filter="fullstack"] > li:not([data-categories~="fullstack"]),
-[data-filter="shopify"] > li:not([data-categories~="shopify"]),
-[data-filter="automation"] > li:not([data-categories~="automation"]),
-[data-filter="frontend"] > li:not([data-categories~="frontend"]) {
-  display: none;
-}
+/* Cards are hidden with the `hidden` attribute by that component, because
+   categories are database rows and CSS can't match them generically. */
 
 /* ── Sticky header scrolled state (components/layout/site-header.tsx) ── */
 @keyframes header-scrolled {

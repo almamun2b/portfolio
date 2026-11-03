@@ -170,8 +170,22 @@ export type ProjectRecord = z.infer<typeof projectSchema>;
 export type Shot = z.infer<typeof shotSchema>;
 export type ProjectMedia = z.infer<typeof projectMediaSchema>;
 
-/** A project as pages receive it: content record plus its screenshots. */
-export type Project = ProjectRecord & { media: ProjectMedia };
+/**
+ * A project as pages receive it from the database: the content record, its
+ * category slugs (rows in `Category`, so any string), and its screenshots.
+ */
+export type Project = Omit<ProjectRecord, "categories"> & {
+  categories: string[];
+  media: ProjectMedia;
+};
+
+/** A category with the number of published projects in it. */
+export interface PublicCategory {
+  slug: string;
+  name: string;
+  description: string | null;
+  projectCount: number;
+}
 
 export {
   CATEGORY_LABELS,

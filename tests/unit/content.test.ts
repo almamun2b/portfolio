@@ -3,24 +3,36 @@ import path from "node:path";
 import sharp from "sharp";
 import { describe, expect, it } from "vitest";
 import { PROJECT_CATEGORIES } from "@/lib/content-labels";
-import {
-  getProjects,
-  getProjectBySlug,
-} from "@/server/modules/content/projects.service";
+import { z } from "zod";
+import { capturedMedia } from "@/content/project-media.generated";
+import { manualMedia } from "@/content/project-media.manual";
+import { projects as rawProjects } from "@/content/projects";
+import { projectSchema, shotSchema } from "@/lib/schemas/content";
 
 const publicDir = path.resolve(import.meta.dirname, "../../public");
 
-describe("project content", async () => {
-  const projects = await getProjects();
+// Projects are rows in Postgres now. These checks cover the seed data
+// (src/content/projects.ts + the screenshot manifests) that fills a new
+// database, so a bad entry fails here instead of in `pnpm db:seed`.
+const projects = z
+  .array(projectSchema)
+  .parse(rawProjects)
+  .map((p) => ({
+    ...p,
+    media: {
+      shots: z
+        .array(shotSchema)
+        .parse([
+          ...(capturedMedia[p.slug] ?? []),
+          ...(manualMedia[p.slug] ?? []),
+        ]),
+    },
+  }));
 
+describe("project seed content", () => {
   it("has unique slugs", () => {
     const slugs = projects.map((p) => p.slug);
     expect(new Set(slugs).size).toBe(slugs.length);
-  });
-
-  it("resolves every slug", async () => {
-    for (const { slug } of projects)
-      expect((await getProjectBySlug(slug))?.slug).toBe(slug);
   });
 
   it("has projects in every category, and featured ones in the home tabs", () => {

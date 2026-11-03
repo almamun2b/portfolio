@@ -4,6 +4,7 @@ import { Container } from "@/components/layout/container";
 import { breadcrumbJsonLd, projectJsonLd, serializeJsonLd } from "@/lib/jsonld";
 import { pageMetadata } from "@/lib/metadata";
 import { projectHref } from "@/lib/site";
+import { getProjectCategories } from "@/server/modules/content/categories.service";
 import {
   getAdjacentProjects,
   getProjectBySlug,
@@ -41,6 +42,7 @@ export default async function ProjectPage({
   const project = await getProjectBySlug(slug);
   if (!project) notFound();
   const { previous, next } = await getAdjacentProjects(slug);
+  const categories = await getProjectCategories();
 
   return (
     <article aria-labelledby="page-title">
@@ -57,7 +59,7 @@ export default async function ProjectPage({
           ]),
         }}
       />
-      <CaseStudyHeader project={project} />
+      <CaseStudyHeader project={project} categories={categories} />
       <Container className="flex flex-col gap-16 pb-12 sm:gap-20">
         <ProjectGallery project={project} />
         <CaseStudyBody project={project} />

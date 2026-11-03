@@ -25,7 +25,7 @@ export default async function DashboardPage() {
       />
 
       <WidgetBoundary title="Key numbers">
-        <Suspense fallback={<CardGridSkeleton />}>
+        <Suspense fallback={<CardGridSkeleton count={7} />}>
           <StatsSection />
         </Suspense>
       </WidgetBoundary>

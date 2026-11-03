@@ -22,6 +22,7 @@ model User {
 
   sessions  Session[]
   auditLogs AuditLog[]
+  posts     Post[]
 
   @@index([createdAt])
   @@index([status])

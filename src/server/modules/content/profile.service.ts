@@ -1,28 +1,24 @@
 import "server-only";
-import { cacheLife } from "next/cache";
 import { z } from "zod";
+import { cacheLife, cacheTag } from "next/cache";
 import { experience as rawExperience } from "@/content/experience";
 import { faq as rawFaq } from "@/content/faq";
-import {
-  education as rawEducation,
-  profile as rawProfile,
-  socials as rawSocials,
-} from "@/content/profile";
+import { education as rawEducation } from "@/content/profile";
 import {
   processSteps as rawProcess,
   services as rawServices,
   skillGroups as rawSkills,
 } from "@/content/services";
 import { yearsSince } from "@/lib/dates";
+import { CACHE_TAGS } from "@/server/core/cache";
+import { readProfile, readSocials } from "../settings/settings.model";
 import {
   educationSchema,
   experienceSchema,
   faqSchema,
   processStepSchema,
-  profileSchema,
   serviceSchema,
   skillGroupSchema,
-  socialSchema,
   type Education,
   type Experience,
   type Faq,
@@ -33,12 +29,12 @@ import {
   type Social,
 } from "@/lib/schemas/content";
 
-// Static source today (src/content). Parsing here means a malformed entry
-// fails the build instead of rendering broken. When this content moves to
-// the database, rewrite these functions and keep their signatures.
+// The profile and social links live in Postgres (SiteSetting, edited at
+// /admin/settings) and are read through tagged, cached getters, so pages are
+// prerendered and a settings save refreshes them. Education, experience,
+// services, the process, skills, and the FAQ are still static files (src/
+// content); parsing here means a malformed entry fails the build.
 
-const profile = profileSchema.parse(rawProfile);
-const socials = z.array(socialSchema).parse(rawSocials);
 const education = z.array(educationSchema).parse(rawEducation);
 const experience = z.array(experienceSchema).parse(rawExperience);
 const services = z.array(serviceSchema).parse(rawServices);
@@ -53,7 +49,9 @@ const faq = z.array(faqSchema).parse(rawFaq);
  */
 export async function getProfile(): Promise<Profile> {
   "use cache";
+  cacheTag(CACHE_TAGS.SETTINGS);
   cacheLife("days");
+  const profile = await readProfile();
   const years = String(yearsSince(profile.careerStart));
   return {
     ...profile,
@@ -61,8 +59,11 @@ export async function getProfile(): Promise<Profile> {
   };
 }
 
-export function getSocials(): Promise<Social[]> {
-  return Promise.resolve(socials);
+export async function getSocials(): Promise<Social[]> {
+  "use cache";
+  cacheTag(CACHE_TAGS.SETTINGS);
+  cacheLife("days");
+  return readSocials();
 }
 
 export function getEducation(): Promise<Education[]> {
@@ -96,7 +97,9 @@ export async function getCareerStats(): Promise<{
   technologies: number;
 }> {
   "use cache";
+  cacheTag(CACHE_TAGS.SETTINGS);
   cacheLife("days");
+  const profile = await readProfile();
   const tech = new Set(skillGroups.flatMap((g) => g.items.map((i) => i.name)));
   return {
     years: yearsSince(profile.careerStart),
