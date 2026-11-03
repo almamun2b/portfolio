@@ -27,7 +27,8 @@ export const updateProjectAction = adminAction(
   "project.update",
   updateProjectSchema,
   async (data) => {
-    await updateProject(data);
+    const project = await updateProject(data);
+    return { id: project.id };
   },
   { tags: projectTags.update },
 );

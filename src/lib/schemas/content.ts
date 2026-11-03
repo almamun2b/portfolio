@@ -1,5 +1,6 @@
 import { z } from "zod";
 import {
+  COVER_ARTS,
   PROJECT_CATEGORIES,
   PROJECT_CONTEXTS,
   PROJECT_CONTRIBUTIONS,
@@ -110,14 +111,7 @@ export const faqSchema = z.object({
 
 export const projectCategorySchema = z.enum(PROJECT_CATEGORIES);
 
-export const coverArtSchema = z.enum([
-  "terminal",
-  "dashboard",
-  "inbox",
-  "editor",
-  "timeline",
-  "course",
-]);
+export const coverArtSchema = z.enum(COVER_ARTS);
 
 export const projectSchema = z.object({
   slug: z.string().regex(/^[a-z0-9-]+$/),

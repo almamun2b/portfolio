@@ -50,3 +50,22 @@ export const CONTRIBUTION_LABELS: Record<ProjectContribution, string> = {
   "co-builder": "Co-builder",
   contributor: "Contributor",
 };
+
+/** Designed covers shown when a project has no screenshot. */
+export const COVER_ARTS = [
+  "terminal",
+  "dashboard",
+  "inbox",
+  "editor",
+  "timeline",
+  "course",
+] as const;
+
+export const COVER_ART_LABELS: Record<(typeof COVER_ARTS)[number], string> = {
+  terminal: "Terminal",
+  dashboard: "Dashboard",
+  inbox: "Inbox",
+  editor: "Editor",
+  timeline: "Timeline",
+  course: "Course",
+};

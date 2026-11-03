@@ -1,5 +1,9 @@
 import { z } from "zod";
-import { PROJECT_CONTEXTS, PROJECT_CONTRIBUTIONS } from "@/lib/content-labels";
+import {
+  COVER_ARTS,
+  PROJECT_CONTEXTS,
+  PROJECT_CONTRIBUTIONS,
+} from "@/lib/content-labels";
 import { TECH_IDS } from "@/lib/tech-ids";
 import { idSchema, listBase, sortByParam } from "./common";
 import {
@@ -30,15 +34,6 @@ export const projectListParamsSchema = z.object({
   sortOrder: z.enum(["asc", "desc"]).catch("asc"),
 });
 export type ProjectListParams = z.output<typeof projectListParamsSchema>;
-
-export const COVER_ARTS = [
-  "terminal",
-  "dashboard",
-  "inbox",
-  "editor",
-  "timeline",
-  "course",
-] as const;
 
 export const SHOT_DEVICES = ["desktop", "mobile", "detail"] as const;
 

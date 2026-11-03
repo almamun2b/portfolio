@@ -26,10 +26,22 @@ interface ActionOptions<S extends z.ZodType, T> {
   tags?: TagResolver<z.output<S>, T>;
 }
 
+/**
+ * FormData to a plain object. A name that appears more than once (a group of
+ * checkboxes) becomes an array, so multi-select fields work without JS.
+ */
 function toObject(input: unknown): unknown {
-  return input instanceof FormData
-    ? Object.fromEntries(input.entries())
-    : input;
+  if (!(input instanceof FormData)) return input;
+  const out: Record<string, FormDataEntryValue | FormDataEntryValue[]> = {};
+  for (const [key, value] of input.entries()) {
+    const existing = out[key];
+    if (existing === undefined) out[key] = value;
+    else
+      out[key] = Array.isArray(existing)
+        ? [...existing, value]
+        : [existing, value];
+  }
+  return out;
 }
 
 async function run<S extends z.ZodType, T>(

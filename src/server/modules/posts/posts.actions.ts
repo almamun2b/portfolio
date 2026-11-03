@@ -23,7 +23,8 @@ export const updatePostAction = adminAction(
   "post.update",
   updatePostSchema,
   async (data) => {
-    await updatePost(data);
+    const post = await updatePost(data);
+    return { id: post.id };
   },
   { tags: postTags.update },
 );

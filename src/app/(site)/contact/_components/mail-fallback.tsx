@@ -5,19 +5,10 @@ import { useState } from "react";
 import { buttonVariants } from "@/components/ui/button-variants";
 
 /**
- * Shown after "Send message" opens a mailto: link. Whether a mail app opened
- * can't be detected, so this never claims success: it offers webmail compose
- * links and the address to copy for visitors without a mail app.
+ * Secondary routes for visitors who would rather use their own email: open a
+ * compose window in Gmail or Outlook, or copy the address.
  */
-export function MailFallback({
-  to,
-  gmail,
-  outlook,
-}: {
-  to: string;
-  gmail: string;
-  outlook: string;
-}) {
+export function MailFallback({ to }: { to: string }) {
   const [copied, setCopied] = useState<"ok" | "failed" | null>(null);
   const copy = () => {
     navigator.clipboard.writeText(to).then(
@@ -30,20 +21,31 @@ export function MailFallback({
     );
   };
   const link = buttonVariants({ variant: "outline", size: "sm" });
+  const recipient = encodeURIComponent(to);
 
   return (
-    <div className="flex flex-col gap-4 rounded-2xl border border-border bg-muted p-5 text-sm">
-      <p className="text-foreground">
-        Your mail app should open with the message ready to send. Nothing
-        opened? Send it from your webmail, or copy my address:
-      </p>
+    <div className="flex flex-col gap-3 rounded-2xl border border-border bg-muted p-5 text-sm">
+      <p className="text-foreground">Prefer your own email? Write to {to}:</p>
       <div className="flex flex-wrap gap-2">
-        <a href={gmail} target="_blank" rel="noreferrer" className={link}>
-          Open in Gmail <ExternalLink aria-hidden="true" />
+        <a href={`mailto:${to}`} className={link}>
+          Open mail app
+        </a>
+        <a
+          href={`https://mail.google.com/mail/?view=cm&fs=1&to=${recipient}`}
+          target="_blank"
+          rel="noreferrer"
+          className={link}
+        >
+          Gmail <ExternalLink aria-hidden="true" />
           <span className="sr-only">(opens in a new tab)</span>
         </a>
-        <a href={outlook} target="_blank" rel="noreferrer" className={link}>
-          Open in Outlook <ExternalLink aria-hidden="true" />
+        <a
+          href={`https://outlook.office.com/mail/deeplink/compose?to=${recipient}`}
+          target="_blank"
+          rel="noreferrer"
+          className={link}
+        >
+          Outlook <ExternalLink aria-hidden="true" />
           <span className="sr-only">(opens in a new tab)</span>
         </a>
         <button type="button" onClick={copy} className={link}>
@@ -52,7 +54,7 @@ export function MailFallback({
           ) : (
             <Copy aria-hidden="true" />
           )}
-          Copy {to}
+          Copy address
         </button>
       </div>
       <p role="status" className="min-h-5 text-muted-foreground">

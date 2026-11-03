@@ -17,8 +17,7 @@ export const createCategoryAction = adminAction(
   "category.create",
   createCategorySchema,
   async (data) => {
-    const category = await createCategory(data);
-    return { id: category.id };
+    await createCategory(data);
   },
   { tags: categoryTags.create },
 );
