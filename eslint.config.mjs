@@ -6,6 +6,17 @@ import nextTs from "eslint-config-next/typescript";
 import prettier from "eslint-config-prettier/flat";
 import tseslint from "typescript-eslint";
 
+const contentPattern = {
+  group: ["@/content/*", "!@/content/navigation"],
+  message:
+    "Read content through src/server/modules/content/* (AGENTS.md › Content layer).",
+};
+const dbPattern = {
+  group: ["@/server/core/db", "@/generated/prisma", "@/generated/prisma/*"],
+  message:
+    "Only core and module services/models touch Prisma. Call a module service instead (AGENTS.md › Architecture rules).",
+};
+
 const eslintConfig = defineConfig([
   ...nextVitals,
   ...nextTs,
@@ -43,26 +54,45 @@ const eslintConfig = defineConfig([
     files: ["**/*.{js,mjs,cjs}"],
     extends: [tseslint.configs.disableTypeChecked],
   },
-  // Content goes through the DAL (src/server/dal) so it can move to the
-  // database without touching pages. Only the DAL, scripts, and the content
-  // folder itself may import src/content directly.
+  // Layering (AGENTS.md › Architecture rules). Prisma (db / generated client)
+  // is reachable only from src/server/core and the module services/models;
+  // controllers (route handlers), actions, pages and components go through a
+  // module service. Content comes only through src/server/modules/content so
+  // it can move to the database without touching pages.
   {
     files: ["src/**/*.{ts,tsx}"],
-    ignores: ["src/server/dal/**", "src/content/**"],
+    ignores: ["src/server/core/**", "src/server/modules/**", "src/content/**"],
     rules: {
       "no-restricted-imports": [
         "error",
-        {
-          patterns: [
-            {
-              group: ["@/content/*", "!@/content/navigation"],
-              message:
-                "Read content through src/server/dal/* (AGENTS.md › Content layer).",
-            },
-          ],
-        },
+        { patterns: [contentPattern, dbPattern] },
       ],
     },
+  },
+  {
+    files: ["src/server/modules/**/*.{actions,controller}.ts"],
+    rules: {
+      "no-restricted-imports": [
+        "error",
+        { patterns: [contentPattern, dbPattern] },
+      ],
+    },
+  },
+  {
+    files: ["src/server/core/**", "src/server/modules/**"],
+    ignores: [
+      "src/server/modules/**/*.{actions,controller}.ts",
+      "src/server/modules/content/**",
+    ],
+    rules: {
+      "no-restricted-imports": ["error", { patterns: [contentPattern] }],
+    },
+  },
+  // "use cache" functions must be async even when they await nothing (static
+  // content that depends on today's date), so require-await can't apply.
+  {
+    files: ["src/server/modules/content/*.service.ts"],
+    rules: { "@typescript-eslint/require-await": "off" },
   },
   // Size limits (AGENTS.md › Code size limits). Blank lines and comments
   // don't count.

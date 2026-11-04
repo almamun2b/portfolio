@@ -1,5 +1,6 @@
 import { z } from "zod";
 import {
+  COVER_ARTS,
   PROJECT_CATEGORIES,
   PROJECT_CONTEXTS,
   PROJECT_CONTRIBUTIONS,
@@ -110,14 +111,7 @@ export const faqSchema = z.object({
 
 export const projectCategorySchema = z.enum(PROJECT_CATEGORIES);
 
-export const coverArtSchema = z.enum([
-  "terminal",
-  "dashboard",
-  "inbox",
-  "editor",
-  "timeline",
-  "course",
-]);
+export const coverArtSchema = z.enum(COVER_ARTS);
 
 export const projectSchema = z.object({
   slug: z.string().regex(/^[a-z0-9-]+$/),
@@ -170,8 +164,22 @@ export type ProjectRecord = z.infer<typeof projectSchema>;
 export type Shot = z.infer<typeof shotSchema>;
 export type ProjectMedia = z.infer<typeof projectMediaSchema>;
 
-/** A project as pages receive it: content record plus its screenshots. */
-export type Project = ProjectRecord & { media: ProjectMedia };
+/**
+ * A project as pages receive it from the database: the content record, its
+ * category slugs (rows in `Category`, so any string), and its screenshots.
+ */
+export type Project = Omit<ProjectRecord, "categories"> & {
+  categories: string[];
+  media: ProjectMedia;
+};
+
+/** A category with the number of published projects in it. */
+export interface PublicCategory {
+  slug: string;
+  name: string;
+  description: string | null;
+  projectCount: number;
+}
 
 export {
   CATEGORY_LABELS,

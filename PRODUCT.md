@@ -26,7 +26,7 @@ A frontend-strong full-stack engineer who ships production systems end to end: R
 ## Operating Context
 
 - Visitors arrive from the resume PDF, LinkedIn (`linkedin.com/in/mamun-cse`), GitHub (`github.com/almamun2b`), or a direct link, often on a phone.
-- The site is static today. A backend (Prisma/Postgres content store, admin CMS, stored contact messages, blog) is planned, so content goes through a data-access layer that can switch from files to the database without page changes.
+- Content lives in Postgres (Prisma) and is edited in a private admin CMS (projects, categories, blog posts, contact messages, profile and social links). Pages are still prerendered, so they open instantly with no loader, and an admin save refreshes them. Content goes through one data-access layer per domain.
 
 ## Capabilities and Constraints
 
@@ -34,7 +34,7 @@ A frontend-strong full-stack engineer who ships production systems end to end: R
 - Every project page shows screenshots. Public projects are captured from their live URLs. Xubitar work uses client-free mockups or designed covers.
 - **Xubitar projects are anonymized:** no client names, product names, logos, or store URLs. His role on each is stated honestly (owner, co-builder, or contributor).
 - The lead-generation system is described as a "B2B lead-enrichment pipeline". The platform it collects from is never named.
-- No API calls at runtime yet. The contact form composes an email to `almamun2b@gmail.com`.
+- The contact form stores each message in the database (rate limited, honeypot-protected) for the owner to read in the admin; the page also offers `almamun2b@gmail.com` and Gmail/Outlook compose links for visitors who prefer email. Pages themselves make no client-side API calls.
 - Stack: Next.js 16 App Router, React 19, Tailwind CSS v4, hand-built UI primitives (no shadcn or Radix), Prisma 7 kept for the future backend.
 
 ## Brand Commitments
@@ -51,14 +51,14 @@ A frontend-strong full-stack engineer who ships production systems end to end: R
 - Contact: almamun2b@gmail.com, +880 1610-088700 (also WhatsApp), Sirajganj, Bangladesh. GitHub `almamun2b`, LinkedIn `mamun-cse`, X `almamun2b`, Facebook `almamun2b`.
 - Public projects with live sites: Travel Buddy, Digital Wallet, Now Health, Library Management System, Next.js starter template and Express + Prisma boilerplate, Preorder Manager, Team Hub, RemoteRecruit landing page. Devxhub work: an AI go-to-market platform, a social media archiving platform, an e-learning platform. Devxhub client work is anonymized like Xubitar work: no client or product names, and no links to the client's product.
 - Portrait photos: `~/Desktop/workspace/files/mamun images/mamun/`.
-- **No testimonials, client logos, awards, certifications, or blog posts exist.** Don't invent them. Don't use project, client, or satisfaction counts that can't be checked; derive any stat from the content itself.
+- **No testimonials, client logos, awards, certifications, or published blog posts exist yet** (the blog is built and empty until the owner writes one). Don't invent them. Don't use project, client, or satisfaction counts that can't be checked; derive any stat from the content itself.
 
 ## Product Principles
 
 1. **Proof before claims.** Show the shipped system, screenshot, stack, and role. A claim with no project behind it doesn't ship.
 2. **Fast to scan.** A recruiter gets role, years, stack, and the CV in the first viewport; a client finds comparable work in two clicks.
 3. **Honest about scope.** Say "I owned", "I co-built", or "I contributed" exactly as the work happened, and keep confidential client work anonymous.
-4. **Static now, backend-ready.** Content goes through one data-access layer per domain, so moving to a database changes one file, not the pages.
+4. **Instant, and editable.** Content is read on the server through one data-access layer per domain and prerendered, so the site feels static while the owner edits it from the admin.
 5. **Motion serves the work.** The animated background and hero are atmosphere; they never delay content or block reading.
 
 ## Accessibility & Inclusion

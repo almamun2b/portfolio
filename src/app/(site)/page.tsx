@@ -18,8 +18,12 @@ import {
   getProfile,
   getServices,
   getSocials,
-} from "@/server/dal/profile";
-import { getProjectCounts, getProjects } from "@/server/dal/projects";
+} from "@/server/modules/content/profile.service";
+import { getProjectCategories } from "@/server/modules/content/categories.service";
+import {
+  getProjectCounts,
+  getProjects,
+} from "@/server/modules/content/projects.service";
 
 export async function generateMetadata() {
   const { years } = await getCareerStats();
@@ -37,6 +41,7 @@ export default async function HomePage() {
     stats,
     featured,
     counts,
+    categories,
   ] = await Promise.all([
     getProfile(),
     getSocials(),
@@ -47,6 +52,7 @@ export default async function HomePage() {
     getCareerStats(),
     getProjects({ featured: true }),
     getProjectCounts(),
+    getProjectCategories(),
   ]);
   const current = experience.find((job) => !job.end);
 
@@ -97,7 +103,11 @@ export default async function HomePage() {
         ]}
       />
       <Services services={services} />
-      <FeaturedProjects projects={featured} total={counts.total} />
+      <FeaturedProjects
+        projects={featured}
+        categories={categories}
+        total={counts.total}
+      />
       <ExperienceSection
         experience={experience}
         education={education}

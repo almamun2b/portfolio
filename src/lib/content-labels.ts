@@ -8,7 +8,11 @@ export const PROJECT_CATEGORIES = [
   "automation",
   "frontend",
 ] as const;
-export type ProjectCategory = (typeof PROJECT_CATEGORIES)[number];
+// The seed categories. Categories are rows in the database now (edited in
+// /admin/categories), so a category slug is any string; these constants only
+// seed the table and label the original four in tests.
+export type SeedCategory = (typeof PROJECT_CATEGORIES)[number];
+export type ProjectCategory = string;
 
 export const PROJECT_CONTEXTS = [
   "personal",
@@ -26,7 +30,7 @@ export const PROJECT_CONTRIBUTIONS = [
 ] as const;
 export type ProjectContribution = (typeof PROJECT_CONTRIBUTIONS)[number];
 
-export const CATEGORY_LABELS: Record<ProjectCategory, string> = {
+export const CATEGORY_LABELS: Record<SeedCategory, string> = {
   fullstack: "Full-stack",
   shopify: "Shopify & e-commerce",
   automation: "Automation & data",
@@ -45,4 +49,23 @@ export const CONTRIBUTION_LABELS: Record<ProjectContribution, string> = {
   lead: "Lead developer",
   "co-builder": "Co-builder",
   contributor: "Contributor",
+};
+
+/** Designed covers shown when a project has no screenshot. */
+export const COVER_ARTS = [
+  "terminal",
+  "dashboard",
+  "inbox",
+  "editor",
+  "timeline",
+  "course",
+] as const;
+
+export const COVER_ART_LABELS: Record<(typeof COVER_ARTS)[number], string> = {
+  terminal: "Terminal",
+  dashboard: "Dashboard",
+  inbox: "Inbox",
+  editor: "Editor",
+  timeline: "Timeline",
+  course: "Course",
 };

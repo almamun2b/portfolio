@@ -1,21 +1,30 @@
 import { readFile } from "node:fs/promises";
+import { cacheLife } from "next/cache";
 import path from "node:path";
 import { ImageResponse } from "next/og";
 import { brand, rgba } from "@/lib/brand-colors";
 import { OG_SIZE, OgFrame } from "@/lib/og";
 import { getTech } from "@/lib/tech";
-import { getProfile } from "@/server/dal/profile";
+import { getProfile } from "@/server/modules/content/profile.service";
 
 export const alt = "Md Abdul Mamun, Full-Stack Software Engineer";
 export const size = OG_SIZE;
 export const contentType = "image/png";
 
-export default async function OpengraphImage() {
-  const profile = await getProfile();
+// File reads count as request-time work under Cache Components; the portrait
+// never changes between deploys, so cache it for good.
+async function readPortrait() {
+  "use cache";
+  cacheLife("max");
   const portrait = await readFile(
     path.join(process.cwd(), "src/assets/portrait-square.jpg"),
   );
-  const src = `data:image/jpeg;base64,${portrait.toString("base64")}`;
+  return `data:image/jpeg;base64,${portrait.toString("base64")}`;
+}
+
+export default async function OpengraphImage() {
+  const profile = await getProfile();
+  const src = await readPortrait();
 
   return new ImageResponse(
     <OgFrame eyebrow="portfolio · full-stack engineer">

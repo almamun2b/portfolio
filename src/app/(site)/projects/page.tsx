@@ -3,7 +3,11 @@ import { Container } from "@/components/layout/container";
 import { PageHero } from "@/components/layout/page-hero";
 import { ProjectCard } from "@/components/projects/project-card";
 import { pageMetadata } from "@/lib/metadata";
-import { getProjectCounts, getProjects } from "@/server/dal/projects";
+import { getProjectCategories } from "@/server/modules/content/categories.service";
+import {
+  getProjectCounts,
+  getProjects,
+} from "@/server/modules/content/projects.service";
 import {
   PROJECT_LIST_ID,
   ProjectFilter,
@@ -18,9 +22,10 @@ export const metadata = pageMetadata({
 });
 
 export default async function ProjectsPage() {
-  const [projects, counts] = await Promise.all([
+  const [projects, counts, categories] = await Promise.all([
     getProjects(),
     getProjectCounts(),
+    getProjectCategories(),
   ]);
   const filterCounts = { all: counts.total, ...counts.byCategory };
   return (
@@ -36,9 +41,15 @@ export default async function ProjectsPage() {
           {/* The filter reads ?category=, so it renders on the client; its
               fallback is the same nav with "All" selected. */}
           <Suspense
-            fallback={<ProjectFilterNav active="all" counts={filterCounts} />}
+            fallback={
+              <ProjectFilterNav
+                active="all"
+                counts={filterCounts}
+                categories={categories}
+              />
+            }
           >
-            <ProjectFilter counts={filterCounts} />
+            <ProjectFilter counts={filterCounts} categories={categories} />
           </Suspense>
           {/* Rendered once, on the server: every card is in the static HTML.
               The filter hides cards with CSS through data-filter. */}

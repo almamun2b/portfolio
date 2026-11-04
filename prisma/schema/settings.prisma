@@ -1,0 +1,7 @@
+// Key/value site settings. Each value is a JSON document validated by a zod
+// schema in src/lib/schemas/settings.ts ("profile" today).
+model SiteSetting {
+  key       String   @id
+  value     Json
+  updatedAt DateTime @updatedAt
+}

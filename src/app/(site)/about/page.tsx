@@ -16,7 +16,7 @@ import {
   getFaq,
   getProfile,
   getSkillGroups,
-} from "@/server/dal/profile";
+} from "@/server/modules/content/profile.service";
 import { EducationCards } from "@/components/sections/education-cards";
 import { SkillTabs } from "./_components/skill-tabs";
 

@@ -5,9 +5,10 @@ import { Timeline, TimelineItem } from "@/components/ui/timeline";
 import { formatRange } from "@/lib/dates";
 import type { Experience } from "@/lib/schemas/content";
 import { getTech } from "@/lib/tech";
+import { getSiteLastModified } from "@/server/modules/content/clock.service";
 
 /** Work history on a rail. `full` shows every highlight (About page). */
-export function ExperienceList({
+export async function ExperienceList({
   experience,
   full = false,
   headingLevel = 3,
@@ -17,10 +18,12 @@ export function ExperienceList({
   headingLevel?: 2 | 3;
 }) {
   const Heading = headingLevel === 2 ? "h2" : "h3";
+  // "Present" ranges count up to today; the clock is cached daily.
+  const now = await getSiteLastModified();
   return (
     <Timeline>
       {experience.map((job, i) => {
-        const range = formatRange(job.start, job.end);
+        const range = formatRange(job.start, job.end, now);
         const current = !job.end;
         return (
           <TimelineItem
