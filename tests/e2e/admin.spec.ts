@@ -270,7 +270,11 @@ test.describe("signed in", () => {
 
   test("a collapsed sidebar stays collapsed after a reload", async ({
     page,
-  }) => {
+  }, testInfo) => {
+    test.skip(
+      testInfo.project.name === "mobile",
+      "the collapsible sidebar is desktop-only (lg and up)",
+    );
     await signIn(page, EMAIL ?? "", PASSWORD ?? "");
     await expect(page).toHaveURL(/\/admin$/);
     const sidebar = page.locator("#admin-sidebar");
